@@ -42,7 +42,7 @@ XButton2::Send {MButton} ;wheel click
 :*:gd`t::C:\Users\Peter\Dropbox\docs\
 :*:db`t::C:\Users\Peter\Dropbox\
 :*:md`t::C:\Users\Peter\Downloads\
-:*:cw`t::C:\cygwin\home\Peter
+:*:cw`t::C:\cygwin\home\Peter\
 
 ;auto replace text with symbols
 ::(c)::©
