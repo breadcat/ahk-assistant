@@ -1,10 +1,9 @@
+
 ; ^ctrl #win !alt +shift
 
 ;environment
 #NoEnv
 #SingleInstance,Force
-SetWinDelay, -1 ;don't delay window opening
-SetBatchLines, -1 ;run script as fast as possible
 SetWorkingDir, C:\Users\%A_UserName%
 
 ;keystates
@@ -14,7 +13,7 @@ SetNumLockState, AlwaysOn
 
 ;hotkeys
 #q::Run notepad
-^q::Send {ALTDOWN}{F4}{ALTUP} ;quit most programs
+^q::Send !{F4} ;quit most programs
 ^!q::Run "AppData\Local\Chromium\User Data\Default\User StyleSheets\Custom.css" ;chrome global css
 #w::Run "C:\Program Files (x86)\Chromium\chrome.exe"
 #+w::Run "C:\Program Files (x86)\Chromium\chrome.exe" -incognito
@@ -32,7 +31,7 @@ RAlt & k::AltTab
 Capslock::Backspace
 
 ;remap logitech m570 buttons
-XButton1::Send {Click}{Click} ;double click
+XButton1::Send {Click 2} ;double click
 XButton2::Send {MButton} ;wheel click
 
 ;bullshit ps/2 to usb adapter workarounds
@@ -46,15 +45,15 @@ XButton2::Send {MButton} ;wheel click
 ::(tm)::™
 
 ;change screen res (resswitch.exe - http://www.naughter.com/qres.html)
-^!+UP::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080
-^!+DOWN::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720
+^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080
+^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720
 
 ;date/time insertion
-#space::
+#Space::
 	FormatTime, CurrentDateTime,, yyyy-MM-dd
 	SendInput %CurrentDateTime%
 return
-#+space::
+#+Space::
 	FormatTime, CurrentDateTime,, yyyy-MM-ddTHH:mm
 	SendInput %CurrentDateTime%
 return
@@ -66,8 +65,21 @@ Insert::
 	clipboard = %newclipboard%`r`n%clipboard%
 return
 
+;tiling
+#Up::WinMaximize, A
+#Down::WinMinimize, A
+#Left::Shift("L")
+#Right::Shift("R")
+#Numpad1::Shift("BL")
+#Numpad2::Shift("B")
+#Numpad3::Shift("BR")
+#Numpad4::Shift("L")
+#Numpad5::WinMaximize, A
+#Numpad6::Shift("R")
+#Numpad7::Shift("TL")
+#Numpad8::Shift("T")
+#Numpad9::Shift("TR")
+
 ;includes
-#Include, %A_ScriptDir%\appspecific.ahk ;application specific hotkeys
-#Include, %A_ScriptDir%\tiling.ahk ;win+numpad tiling
-#Include, %A_ScriptDir%\mousewin.ahk ;control windows like kde does
-#Include, %A_ScriptDir%\secret.ahk ;personally identifiable data
+#Include, %A_ScriptDir%\appspecific.ahk ;too many to include in index, deserves separating
+#Include, %A_ScriptDir%\functions.ahk ;functions don't belong in index

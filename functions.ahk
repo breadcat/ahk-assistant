@@ -30,17 +30,3 @@ Shift(Pos)
       WinMove, A,, 0, mBottom/2, mRight/2, mBottom/2
 }
 Return
-
-#Up::WinMaximize, A
-#Down::WinMinimize, A
-#Left::Shift("L")
-#Right::Shift("R")
-#Numpad1::Shift("BL")
-#Numpad2::Shift("B")
-#Numpad3::Shift("BR")
-#Numpad4::Shift("L")
-#Numpad5::WinMaximize, A
-#Numpad6::Shift("R")
-#Numpad7::Shift("TL")
-#Numpad8::Shift("T")
-#Numpad9::Shift("TR")
