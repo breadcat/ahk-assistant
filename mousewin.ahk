@@ -22,20 +22,9 @@
 ; The shortcuts:
 ;  Alt + Left Button  : Drag to move a window.
 ;  Alt + Right Button : Drag to resize a window.
-;  Double-Alt + Left Button   : Minimize a window.
-;  Double-Alt + Right Button  : Maximize/Restore a window.
-;  Double-Alt + Middle Button : Close a window.
 ;
 ; You can optionally release Alt after the first
 ; click rather than holding it down the whole time.
-
-If (A_AhkVersion < "1.0.39.00")
-{
-    MsgBox,20,,This script may not work properly with your version of AutoHotkey. Continue?
-    IfMsgBox,No
-    ExitApp
-}
-
 
 ; This is the setting that runs smoothest on my
 ; system. Depending on your video card and cpu
@@ -46,15 +35,6 @@ CoordMode,Mouse
 return
 
 !LButton::
-If DoubleAlt
-{
-    MouseGetPos,,,KDE_id
-    ; This message is mostly equivalent to WinMinimize,
-    ; but it avoids a bug with PSPad.
-    PostMessage,0x112,0xf020,,,ahk_id %KDE_id%
-    DoubleAlt := false
-    return
-}
 ; Get the initial mouse position and window id, and
 ; abort if the window is maximized.
 MouseGetPos,KDE_X1,KDE_Y1,KDE_id
@@ -78,18 +58,6 @@ Loop
 return
 
 !RButton::
-If DoubleAlt
-{
-    MouseGetPos,,,KDE_id
-    ; Toggle between maximized and restored state.
-    WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
-    If KDE_Win
-        WinRestore,ahk_id %KDE_id%
-    Else
-        WinMaximize,ahk_id %KDE_id%
-    DoubleAlt := false
-    return
-}
 ; Get the initial mouse position and window id, and
 ; abort if the window is maximized.
 MouseGetPos,KDE_X1,KDE_Y1,KDE_id
@@ -126,24 +94,4 @@ Loop
     KDE_X1 := (KDE_X2 + KDE_X1) ; Reset the initial position for the next iteration.
     KDE_Y1 := (KDE_Y2 + KDE_Y1)
 }
-return
-
-; "Alt + MButton" may be simpler, but I
-; like an extra measure of security for
-; an operation like this.
-!MButton::
-If DoubleAlt
-{
-    MouseGetPos,,,KDE_id
-    WinClose,ahk_id %KDE_id%
-    DoubleAlt := false
-    return
-}
-return
-
-; This detects "double-clicks" of the alt key.
-~Alt::
-DoubleAlt := A_PriorHotKey = "~Alt" AND A_TimeSincePriorHotkey < 400
-Sleep 0
-KeyWait Alt  ; This prevents the keyboard's auto-repeat feature from interfering.
 return
