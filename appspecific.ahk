@@ -1,9 +1,28 @@
 
 ;explorer
 #IfWinActive ahk_class CabinetWClass
-  Capslock::Send !{Up} ;capslock goes up a folder
+  Capslock:: ;up one folder
+  if A_OSVersion in WIN_XP
+    {
+    Send {Backspace}
+    }
+    Else
+    {
+    Send !{Up}
+    }
+    Return
   F6::Send !d ;addressbar
-  F1::Send {F2} ;disable help, enable rename
+  F1:: ;overflow to rename, help is useless in explorer
+  F2:: ;rename commands
+  if A_OSVersion in WIN_XP
+    {
+    Send {F2}{Ctrldown}{Home}{Shiftdown}{End}{Ctrlup}{Left 4}{Shiftup} ; rename (hopefully) deselects file extension
+    }
+    Else
+    {
+    Send {F2}
+    }
+    Return
 #IfWinActive
 
 ;photoviewer
