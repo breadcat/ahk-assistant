@@ -77,7 +77,7 @@
 
 ;chrome/chromium
 #IfWinActive ahk_class Chrome_WidgetWin_1
-  ^+w::Send ^w
+  ^+w::Send ^w ;quit window closes tab
 	^q::Send ^w ;quit now closes tab, the two keys are too close for this sort of thing
 	^d::Send ^f ;useless bookmark > useful find
 	^+h::Send ^tchrome://chrome/settings/clearBrowserData{Enter} ;delete history page

@@ -22,17 +22,26 @@ SetNumLockState, AlwaysOn
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
 #+q::Run notepad.exe "C:\Dropbox\docs\faulties.txt"
-^!q::Run "AppData\Local\Chromium\User Data\Default\User StyleSheets\Custom.css" ;chrome global css
+^!q:: ;chromium global CSS
+if A_OSVersion in WIN_XP
+  {
+  Run notepad.exe "%A_AppData%\..\Local Settings\Application Data\Chromium\User Data\Default\User StyleSheets\Custom.css"
+  }
+  Else
+  {
+  Run "AppData\Local\Chromium\User Data\Default\User StyleSheets\Custom.css" ;chrome global css
+  }
+  Return
 #w::Run "C:\Program Files (x86)\Chromium\chrome.exe"
 #+w::Run "C:\Program Files (x86)\Chromium\chrome.exe" -incognito
 #e:: ;launch documents directory
 if A_OSVersion in WIN_XP
   {
-  Run explorer C:\Documents and Settings\%A_UserName%\Documents ;won't work with relative paths, has to be absolute
+  Run explorer %A_MyDocuments%
   }
   Else
   {
-  Run explorer C:\Users\%A_UserName%\Downloads ;won't work with relative paths, has to be absolute
+  Run explorer %A_MyDocuments%\..\Downloads
   }
   Return
 #+e:: ;launch dropbox directory
@@ -42,7 +51,7 @@ if A_OSVersion in WIN_XP
   }
   Else
   {
-  Run explorer C:\Users\%A_UserName%\Dropbox ;won't work with relative paths, has to be absolute
+  Run explorer %A_MyDocuments%\..\Dropbox
   }
   Return
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ;my computer
