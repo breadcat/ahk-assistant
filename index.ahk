@@ -73,9 +73,8 @@ if A_OSVersion in WIN_XP
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
 Capslock::Backspace
-;change screen res (resswitch.exe - http://www.naughter.com/qres.html)
-^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080
-^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720
+^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
+^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
 
 ;remap logitech m570 buttons
 XButton1::Send {Click 2} ;double click
@@ -113,12 +112,26 @@ Insert::
 return
 
 
-;typo corrections
+;text replacements
 ::seperated::separated
 ::recieved::received
 ::license::licence
 ::licenses::licences
 ::equivelants::equivalents
+;work stuff
+::ctsty::Called to speak to you, their number is 
+::sksu::Samsung OS7030 KSU
+::s2b::Samsung OS7030 2BM
+::s4t::Samsung OS7030 4TM
+::s4d::Samsung OS7030 4DM
+::s2d::Samsung OS7030 2DM
+::s4s::Samsung OS7030 4SM
+::sepm::Samsung OS7030 EPM
+::smod::Samsung OS7030 Modem
+::s7b::Samsung DS5007S
+::s14b::Samsung DS5014S
+::s21b::Samsung DS5021S
+::s38b::Samsung DS5038S
 
 ;auto/tab completions
 :*:gd`t::
