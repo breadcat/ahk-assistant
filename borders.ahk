@@ -1,5 +1,3 @@
-;window border removal ahk script
-;for use at work, on XP
 
 ;doesn't work via include, must run standalone
 
@@ -43,10 +41,7 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
-
-
-
-    If WinClass In % "ShImgVw:CPreviewWnd"
+    If WinClass In % "ShImgVw:CPreviewWnd" ;windows xp image viewer
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
@@ -62,7 +57,7 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
-    If WinProcess In % "7zFM.exe"
+    If WinProcess In % "7zFM.exe" ;7zip
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
@@ -81,7 +76,6 @@ AdjustWindow(id)
     If WinProcess In % "outlook.exe"
     {
         WinSet, Style, -0xC00000, %WinTitle%
-        Winset, AlwaysOnTop, off, %WinTitle%
     }
     If WinProcess In % "winword.exe"
     {

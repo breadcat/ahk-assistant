@@ -25,11 +25,16 @@
     Return
 #IfWinActive
 
-;photoviewer
+;photoviewer 7
 #IfWinActive ahk_class Photo_Lightweight_Viewer
   Capslock::Send !{F4} ;quit
   Up::Return ;removes annoying feature where up/down stops left/right naviagation
   Down::Return
+#IfWinActive
+
+;photoviewer xp
+#IfWinActive ahk_class ShImgVw:CPreviewWnd
+  Capslock::Send !{F4} ;quit
 #IfWinActive
 
 ;mpc-hc
