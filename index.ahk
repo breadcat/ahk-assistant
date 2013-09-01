@@ -81,12 +81,6 @@ XButton1::Send {Click 2} ;double click
 XButton2::Send {MButton} ;wheel click
 
 
-;bullshit ps/2 to usb adapter workarounds
-#f::sendraw \
-#^f::sendraw |
-^+f::sendraw |
-
-
 ;auto replace text with symbols
 ::(c)::©
 ::(r)::®
