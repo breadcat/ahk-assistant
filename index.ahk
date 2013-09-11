@@ -8,8 +8,7 @@
 SetTimer, ScriptReload, 1000
 SetWinDelay,2
 CoordMode,Mouse
-return
-SetWorkingDir, C:\Users\%A_UserName%
+SetWorkingDir %A_MyDocuments%\..\
 
 
 ;keystates
@@ -21,7 +20,7 @@ SetNumLockState, AlwaysOn
 ;hotkeys
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
-#+q::Run notepad.exe "C:\Dropbox\docs\faulties.txt"
+#+q::Run notepad.exe "%A_MyDocuments%\Dropbox\docs\faulties.txt"
 ^!q:: ;chromium global CSS
 if A_OSVersion in WIN_XP
   {
@@ -29,7 +28,7 @@ if A_OSVersion in WIN_XP
   }
   Else
   {
-  Run "AppData\Local\Chromium\User Data\Default\User StyleSheets\Custom.css" ;chrome global css
+  Run "%A_AppData%\..\Local\Chromium\User Data\Default\User StyleSheets\Custom.css"
   }
   Return
 #w::Run "C:\Program Files (x86)\Chromium\chrome.exe"
@@ -47,7 +46,7 @@ if A_OSVersion in WIN_XP
 #+e:: ;launch dropbox directory
 if A_OSVersion in WIN_XP
   {
-  Run explorer C:\Dropbox
+  Run explorer %A_MyDocuments%\Dropbox
   }
   Else
   {
@@ -61,11 +60,11 @@ if A_OSVersion in WIN_XP
 #p::
 if A_OSVersion in WIN_XP
   {
-  Run "C:\Dropbox\conf\putty.exe"
+  Run "%A_MyDocuments%\Dropbox\conf\putty.exe"
   }
   Else
   {
-  Run "Dropbox\conf\putty.exe"
+  Run "%A_MyDocuments%\..\Dropbox\conf\putty.exe"
   }
   Return
 #c::Run calc
@@ -122,6 +121,7 @@ return
 ::s4s::Samsung OS7030 4SM
 ::sepm::Samsung OS7030 EPM
 ::smod::Samsung OS7030 Modem
+::s2100b::Samsung DS-2100B
 ::s7b::Samsung DS5007S
 ::s14b::Samsung DS5014S
 ::s21b::Samsung DS5021S
@@ -131,17 +131,17 @@ return
 :*:gd`t::
 if A_OSVersion in WIN_XP
   {
-  Send C:\Dropbox\docs\
+  Send %A_MyDocuments%\Dropbox\docs\
   }
   Else
   {
-  Send C:\Users\%A_UserName%\docs\
+  Send C:\Users\%A_UserName%\Dropbox\docs\
   }
   Return
 :*:md`t::
 if A_OSVersion in WIN_XP
   {
-  Send C:\Documents and Settings\%A_UserName%\Documents\
+  Send %A_MyDocuments%
   }
   Else
   {
@@ -151,7 +151,7 @@ if A_OSVersion in WIN_XP
 :*:db`t::
 if A_OSVersion in WIN_XP
   {
-  Send C:\Dropbox\
+  Send %A_MyDocuments%\Dropbox\
   }
   Else
   {
