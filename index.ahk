@@ -72,6 +72,8 @@ if A_OSVersion in WIN_XP
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
 Capslock::Backspace
+!^0::SoundSet +5 ;volume up
+!^9::SoundSet -5 ;volume down
 ^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
 ^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
 
@@ -126,6 +128,8 @@ return
 ::s14b::Samsung DS5014S
 ::s21b::Samsung DS5021S
 ::s38b::Samsung DS5038S
+:*:bte`t::BT Elements
+:*:btd`t::BT Diverse 7110+
 
 ;auto/tab completions
 :*:gd`t::
