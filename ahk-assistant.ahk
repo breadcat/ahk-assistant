@@ -80,9 +80,31 @@ Capslock::Backspace
 ;remap logitech m570 buttons
 XButton1::Send {Click 2} ;double click
 XButton2::Send {MButton} ;wheel click
+#k:: ;split active and previous 2 windows side by side.
+{
+	Shift("R")
+	Send {AltDown}{Tab}{AltUp}
+	Shift("L")
+	Send {AltDown}{Tab}{AltUp}
+	return
+}
 
-;application specific hotkeys
-#Include, %A_ScriptDir%\appspecific.ahk ;too many to include in index, deserves separating
+#Include, %A_ScriptDir%\appspecific.ahk ;application specific hotkeys
+#Include, %A_ScriptDir%\secret.ahk ;physical and ip address completions
+
+;hide/show taskbar toggle
+#x::
+if toggle := !toggle 
+    {
+    WinHide ahk_class Shell_TrayWnd
+    WinHide, Start ahk_class Button 
+    }
+    else
+    {
+    WinShow ahk_class Shell_TrayWnd
+    WinShow, Start ahk_class Button 
+    }
+return
 
 
 ;auto replace text with symbols
