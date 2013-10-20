@@ -67,6 +67,16 @@ if A_OSVersion in WIN_XP
   Run "%A_MyDocuments%\..\Dropbox\conf\putty.exe"
   }
   Return
+^!k::
+if A_OSVersion in WIN_XP
+  {
+  Run "%A_MyDocuments%\Dropbox\conf\keepass\KeePass.exe"
+  }
+  Else
+  {
+  Run "%A_MyDocuments%\..\Dropbox\conf\keepass\KeePass.exe"
+  }
+  Return
 #c::Run calc
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;win+\ - screen standby
 RAlt & j::ShiftAltTab
@@ -138,6 +148,7 @@ return
 ::license::licence
 ::licenses::licences
 ::equivelants::equivalents
+::attendent::attendant
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
 ::sksu::Samsung OS7030 KSU
