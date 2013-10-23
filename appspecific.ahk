@@ -25,6 +25,12 @@
     Return
 #IfWinActive
 
+;font previewer
+#IfWinActive ahk_class FontViewWClass
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+
+
 ;photoviewer 7
 #IfWinActive ahk_class Photo_Lightweight_Viewer
   Capslock::Send !{F4} ;quit
@@ -88,9 +94,10 @@
 	^+h::Send ^tchrome://chrome/settings/clearBrowserData{Enter} ;delete history page
 #IfWinActive
 
-;notepad2
+;notepad2-mod
 #IfWinActive ahk_class Notepad2
-	!z::Return ;disable delete first char of line 'feature;
+  !z::Return ;disable delete first char of line 'feature;
+  ^0::Return ;disable annoying transparency feature
   ^Down::Send {Down} ; disable shift line down feature
   ^Up::Send {Up} ; disable shift line up feature
 #IfWinActive
