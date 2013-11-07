@@ -117,6 +117,23 @@ if toggle := !toggle
 return
 
 
+;toggle between default audio output (http://ml.pe/optimizing/2013/changing-the-default-sound-device-using-autohotkey/)
+^!Space::
+    switch := !switch
+    If (switch)
+        usePlaybackDevice(1)
+    else
+        usePlaybackDevice(2)
+    return
+ usePlaybackDevice(device) {
+    Run, mmsys.cpl
+    WinWaitActive, Sound ahk_class #32770
+    ControlSend, SysListView321,{Down %device%}, Sound ahk_class #32770
+    ControlClick, Button2, Sound ahk_class #32770
+    WinClose, Sound ahk_class #32770
+}
+
+
 ;auto replace text with symbols
 ::(c)::©
 ::(r)::®
