@@ -43,6 +43,11 @@
   Capslock::Send !{F4} ;quit
 #IfWinActive
 
+;sumatrapdf
+#IfWinActive ahk_class SUMATRA_PDF_FRAME
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+
 ;mpc-hc
 #IfWinActive ahk_class MediaPlayerClassicW
   1::Send 2^1 ;1 keeps borders
