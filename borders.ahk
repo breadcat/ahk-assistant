@@ -45,6 +45,10 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+    If WinClass In % "MMCMainFrame" ;windows xp mmc panes
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
     If WinProcess In % "Photoshop.exe"
     {
         WinSet, Style, -0xC00000, %WinTitle%
