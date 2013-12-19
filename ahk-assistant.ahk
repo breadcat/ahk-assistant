@@ -21,18 +21,8 @@ SetNumLockState, AlwaysOn
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
 #+q::Run notepad.exe "%A_MyDocuments%\Dropbox\docs\faulties.txt"
-^!q:: ;chromium global CSS
-if A_OSVersion in WIN_XP
-  {
-  Run notepad.exe "%A_AppData%\..\Local Settings\Application Data\Chromium\User Data\Default\User StyleSheets\Custom.css"
-  }
-  Else
-  {
-  Run "%A_AppData%\..\Local\Chromium\User Data\Default\User StyleSheets\Custom.css"
-  }
-  Return
-#w::Run "C:\Program Files (x86)\Chromium\chrome.exe"
-#+w::Run "C:\Program Files (x86)\Chromium\chrome.exe" -incognito
+#w::Run firefox.exe
+#+w::Run firefox.exe -private-window
 #e:: ;launch documents directory
 if A_OSVersion in WIN_XP
   {
