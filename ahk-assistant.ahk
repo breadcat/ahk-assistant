@@ -150,6 +150,7 @@ return
 
 
 ;text replacements
+SC029::Send, 0 ;Backticks send zeroes
 ::seperated::separated
 ::recieved::received
 ::license::licence
@@ -158,6 +159,7 @@ return
 ::attendent::attendant
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
+::gtacb::Called to speak to you, can you give them a call back?
 ::sksu::Samsung OS7030 KSU
 ::s2b::Samsung OS7030 2BM
 ::s4t::Samsung OS7030 4TM
@@ -171,6 +173,15 @@ return
 ::s14b::Samsung DS5014S
 ::s21b::Samsung DS5021S
 ::s38b::Samsung DS5038S
+::emg80a::LG eMG80-KSUA
+::emg80i::LG eMG80-KSUI
+::emg80b::LG eMG80-BRIU2
+::ipecs50a::LG iPECS-LIK50A
+::l9030::LG LDP-9030D
+::l9008::LG LDP-9008D
+::lip24::LG LIP-8024E
+::lip12::LG LIP-8012E
+::lip8::LG LIP-8008E
 :*:bte`t::BT Elements
 :*:btd`t::BT Diverse 7110+
 
