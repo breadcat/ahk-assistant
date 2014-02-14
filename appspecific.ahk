@@ -91,12 +91,12 @@
   return
 #IfWinActive
 
-;firefox
-#IfWinActive ahk_class MozillaWindowClass
-  ^+w::Send ^w ;quit window closes tab
+;chromium
+#IfWinActive ahk_class ahk_class Chrome_WidgetWin_1
+	^+w::Send ^w ;quit window closes tab
 	^q::Send ^w ;quit now closes tab, the two keys are too close for this sort of thing
 	^d::Send ^f ;bookmark remapped to find
-	^+n::Run firefox.exe -private-window ;remap unclose window to new private tab
+	^b::Send ^v ;replace bookmarks with paste
 #IfWinActive
 
 ;notepad2-mod

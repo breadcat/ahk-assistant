@@ -21,8 +21,8 @@ SetNumLockState, AlwaysOn
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
 #+q::Run notepad.exe "%A_MyDocuments%\Dropbox\docs\faulties.txt"
-#w::Run firefox.exe
-#+w::Run firefox.exe -private-window
+#w::Run "C:\Program Files (x86)\Chromium\chrome.exe"
+#+w::Run "C:\Program Files (x86)\Chromium\chrome.exe" -incognito
 #e:: ;launch documents directory
 if A_OSVersion in WIN_XP
   {
