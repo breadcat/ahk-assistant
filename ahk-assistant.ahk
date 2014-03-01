@@ -47,7 +47,7 @@ if A_OSVersion in WIN_XP
 ^!r::Run mstsc ;remote desktop connection
 #t::Run C:\cygwin\bin\mintty.exe -
 #+t::Run cmd
-#p::
+#p:: ;putty
 if A_OSVersion in WIN_XP
   {
   Run "%A_MyDocuments%\Dropbox\conf\putty.exe"
@@ -57,18 +57,20 @@ if A_OSVersion in WIN_XP
   Run "%A_MyDocuments%\..\Dropbox\conf\putty.exe"
   }
   Return
-^!k::
+^!k:: ;keepass
 if A_OSVersion in WIN_XP
   {
-  Run "%A_MyDocuments%\Dropbox\conf\keepass\KeePass.exe"
+  Run "%A_MyDocuments%\Dropbox\docs\keepass\KeePass.exe"
   }
   Else
   {
-  Run "%A_MyDocuments%\..\Dropbox\conf\keepass\KeePass.exe"
+  Run "%A_MyDocuments%\..\Dropbox\docs\keepass\KeePass.exe"
   }
   Return
 #c::Run calc
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;win+\ - screen standby
+SC029::Send, 0 ;Backticks send zeroes
+^SC029::Send, `` ;Backticks send zeroes
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
 Capslock::Backspace
@@ -150,7 +152,6 @@ return
 
 
 ;text replacements
-SC029::Send, 0 ;Backticks send zeroes
 ::seperated::separated
 ::recieved::received
 ::license::licence
@@ -176,7 +177,9 @@ SC029::Send, 0 ;Backticks send zeroes
 ::emg80a::LG eMG80-KSUA
 ::emg80i::LG eMG80-KSUI
 ::emg80b::LG eMG80-BRIU2
+::emg80h::LG eMG80-HYB8
 ::ipecs50a::LG iPECS-LIK50A
+::ipecs50b::LG iPECS-LIK50B
 ::l9030::LG LDP-9030D
 ::l9008::LG LDP-9008D
 ::lip24::LG LIP-8024E

@@ -30,6 +30,10 @@
   Capslock::Send !{F4} ;quit
 #IfWinActive
 
+;calc
+#IfWinActive ahk_class SciCalc
+  Capslock::Send !{F4} ;quit
+#IfWinActive
 
 ;photoviewer 7
 #IfWinActive ahk_class Photo_Lightweight_Viewer

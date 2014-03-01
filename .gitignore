@@ -4,3 +4,6 @@ resswitch.exe
 
 #physical and ip address replacements
 secret.ahk
+
+#internal file for work
+telestat.ahk
