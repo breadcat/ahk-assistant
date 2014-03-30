@@ -12,6 +12,7 @@
     }
     Return
   F6::Send !d ;addressbar
+  Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
   F1:: ;overflow to rename, help is useless in explorer
   F2:: ;rename commands
   if A_OSVersion in WIN_XP
@@ -23,6 +24,7 @@
     Send {F2}
     }
     Return
+
 #IfWinActive
 
 ;font previewer
