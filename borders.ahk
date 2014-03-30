@@ -49,6 +49,10 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+    If WinClass In % "MozillaWindowClass" ;firefox
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
     If WinProcess In % "Photoshop.exe"
     {
         WinSet, Style, -0xC00000, %WinTitle%

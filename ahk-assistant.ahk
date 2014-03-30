@@ -21,8 +21,8 @@ SetNumLockState, AlwaysOn
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
 #+q::Run notepad.exe "%A_MyDocuments%\Dropbox\docs\faulties.txt"
-#w::Run "C:\Program Files (x86)\Chromium\chrome.exe"
-#+w::Run "C:\Program Files (x86)\Chromium\chrome.exe" -incognito
+#w::Run firefox.exe
+#+w::Run firefox.exe -private
 #e:: ;launch documents directory
 if A_OSVersion in WIN_XP
   {
@@ -108,6 +108,10 @@ if toggle := !toggle
     }
 return
 
+:*:ytv:: 
+  send,{end}{shift down}{home}{shift up}{del}
+  send,https://www.youtube.com/watch?v={ctrl down}v{ctrl up}
+return
 
 ;toggle between default audio output (http://ml.pe/optimizing/2013/changing-the-default-sound-device-using-autohotkey/)
 ^!Space::
@@ -158,6 +162,7 @@ return
 ::licenses::licences
 ::equivelants::equivalents
 ::attendent::attendant
+::propogate::propagate
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
 ::gtacb::Called to speak to you, can you give them a call back?
@@ -177,6 +182,7 @@ return
 ::emg80a::LG eMG80-KSUA
 ::emg80i::LG eMG80-KSUI
 ::emg80b::LG eMG80-BRIU2
+::emg80p::LG eMG80-PRIU
 ::emg80h::LG eMG80-HYB8
 ::ipecs50a::LG iPECS-LIK50A
 ::ipecs50b::LG iPECS-LIK50B
