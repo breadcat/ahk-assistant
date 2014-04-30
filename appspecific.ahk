@@ -1,6 +1,5 @@
 
-;explorer
-#IfWinActive ahk_class CabinetWClass
+#IfWinActive ahk_class CabinetWClass ;explorer
   Capslock:: ;up one folder
   if A_OSVersion in WIN_XP
     {
@@ -24,89 +23,77 @@
     Send {F2}
     }
     Return
-
 #IfWinActive
 
-;font previewer
-#IfWinActive ahk_class FontViewWClass
+#IfWinActive ahk_class FontViewWClass ;font previewer
   Capslock::Send !{F4} ;quit
 #IfWinActive
 
-;calc
-#IfWinActive ahk_class SciCalc
+#IfWinActive ahk_class SciCalc ;calc
   Capslock::Send !{F4} ;quit
 #IfWinActive
 
-;photoviewer 7
-#IfWinActive ahk_class Photo_Lightweight_Viewer
+#IfWinActive ahk_class Photo_Lightweight_Viewer ;photoviewer windows 7
   Capslock::Send !{F4} ;quit
   Up::Return ;removes annoying feature where up/down stops left/right naviagation
   Down::Return
 #IfWinActive
 
-;photoviewer xp
-#IfWinActive ahk_class ShImgVw:CPreviewWnd
+#IfWinActive ahk_class ShImgVw:CPreviewWnd ;photoviewer windows xp
   Capslock::Send !{F4} ;quit
 #IfWinActive
 
-;sumatrapdf
-#IfWinActive ahk_class SUMATRA_PDF_FRAME
+#IfWinActive ahk_class SUMATRA_PDF_FRAME ;sumatra pdf
   Capslock::Send !{F4} ;quit
 #IfWinActive
 
-;mpc-hc
-#IfWinActive ahk_class MediaPlayerClassicW
+#IfWinActive ahk_class MediaPlayerClassicW ;mpc-hc
   1::Send 2^1 ;1 keeps borders
   Ralt & Enter::Send !{Enter} ; ralt-enter fullscreens
   Capslock::Send !{F4} ;quit
   p::Send ^7 ;p for playlist
 #IfWinActive
 
-;outlook
-#IfWinActive ahk_class rctrl_renwnd32
+#IfWinActive ahk_class rctrl_renwnd32 ;outlook
   ^Enter::Return ;disable accidentally send email shortcut
 #IfWinActive
 
-;excel
-#IfWinActive ahk_class XLMAIN
+#IfWinActive ahk_class XLMAIN ;excel
   ^+v::Send {Esc}{Up}^c{Down}^v{Esc}{Down} ;ctrl+shift+v copies above cell into current
 #IfWinActive
 
-;mstsc
-#IfWinActive ahk_class #32770
+#IfWinActive ahk_class #32770 ;mstsc
   ^Enter::Send 10.0.0.5{Enter} ;tserver
   ^+Enter::Send 10.0.0.10{Enter} ;dserer
 #IfWinActive
 
-;act
-#IfWinActive ahk_class WindowsForms10.Window.8.app.0.2004eee
+#IfWinActive ahk_class WindowsForms10.Window.8.app.0.2004eee ;act
   ^Enter::Send ^{End}{Space}-PG+{Tab 3}{Enter} ;save note with footer
   ^n::Send {F9} ;insert note
   ^f::Send !LC ;search for company
 #IfWinActive
 
-;command prompt
-#IfWinActive ahk_class ConsoleWindowClass
+#IfWinActive ahk_class ConsoleWindowClass ;command prompt
   ^c:: ;copy
     Send {Enter}
-  return
+    return
   ^v:: ;paste
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
     Send {RButton}p
-  return
+    return
 #IfWinActive
 
-;chromium
-#IfWinActive ahk_class ahk_class Chrome_WidgetWin_1
+#IfWinActive ahk_class ahk_class ahk_class MozillaWindowClass ;firefox
 	^+w::Send ^w ;quit window closes tab
+	^+n::Send ^+p ;new incognito window
 	^q::Send ^w ;quit now closes tab, the two keys are too close for this sort of thing
+	^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
 	^d::Send ^f ;bookmark remapped to find
 	^b::Send ^v ;replace bookmarks with paste
 #IfWinActive
 
-;notepad2-mod
-#IfWinActive ahk_class Notepad2
+#IfWinActive ahk_class Notepad2 ;notepad2-mod
   !z::Return ;disable delete first char of line 'feature;
   ^0::Return ;disable annoying transparency feature
   ^Down::Send {Down} ; disable shift line down feature

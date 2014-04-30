@@ -10,17 +10,19 @@ SetWinDelay,2
 CoordMode,Mouse
 SetWorkingDir %A_MyDocuments%\..\
 
-
 ;keystates
 SetCapsLockState, AlwaysOff
 SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 
+;includes
+#Include, %A_ScriptDir%\appspecific.ahk ;application specific hotkeys
+#Include, %A_ScriptDir%\secret.ahk ;physical and ip address completions
 
 ;hotkeys
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
-#+q::Run notepad.exe "%A_MyDocuments%\Dropbox\docs\faulties.txt"
+#+q::Run notepad.exe "%A_MyDocuments%\Vault\docs\faulties.txt"
 #w::Run firefox.exe
 #+w::Run firefox.exe -private
 #e:: ;launch documents directory
@@ -36,11 +38,11 @@ if A_OSVersion in WIN_XP
 #+e:: ;launch dropbox directory
 if A_OSVersion in WIN_XP
   {
-  Run explorer %A_MyDocuments%\Dropbox
+  Run explorer %A_MyDocuments%\Vault
   }
   Else
   {
-  Run explorer %A_MyDocuments%\..\Dropbox
+  Run explorer %A_MyDocuments%\..\Vault
   }
   Return
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ;my computer
@@ -50,27 +52,27 @@ if A_OSVersion in WIN_XP
 #p:: ;putty
 if A_OSVersion in WIN_XP
   {
-  Run "%A_MyDocuments%\Dropbox\conf\putty.exe"
+  Run "%A_MyDocuments%\Vault\conf\putty.exe"
   }
   Else
   {
-  Run "%A_MyDocuments%\..\Dropbox\conf\putty.exe"
+  Run "%A_MyDocuments%\..\Vault\conf\putty.exe"
   }
   Return
 ^!k:: ;keepass
 if A_OSVersion in WIN_XP
   {
-  Run "%A_MyDocuments%\Dropbox\docs\keepass\KeePass.exe"
+  Run "%A_MyDocuments%\Vault\docs\keepass\KeePass.exe"
   }
   Else
   {
-  Run "%A_MyDocuments%\..\Dropbox\docs\keepass\KeePass.exe"
+  Run "%A_MyDocuments%\..\Vault\docs\keepass\KeePass.exe"
   }
   Return
 #c::Run calc
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;win+\ - screen standby
 SC029::Send, 0 ;Backticks send zeroes
-^SC029::Send, `` ;Backticks send zeroes
+^SC029::Send, `` ;C-Backtick send backticks
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
 Capslock::Backspace
@@ -78,10 +80,16 @@ Capslock::Backspace
 !^9::SoundSet -5 ;volume down
 ^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
 ^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
-
-;remap logitech m570 buttons
-XButton1::Send {Click 2} ;double click
-XButton2::Send {MButton} ;wheel click
+XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
+XButton2::Send {MButton} ;remap logitech m570 x2 to wheel click
+#Space:: ;date insert
+	FormatTime, CurrentDateTime,, yyyy-MM-dd
+	SendInput %CurrentDateTime%
+  return
+#+Space:: ;date and time insert
+	FormatTime, CurrentDateTime,, yyyy-MM-ddTHH:mm
+	SendInput %CurrentDateTime%
+  return
 #k:: ;split active and previous 2 windows side by side.
 {
 	Shift("R")
@@ -90,31 +98,24 @@ XButton2::Send {MButton} ;wheel click
 	Send {AltDown}{Tab}{AltUp}
 	return
 }
-
-#Include, %A_ScriptDir%\appspecific.ahk ;application specific hotkeys
-#Include, %A_ScriptDir%\secret.ahk ;physical and ip address completions
-
-;hide/show taskbar toggle
-#x::
+Insert:: ;insert appends to clipboard
+	newclipboard = %clipboard%
+	Send, ^c
+	clipboard = %newclipboard%`r`n%clipboard%
+  return
+#x:: ;hide/show taskbar toggle
 if toggle := !toggle 
-    {
-    WinHide ahk_class Shell_TrayWnd
-    WinHide, Start ahk_class Button 
-    }
-    else
-    {
-    WinShow ahk_class Shell_TrayWnd
-    WinShow, Start ahk_class Button 
-    }
-return
-
-:*:ytv:: 
-  send,{end}{shift down}{home}{shift up}{del}
-  send,https://www.youtube.com/watch?v={ctrl down}v{ctrl up}
-return
-
-;toggle between default audio output (http://ml.pe/optimizing/2013/changing-the-default-sound-device-using-autohotkey/)
-^!Space::
+  {
+  WinHide ahk_class Shell_TrayWnd
+  WinHide, Start ahk_class Button 
+  }
+  else
+  {
+  WinShow ahk_class Shell_TrayWnd
+  WinShow, Start ahk_class Button 
+  }
+  return
+^!Space:: ;toggle between default audio output (http://ml.pe/optimizing/2013/changing-the-default-sound-device-using-autohotkey/)
     switch := !switch
     If (switch)
         usePlaybackDevice(1)
@@ -129,31 +130,10 @@ return
     WinClose, Sound ahk_class #32770
 }
 
-
 ;auto replace text with symbols
 ::(c)::©
 ::(r)::®
 ::(tm)::™
-
-
-;date/time insertion
-#Space::
-	FormatTime, CurrentDateTime,, yyyy-MM-dd
-	SendInput %CurrentDateTime%
-return
-#+Space::
-	FormatTime, CurrentDateTime,, yyyy-MM-ddTHH:mm
-	SendInput %CurrentDateTime%
-return
-
-
-;insert appends to clipboard
-Insert::
-	newclipboard = %clipboard%
-	Send, ^c
-	clipboard = %newclipboard%`r`n%clipboard%
-return
-
 
 ;text replacements
 ::seperated::separated
@@ -195,14 +175,18 @@ return
 :*:btd`t::BT Diverse 7110+
 
 ;auto/tab completions
+:*:ytv:: ;create YT link from video ID
+  send,{end}{shift down}{home}{shift up}{del}
+  send,https://www.youtube.com/watch?v={ctrl down}v{ctrl up}
+  return
 :*:gd`t::
 if A_OSVersion in WIN_XP
   {
-  Send %A_MyDocuments%\Dropbox\docs\
+  Send %A_MyDocuments%\Vault\docs\
   }
   Else
   {
-  Send C:\Users\%A_UserName%\Dropbox\docs\
+  Send C:\Users\%A_UserName%\Vault\docs\
   }
   Return
 :*:md`t::
@@ -218,18 +202,18 @@ if A_OSVersion in WIN_XP
 :*:db`t::
 if A_OSVersion in WIN_XP
   {
-  Send %A_MyDocuments%\Dropbox\
+  Send %A_MyDocuments%\Vault\
   }
   Else
   {
-  Send C:\Users\%A_UserName%\Dropbox\
+  Send C:\Users\%A_UserName%\Vault\
   }
   Return
-:*:cw`t::
-{
-Send C:\cygwin\home\%A_UserName%\
-}
-Return
+:*:cw`t:: ;cygwin
+  {
+  Send C:\cygwin\home\%A_UserName%\
+  }
+  Return
 
 ;tiling
 #Up::WinMaximize, A
@@ -245,7 +229,6 @@ Return
 #Numpad7::Shift("TL")
 #Numpad8::Shift("T")
 #Numpad9::Shift("TR")
-
 Shift(Pos)
 {
   WinGetClass, class, A
@@ -278,9 +261,7 @@ Shift(Pos)
 }
 Return
 
-
-;auto-reload on change
-ScriptReload:
+ScriptReload: ;auto-reload on change
 {
   FileGetAttrib, FileAttribs, %A_ScriptFullPath%
   IfInString, FileAttribs, A
@@ -293,7 +274,6 @@ ScriptReload:
   }
   Return
 }
-
 
 ;kde-windows (Easy Window Dragging -- KDE style (requires XP/2k/NT) -- by Jonny)
 !LButton::
