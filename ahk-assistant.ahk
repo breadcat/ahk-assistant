@@ -24,7 +24,7 @@ SetNumLockState, AlwaysOn
 ^q::Send !{F4} ;quit most programs
 #+q::Run notepad.exe "%A_MyDocuments%\Vault\docs\faulties.txt"
 #w::Run firefox.exe
-#+w::Run firefox.exe -private
+#+w::Run firefox.exe -private-window
 #e:: ;launch documents directory
 if A_OSVersion in WIN_XP
   {
@@ -83,25 +83,25 @@ Capslock::Backspace
 XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
 XButton2::Send {MButton} ;remap logitech m570 x2 to wheel click
 #Space:: ;date insert
-	FormatTime, CurrentDateTime,, yyyy-MM-dd
-	SendInput %CurrentDateTime%
+  FormatTime, CurrentDateTime,, yyyy-MM-dd
+  Send %CurrentDateTime%
   return
 #+Space:: ;date and time insert
-	FormatTime, CurrentDateTime,, yyyy-MM-ddTHH:mm
-	SendInput %CurrentDateTime%
+  FormatTime, CurrentDateTime,, yyyy-MM-dd HHmm
+  Send %CurrentDateTime%
   return
 #k:: ;split active and previous 2 windows side by side.
-{
-	Shift("R")
-	Send {AltDown}{Tab}{AltUp}
-	Shift("L")
-	Send {AltDown}{Tab}{AltUp}
-	return
-}
+  {
+  Shift("R")
+  Send {AltDown}{Tab}{AltUp}
+  Shift("L")
+  Send {AltDown}{Tab}{AltUp}
+  return
+  }
 Insert:: ;insert appends to clipboard
-	newclipboard = %clipboard%
-	Send, ^c
-	clipboard = %newclipboard%`r`n%clipboard%
+  newclipboard = %clipboard%
+  Send, ^c
+  clipboard = %newclipboard%`r`n%clipboard%
   return
 #x:: ;hide/show taskbar toggle
 if toggle := !toggle 
