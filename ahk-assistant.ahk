@@ -103,6 +103,16 @@ Insert:: ;insert appends to clipboard
   Send, ^c
   clipboard = %newclipboard%`r`n%clipboard%
   return
+^!t:: ;formats a copied telephone number correctly, and pastes it
+  StringReplace, clipboard, clipboard, %A_SPACE%, , All ;remove spaces
+  StringReplace, clipboard, clipboard, `r, , All ;remove lines
+  StringReplace, clipboard, clipboard, `n, , All ;remove lines
+  StringReplace, clipboard, clipboard, (, , All ;remove lbracket
+  StringReplace, clipboard, clipboard, ), , All ;remove rbracket
+  StringLeft, 5digits, clipboard, 5
+  StringRight, 6digits, clipboard, 6
+  Send %5digits% %6digits%
+  return
 #x:: ;hide/show taskbar toggle
 if toggle := !toggle 
   {
@@ -120,7 +130,7 @@ if toggle := !toggle
     If (switch)
         usePlaybackDevice(1)
     else
-        usePlaybackDevice(2)
+        usePlaybackDevice(3)
     return
  usePlaybackDevice(device) {
     Run, mmsys.cpl
@@ -136,6 +146,10 @@ if toggle := !toggle
 ::(tm)::™
 
 ;text replacements
+:*:i'll::I'll
+:*:i've::I've
+:*:i'm::I'm
+:*:teh::the
 ::seperated::separated
 ::recieved::received
 ::license::licence
@@ -146,6 +160,7 @@ if toggle := !toggle
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
 ::gtacb::Called to speak to you, can you give them a call back?
+::ctt::Feel free to close the ticket.
 ::sksu::Samsung OS7030 KSU
 ::s2b::Samsung OS7030 2BM
 ::s4t::Samsung OS7030 4TM
@@ -164,6 +179,7 @@ if toggle := !toggle
 ::emg80b::LG eMG80-BRIU2
 ::emg80p::LG eMG80-PRIU
 ::emg80h::LG eMG80-HYB8
+::emg80c::LG eMG80-CH204
 ::ipecs50a::LG iPECS-LIK50A
 ::ipecs50b::LG iPECS-LIK50B
 ::l9030::LG LDP-9030D
@@ -171,6 +187,7 @@ if toggle := !toggle
 ::lip24::LG LIP-8024E
 ::lip12::LG LIP-8012E
 ::lip8::LG LIP-8008E
+::lip4::LG LIP-8004D
 :*:bte`t::BT Elements
 :*:btd`t::BT Diverse 7110+
 
