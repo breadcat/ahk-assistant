@@ -49,6 +49,8 @@ if A_OSVersion in WIN_XP
 ^!r::Run mstsc ;remote desktop connection
 #t::Run C:\cygwin\bin\mintty.exe -
 #+t::Run cmd
+^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
+^!v::Run %programfiles%\TightVNC\tvnviewer.exe
 #p:: ;putty
 if A_OSVersion in WIN_XP
   {

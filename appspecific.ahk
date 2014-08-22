@@ -45,6 +45,8 @@
 
 #IfWinActive ahk_class SUMATRA_PDF_FRAME ;sumatra pdf
   Capslock::Send !{F4} ;quit
+  ^b::Send {F12} ; ctrl+b for bookmarks
+  !Enter::Send ^l ;fullscreen
 #IfWinActive
 
 #IfWinActive ahk_class MediaPlayerClassicW ;mpc-hc
@@ -62,11 +64,6 @@
   ^+v::Send {Esc}{Up}^c{Down}^v{Esc}{Down} ;ctrl+shift+v copies above cell into current
 #IfWinActive
 
-#IfWinActive ahk_class #32770 ;mstsc
-  ^Enter::Send 10.0.0.5{Enter} ;tserver
-  ^+Enter::Send 10.0.0.10{Enter} ;dserer
-#IfWinActive
-
 #IfWinActive ahk_class WindowsForms10.Window.8.app.0.2004eee ;act
   ^Enter::Send ^{End}{Space}-PG+{Tab 3}{Enter} ;save note with footer
   ^n::Send {F9} ;insert note
@@ -77,6 +74,7 @@
   ^c:: ;copy
     Send {Enter}
     return
+  +Insert::
   ^v:: ;paste
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
@@ -96,6 +94,9 @@
 #IfWinActive ahk_class Notepad2 ;notepad2-mod
   !z::Return ;disable delete first char of line 'feature;
   ^0::Return ;disable annoying transparency feature
-  ^Down::Send {Down} ; disable shift line down feature
-  ^Up::Send {Up} ; disable shift line up feature
+  !t::Return ;disable always on top
+  ^+Down::
+  ^Down::Send {Down} ; disable (alt) shift line down feature
+  ^+Up::
+  ^Up::Send {Up} ; disable (alt) shift line up feature
 #IfWinActive
