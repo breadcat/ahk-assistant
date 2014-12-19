@@ -56,6 +56,12 @@
   p::Send ^7 ;p for playlist
 #IfWinActive
 
+#IfWinActive ahk_class mpv ;mpv
+  Alt & Enter:: ;overflow to fullscreen below
+  Ralt & Enter::Send f ; ralt-enter fullscreens
+  Capslock::Send !{F4} ;quitp
+#IfWinActive
+
 #IfWinActive ahk_class rctrl_renwnd32 ;outlook
   ^Enter::Return ;disable accidentally send email shortcut
 #IfWinActive
@@ -89,6 +95,7 @@
 	^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
 	^d::Send ^f ;bookmark remapped to find
 	^b::Send ^v ;replace bookmarks with paste
+	f6::Send ^l ;F6 jumps to address bar
 #IfWinActive
 
 #IfWinActive ahk_class Notepad2 ;notepad2-mod

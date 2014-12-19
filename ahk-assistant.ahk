@@ -9,6 +9,7 @@ SetTimer, ScriptReload, 1000
 SetWinDelay,2
 CoordMode,Mouse
 SetWorkingDir %A_MyDocuments%\..\
+ProgramFilesX86 := A_ProgramFiles . (A_PtrSize=8 ? " (x86)" : "") ;pfx86 variable from http://www.autohotkey.com/board/topic/79160-a-programfiles-for-programs-in-windows-7-x86-directory/
 
 ;keystates
 SetCapsLockState, AlwaysOff
@@ -54,11 +55,11 @@ if A_OSVersion in WIN_XP
 #p:: ;putty
 if A_OSVersion in WIN_XP
   {
-  Run "%A_MyDocuments%\Vault\conf\putty.exe"
+  Run "%A_MyDocuments%\Vault\git\dotfiles\putty.exe"
   }
   Else
   {
-  Run "%A_MyDocuments%\..\Vault\conf\putty.exe"
+  Run "%ProgramFilesX86%\PuTTY\putty.exe"
   }
   Return
 ^!k:: ;keepass
@@ -148,10 +149,6 @@ if toggle := !toggle
 ::(tm)::™
 
 ;text replacements
-:*:i'll::I'll
-:*:i've::I've
-:*:i'm::I'm
-:*:teh::the
 ::seperated::separated
 ::recieved::received
 ::license::licence
@@ -159,6 +156,7 @@ if toggle := !toggle
 ::equivelants::equivalents
 ::attendent::attendant
 ::propogate::propagate
+::refridgeration::refrigeration
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
 ::gtacb::Called to speak to you, can you give them a call back?
@@ -184,6 +182,7 @@ if toggle := !toggle
 ::emg80c::LG eMG80-CH204
 ::ipecs50a::LG iPECS-LIK50A
 ::ipecs50b::LG iPECS-LIK50B
+::l9048::LG LDP-9048DSS
 ::l9030::LG LDP-9030D
 ::l9008::LG LDP-9008D
 ::lip24::LG LIP-8024E
