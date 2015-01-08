@@ -96,6 +96,13 @@
 	^d::Send ^f ;bookmark remapped to find
 	^b::Send ^v ;replace bookmarks with paste
 	f6::Send ^l ;F6 jumps to address bar
+	^+o::Send {AltDown}t<{AltUp}o ;ctrl+shift+o option
+	#o::
+    StringReplace, clipboard, clipboard, %A_SPACE%, , All ;remove spaces, basic validation
+    StringReplace, clipboard, clipboard, `r, , All ;remove lines, sometimes overflows :/
+    StringReplace, clipboard, clipboard, `n, , All ;remove lines, sometimes overflows :/
+    Send, ^c^t^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
+    return
 #IfWinActive
 
 #IfWinActive ahk_class Notepad2 ;notepad2-mod

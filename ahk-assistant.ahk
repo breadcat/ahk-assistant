@@ -18,7 +18,7 @@ SetNumLockState, AlwaysOn
 
 ;includes
 #Include, %A_ScriptDir%\appspecific.ahk ;application specific hotkeys
-#Include, %A_ScriptDir%\secret.ahk ;physical and ip address completions
+#Include, *i %A_ScriptDir%\secret.ahk ;physical and ip address completions, only included if exists.
 
 ;hotkeys
 #q::Run notepad
@@ -150,6 +150,7 @@ if toggle := !toggle
 
 ;text replacements
 ::seperated::separated
+::seperate::separate
 ::recieved::received
 ::license::licence
 ::licenses::licences
