@@ -80,12 +80,6 @@ pasteTelephone() {
   return
   }
 
-createYoutubeLink() {
-  send,{end}{shift down}{home}{shift up}{del}
-  send,https://www.youtube.com/watch?v={ctrl down}v{ctrl up}
-  return
-  }
-
 typeSyncDocs() {
 if A_OSVersion in WIN_XP
   {
@@ -131,6 +125,97 @@ if A_OSVersion in WIN_XP
   Return
   }
 
+cmdPaste() { ;C-v / S-insert pastes into cmd
+  CoordMode, Mouse, Relative
+  MouseMove, 100, 100
+  Send {RButton}p
+  return
+  }
+
+explorerUp() { ;up one folder
+  if A_OSVersion in WIN_XP
+  {
+  Send {Backspace}
+  }
+  Else
+  {
+  Send !{Up}
+  }
+  Return
+  }
+
+explorerRename() {
+  if A_OSVersion in WIN_XP
+  {
+  Send {F2}{Ctrldown}{Home}{Shiftdown}{End}{Ctrlup}{Left 4}{Shiftup} ; rename (hopefully) deselects file extension
+  }
+  Else
+  {
+  Send {F2}
+  }
+  Return
+  }
+
+explorerCMD() { ;open command prompt in current location
+  ClipSaved := ClipboardAll
+  Send !d^c
+  Run, cmd /K "cd `"%clipboard%`""
+  Clipboard := ClipSaved
+  ClipSaved =
+  Return
+  }
+
+explorerHidden() { ;toggle show/hide hidden folders, stolen from http://www.autohotkey.com/board/topic/68131-turn-off-show-hidden-files-at-boot/
+  RegRead, HiddenFiles_Status, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden
+  If HiddenFiles_Status = 2
+  RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden, 1
+  Else
+    RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden, 2
+  WinGetClass, eh_Class,A
+  If (eh_Class = "#32770" OR A_OSVersion = "WIN_VISTA" OR A_OSVersion = "WIN_7")
+    send, {F5}
+  Else PostMessage, 0x111, 28931,,, A
+  Return
+  }
+
+explorerNewDir() { ;allows xp to create new folder from keypress
+  if A_OSVersion in WIN_XP
+  {
+  Send !fwf
+  }
+  Else
+  {
+  Send ^+n
+  }
+  Return
+  }
+
+explorerNewFile() { ;create a new blank text file
+  if A_OSVersion in WIN_XP
+  {
+  Send !fwt{End}{Left 4}{ShiftDown}{Home}{ShiftUp} ;new text file, and deselect file extension
+  }
+  Else
+  {
+  Send !fwt ;clever windows 7 already knows to skip file extensions
+  }
+  Return
+  }
+
+excelFormulaBar() { ;jumps to formula bar
+  CoordMode, Mouse, Relative
+  MouseMove, 180, 60
+  Send {LButton}
+  return
+  }
+
+borderlessFullscreen() { ;borderless fullscreen script from PCGW (http://pcgamingwiki.com/wiki/Glossary:Borderless_fullscreen_windowed#Borderless_scripts)
+  WinGet, WindowID, ID, A
+  WinSet, Style, -0xC40000, ahk_id %WindowID%
+  WinMove, ahk_id %WindowID%, , 0, 0, A_ScreenWidth, A_ScreenHeight
+  return
+  }
+
 ;toggle between default audio output (http://ml.pe/optimizing/2013/changing-the-default-sound-device-using-autohotkey/)
 toggleAudioDevice() {
     switch := !switch
@@ -160,13 +245,9 @@ winSplit() { ;split active and previous window side by side, press again to swap
     Send {AltDown}{Tab}{AltUp}
     }
   else {
-    Tile("L")
-    Sleep, 15
     Send {AltDown}{Tab}{AltUp}
     Sleep, 10
-    Tile("R")
-    Sleep, 15
-    Send {AltDown}{Tab}{AltUp}
+    winSplit()
     }
   return
   }

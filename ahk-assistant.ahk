@@ -17,7 +17,6 @@ SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 
 ;includes
-#Include, %A_ScriptDir%\appspecific.ahk ;application specific hotkeys
 #Include, %A_ScriptDir%\functions.ahk ;all those long winded functions
 #Include, *i %A_ScriptDir%\secret.ahk ;physical and ip address completions, only included if exists.
 
@@ -34,6 +33,7 @@ SetNumLockState, AlwaysOn
 #t:: launchTerminal()
 #+t::Run cmd
 ^!t::pasteTelephone()
+#y::send,{end}{shift down}{home}{shift up}{del}https://www.youtube.com/watch?v={ctrl down}v{ctrl up} ;create youtube link from ID
 ^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
 ^!v::Run %programfiles%\TightVNC\tvnviewer.exe
 #p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
@@ -88,6 +88,7 @@ Insert::appendClipboard()
 ::recieved::received
 ::license::licence
 ::licenses::licences
+::equivelant::equivalent
 ::equivelants::equivalents
 ::attendent::attendant
 ::propogate::propagate
@@ -129,11 +130,125 @@ Insert::appendClipboard()
 :*:btd`t::BT Diverse 7110+
 
 ;auto/tab completions
-:*:ytv::createYoutubeLink()
 :*:gd`t::typeSyncDocs()
 :*:md`t::typeDocuments()
 :*:db`t::typeSync()
 :*:cw`t::typeCygwin()
+
+;application specific hotkeys
+#IfWinActive ahk_class CabinetWClass ;explorer
+  Capslock::explorerUp()
+  F6::Send !d ;addressbar
+  Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
+  F1:: ;overflow to rename, help is useless in explorer
+  F2::explorerRename() ;rename commands
+  F3::explorerCMD()
+  ^h::explorerHidden()
+  ^+n::explorerNewDir()
+  ^!+n::explorerNewFile()
+#IfWinActive
+
+#IfWinActive ahk_class FontViewWClass ;font previewer
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+
+#IfWinActive ahk_class SciCalc ; windows xp calc
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+#IfWinActive ahk_class CalcFrame ; windows 7 calc
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+
+#IfWinActive ahk_class ShImgVw:CPreviewWnd ;photoviewer windows xp
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+#IfWinActive ahk_class Photo_Lightweight_Viewer ;photoviewer windows 7
+  Capslock::Send !{F4} ;quit
+  Up:: ;overflow
+  Down::Return ;fixes up/down breaking left/right navigation
+#IfWinActive
+
+#IfWinActive ahk_class SUMATRA_PDF_FRAME ;sumatra pdf
+  Capslock::Send !{F4} ;quit
+  ^b::Send {F12} ; ctrl+b for bookmarks
+  !Enter::Send ^l ;fullscreen
+#IfWinActive
+
+#IfWinActive ahk_class MediaPlayerClassicW ;mpc-hc
+  1::Send 2^1 ;1 keeps borders
+  Ralt & Enter::Send !{Enter} ; ralt-enter fullscreens
+  Capslock::Send !{F4} ;quit
+  p::Send ^7 ;p for playlist
+#IfWinActive
+
+#IfWinActive ahk_class mpv ;mpv
+  Alt & Enter:: ;overflow to fullscreen below
+  Ralt & Enter::Send f ; ralt-enter fullscreens
+  Capslock::Send !{F4} ;quit
+#IfWinActive
+
+#IfWinActive ahk_class rctrl_renwnd32 ;outlook
+  ^Enter::Return ;disable accidentally send email shortcut
+#IfWinActive
+
+#IfWinActive ahk_class XLMAIN ;excel
+  ^+v::Send {Esc}{Up}^c{Down}^v{Esc}{Down} ;ctrl+shift+v copies above cell into current
+  ^F2::Send {AltDown}o{AltUp}hr ;rename sheet
+  F3::Send {CtrlDown}f{CtrlUp}{Enter}{Escape} ;f3 searches for the same string again
+  F6::excelFormulaBar()
+#IfWinActive
+
+#IfWinActive ahk_class WindowsForms10.Window.8.app.0.2004eee ;act
+  ^Enter::Send ^{End}{Space}-PG+{Tab 3}{Enter} ;save note with footer
+  ^n::Send {F9} ;insert note
+  ^f::Send !LC ;search for company
+#IfWinActive
+
+#IfWinActive ahk_class ConsoleWindowClass ;command prompt
+  ^c::Send {Enter} ;copy
+  +Insert:: ;overflow to paste
+  ^v::cmdPaste() ;paste
+#IfWinActive
+
+#IfWinActive ahk_class ahk_class ahk_class MozillaWindowClass ;firefox
+  ^+w::Send ^w ;quit window closes tab
+  ^+n::Send ^+p ;new incognito window
+  ^q::Send ^w ;quit now closes tab, the two keys are too close for this sort of thing
+  ^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
+  ^d::Send ^f ;bookmark remapped to find
+  ^b::Send ^v ;replace bookmarks with paste
+  f6::Send ^l ;F6 jumps to address bar
+  ^+o::Send {AltDown}t<{AltUp}o ;ctrl+shift+o option
+  #o::Send, ^c^t^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
+  +PgDn::Send {Space 4}{Down 7} ;scroll down to specific part of a specific page, not really
+  +PgUp::Send {Home} ;makes sense, kinda
+#IfWinActive
+
+#IfWinActive ahk_class MSPaintApp ;mspaint
+  ^=::Send {CtrlDown}{PgUp}{CtrlUp} ;zoom in
+  ^-::Send {CtrlDown}{PgDn}{CtrlUp} ;zoom out
+#IfWinActive
+
+#IfWinActive ahk_class Notepad2 ;notepad2-mod
+  !z::Return ;disable delete first char of line 'feature;
+  ^0::Return ;disable annoying transparency feature
+  !t::Return ;disable always on top
+  ^+Down:: ;overflow
+  ^Down::Send {Down} ; disable (alt) shift line down feature
+  ^+Up:: ;overflow
+  ^Up::Send {Up} ; disable (alt) shift line up feature
+#IfWinActive
+
+#IfWinActive ahk_class wxWindowClassNR ;audacity
+  ^=::Send {CtrlDown}1{CtrlUp} ;zoom in
+  ^-::Send {CtrlDown}3{CtrlUp} ;zoom out
+  ^0::Send {CtrlDown}2{CtrlUp} ;zoom reset
+#IfWinActive
+
+#IfWinActive ahk_class civ5 ;civilization 5
+  F11::borderlessFullscreen()
+#IfWinActive
+
 
 ScriptReload: ;auto-reload on change
 {
