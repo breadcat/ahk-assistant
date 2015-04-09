@@ -89,4 +89,9 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+    If WinClass In % "Qt5QWindowIcon" ;owncloud client
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
+
 }
