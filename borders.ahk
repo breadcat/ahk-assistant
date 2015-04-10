@@ -93,5 +93,9 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+    If WinProcess In % "charmap.exe"
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
 
 }

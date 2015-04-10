@@ -129,6 +129,16 @@ typeCygwin() {
     Return
   }
 
+typeAcuteE() {
+    ; {AltDown}130{AltUp} doesn't work for some reason, don't judge me
+    ClipSaved := ClipboardAll
+    Clipboard = é
+    Send ^v
+    Clipboard := ClipSaved
+    ClipSaved =
+    Return
+  }
+
 cmdPaste() { ;C-v / S-insert pastes into cmd
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
@@ -252,6 +262,25 @@ winSplit() { ;split active and previous window side by side, press again to swap
         Send {AltDown}{Tab}{AltUp}
         Sleep, 10
         winSplit()
+      }
+    Return
+  }
+
+winSplitH() { ;split active and previous window on top of each other, press again to swap positions
+    splitToggleH := !splitToggleH
+    If (splitToggleH = "1") {
+        Tile("T")
+        Sleep, 15
+        Send {AltDown}{Tab}{AltUp}
+        Sleep, 10
+        Tile("B")
+        Sleep, 15
+        Send {AltDown}{Tab}{AltUp}
+      }
+    Else {
+        Send {AltDown}{Tab}{AltUp}
+        Sleep, 10
+        winSplitH()
       }
     Return
   }

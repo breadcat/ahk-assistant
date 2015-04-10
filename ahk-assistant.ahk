@@ -23,9 +23,9 @@ SetNumLockState, AlwaysOn
 ;hotkeys
 #q::Run notepad
 ^q::Send !{F4} ;quit most programs
-#+q::Run notepad.exe "%A_MyDocuments%\Vault\docs\faulties.txt"
-#w::Run firefox.exe
-#+w::Run firefox.exe -private-window
+#+q::Run notepad "%A_MyDocuments%\Vault\docs\faulties.txt"
+#w::Run firefox
+#+w::Run firefox -private-window
 #e::dirWorking()
 #+e::dirSync()
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ;my computer
@@ -39,15 +39,16 @@ SetNumLockState, AlwaysOn
 #p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
 ^!k::launchKeepass()
 #c::Run calc
-#\::SendMessage 0x112, 0xF170, 2, , Program Manager ;win+\ - screen standby
+#\::SendMessage 0x112, 0xF170, 2, , Program Manager ;W-\ - screen standby
 SC029::Send, 0 ;Backtick send zeroes
 +SC029::Send, `` ;S-Backtick send backticks
 ^SC029::Send, `¬ ;C-Backtick send negations
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
 CapsLock::BackSpace
-!^0::SoundSet +5 ;volume up
-!^9::SoundSet -5 ;volume down
+!^0::Send {Volume_Mute} ;C-A-0 volume mute toggle
+!^-::Send {Volume_Down} ;C-A-- volume down
+!^=::Send {Volume_Up} ;C-A-+ volume up
 ^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
 ^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
 XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
@@ -74,21 +75,53 @@ Insert::appendClipboard()
 #Numpad8::Tile("T")
 #Numpad9::Tile("TR")
 #Numpad0::winSplit()
+#NumpadIns::winSplitH()
 
-;auto replace text with symbols
+;text replacements
+;swedish
+:c*:(Ao)::Å
+:c*:(ao)::å
+:c*:(Ai)::Ä
+:c*:(ai)::ä
+:c*:(Oi)::Ö
+:c*:(oi)::ö
+;german
+:c*:(Ui)::Ü
+:c*:(ui)::ü
+:*:(ss)::ß
+;spanish
+:c*:(Ny)::Ñ
+:c*:(ny)::ñ
+:c*:(A-)::Á
+:c*:(a-)::á
+:c*:(E-)::É
+; :c*:(e-)::é ;conflicts with C-A-e insert which is annoying
+Ralt & e::typeAcuteE() ;awful, awful workaround
+:c*:(I-)::Í
+:c*:(i-)::í
+:c*:(O-)::Ó
+:c*:(o-)::ó
+:c*:(U-)::Ú
+:c*:(u-)::ú
+:*:(!!)::¡
+:*:(??)::¿
+;symbols
 :*:(c)::©
 :*:(r)::®
 :*:(tm)::™
-
-;text replacements
+:*:(ee)::€
+:*:(deg)::°
+;stupid fingers
 ::seperated::separated
 ::seperate::separate
+::recieve::receive
 ::recieved::received
 ::license::licence
 ::licenses::licences
 ::equivelant::equivalent
 ::equivelants::equivalents
 ::attendent::attendant
+::consistant::consistent
 ::propogate::propagate
 ::refridgeration::refrigeration
 ;work stuff
@@ -126,8 +159,7 @@ Insert::appendClipboard()
 ::lip4::LG LIP-8004D
 :*:bte`t::BT Elements
 :*:btd`t::BT Diverse 7110+
-
-;auto/tab completions
+;tab completions
 :*:gd`t::typeSyncDocs()
 :*:md`t::typeDocuments()
 :*:db`t::typeSync()
@@ -193,8 +225,8 @@ Insert::appendClipboard()
 
 #IfWinActive ahk_class XLMAIN ;excel
   ^+v::Send {Esc}{Up}^c{Down}^v{Esc}{Down} ;ctrl+shift+v copies above cell into current
-  ^F2::Send {AltDown}o{AltUp}hr ;rename sheet
-  F3::Send {CtrlDown}f{CtrlUp}{Enter}{Escape} ;f3 searches for the same string again
+  ^F2::Send !ohr ;rename sheet
+  F3::Send ^f{Enter}{Escape} ;f3 searches for the same string again
   F6::excelFormulaBar()
 #IfWinActive
 
