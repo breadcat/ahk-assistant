@@ -26,18 +26,18 @@ SetNumLockState, AlwaysOn
 #+q::Run notepad.exe "%A_MyDocuments%\Vault\docs\faulties.txt"
 #w::Run firefox.exe
 #+w::Run firefox.exe -private-window
-#e:: dirWorking()
-#+e:: dirSync()
+#e::dirWorking()
+#+e::dirSync()
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ;my computer
 ^!r::Run mstsc ;remote desktop connection
-#t:: launchTerminal()
+#t::launchTerminal()
 #+t::Run cmd
 ^!t::pasteTelephone()
 #y::send,{end}{shift down}{home}{shift up}{del}https://www.youtube.com/watch?v={ctrl down}v{ctrl up} ;create youtube link from ID
 ^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
 ^!v::Run %programfiles%\TightVNC\tvnviewer.exe
 #p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
-^!k:: launchKeepass()
+^!k::launchKeepass()
 #c::Run calc
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;win+\ - screen standby
 SC029::Send, 0 ;Backtick send zeroes
@@ -45,19 +45,17 @@ SC029::Send, 0 ;Backtick send zeroes
 ^SC029::Send, `¬ ;C-Backtick send negations
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
-Capslock::Backspace
+CapsLock::BackSpace
 !^0::SoundSet +5 ;volume up
 !^9::SoundSet -5 ;volume down
 ^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
 ^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
 XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
 XButton2::Send {MButton} ;remap logitech m570 x2 to wheel click
-#Space:: insertDate()
+#Space::insertDate()
 #+Space::insertDateTime()
 Insert::appendClipboard()
 ^!Space::toggleAudioDevice()
-
-;kde-windows (Easy Window Dragging -- KDE style (requires XP/2k/NT) -- by Jonny)
 !LButton::kdeMove()
 !RButton::kdeResize()
 
@@ -137,7 +135,7 @@ Insert::appendClipboard()
 
 ;application specific hotkeys
 #IfWinActive ahk_class CabinetWClass ;explorer
-  Capslock::explorerUp()
+  CapsLock::explorerUp()
   F6::Send !d ;addressbar
   Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
   F1:: ;overflow to rename, help is useless in explorer
@@ -149,27 +147,29 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class FontViewWClass ;font previewer
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
 #IfWinActive
 
 #IfWinActive ahk_class SciCalc ; windows xp calc
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
 #IfWinActive
+
 #IfWinActive ahk_class CalcFrame ; windows 7 calc
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
 #IfWinActive
 
 #IfWinActive ahk_class ShImgVw:CPreviewWnd ;photoviewer windows xp
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
 #IfWinActive
+
 #IfWinActive ahk_class Photo_Lightweight_Viewer ;photoviewer windows 7
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
   Up:: ;overflow
   Down::Return ;fixes up/down breaking left/right navigation
 #IfWinActive
 
 #IfWinActive ahk_class SUMATRA_PDF_FRAME ;sumatra pdf
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
   ^b::Send {F12} ; ctrl+b for bookmarks
   !Enter::Send ^l ;fullscreen
 #IfWinActive
@@ -177,14 +177,14 @@ Insert::appendClipboard()
 #IfWinActive ahk_class MediaPlayerClassicW ;mpc-hc
   1::Send 2^1 ;1 keeps borders
   Ralt & Enter::Send !{Enter} ; ralt-enter fullscreens
-  Capslock::Send !{F4} ;quit
+  CapsLock::Send !{F4} ;quit
   p::Send ^7 ;p for playlist
 #IfWinActive
 
 #IfWinActive ahk_class mpv ;mpv
   Alt & Enter:: ;overflow to fullscreen below
-  Ralt & Enter::Send f ; ralt-enter fullscreens
-  Capslock::Send !{F4} ;quit
+  Ralt & Enter::Send f ; ralt-Enter fullscreens
+  CapsLock::Send !{F4} ;quit
 #IfWinActive
 
 #IfWinActive ahk_class rctrl_renwnd32 ;outlook
@@ -249,17 +249,17 @@ Insert::appendClipboard()
   F11::borderlessFullscreen()
 #IfWinActive
 
-
-ScriptReload: ;auto-reload on change
-{
-  FileGetAttrib, FileAttribs, %A_ScriptFullPath%
-  IfInString, FileAttribs, A
+;auto-reload on change
+ScriptReload:
   {
-    FileSetAttrib, -A, %A_ScriptFullPath%
-    TrayTip, Reloading Script..., %A_ScriptName%, , 1
-    Sleep, 1000
-    Reload
-    TrayTip
+    FileGetAttrib, FileAttribs, %A_ScriptFullPath%
+    IfInString, FileAttribs, A
+      {
+        FileSetAttrib, -A, %A_ScriptFullPath%
+        TrayTip, Reloading Script..., %A_ScriptName%, , 1
+        Sleep, 1000
+        Reload
+        TrayTip
+      }
+    Return
   }
-  Return
-}
