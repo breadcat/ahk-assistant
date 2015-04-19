@@ -67,17 +67,27 @@ appendClipboard() {
 
 pasteTelephone() {
     StringReplace, clipboard, clipboard, +44, 0, All ;translate intl codes
-    StringReplace, clipboard, clipboard, %A_Space%,, All ;remove Spaces
+    StringReplace, clipboard, clipboard, %A_Space%,, All ;remove spaces
     StringReplace, clipboard, clipboard, %A_Tab%, `,, All ;remove tabs
     StringReplace, clipboard, clipboard, `,,, All ;remove commas
-    StringReplace, clipboard, clipboard, `r,, All ;remove Lines
-    StringReplace, clipboard, clipboard, `n,, All ;remove Lines
+    StringReplace, clipboard, clipboard, `r,, All ;remove lines
+    StringReplace, clipboard, clipboard, `n,, All ;remove lines
     StringReplace, clipboard, clipboard, -,, All ;remove hyphens
     StringReplace, clipboard, clipboard, (,, All ;remove lbracket
     StringReplace, clipboard, clipboard, ),, All ;remove rbracket
     StringLeft, 5Digits, clipboard, 5
     StringRight, 6Digits, clipboard, 6
     Send %5Digits% %6Digits%
+    Return
+  }
+
+dialTelephone() { ;lg phone-link
+    ClipSaved := ClipboardAll
+    Send, ^c
+    StringReplace, clipboard, clipboard, +44, 0, All ;translate intl codes
+    Run, dial://%clipboard% ;must enable internet dialling to work
+    Clipboard := ClipSaved
+    ClipSaved =
     Return
   }
 
@@ -143,6 +153,13 @@ cmdPaste() { ;C-v / S-insert pastes into cmd
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
     Send {RButton}p
+    Return
+  }
+
+flashFullscreen() { ;double click the window
+    CoordMode, Mouse, Relative
+    MouseMove, 250, 250
+    Send {Click 2}
     Return
   }
 

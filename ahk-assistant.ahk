@@ -33,7 +33,8 @@ SetNumLockState, AlwaysOn
 #t::launchTerminal()
 #+t::Run cmd
 ^!t::pasteTelephone()
-#y::send,{end}{shift down}{home}{shift up}{del}https://www.youtube.com/watch?v={ctrl down}v{ctrl up} ;create youtube link from ID
+#Enter::dialTelephone()
+#y::send {end}{shift down}{home}{shift up}https://www.youtube.com/v/^v ;create youtube link from ID and bypass age restrictions
 ^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
 ^!v::Run %programfiles%\TightVNC\tvnviewer.exe
 #p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
@@ -47,8 +48,8 @@ RAlt & j::ShiftAltTab
 RAlt & k::AltTab
 CapsLock::BackSpace
 !^0::Send {Volume_Mute} ;C-A-0 volume mute toggle
-!^-::Send {Volume_Down} ;C-A-- volume down
-!^=::Send {Volume_Up} ;C-A-+ volume up
+!^-::Send {Volume_Down 3} ;C-A-- volume down
+!^=::Send {Volume_Up 3} ;C-A-+ volume up
 ^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
 ^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
 XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
@@ -59,6 +60,10 @@ Insert::appendClipboard()
 ^!Space::toggleAudioDevice()
 !LButton::kdeMove()
 !RButton::kdeResize()
+RAlt & Up::MouseMove, 0, -1, 2, R
+RAlt & Down::MouseMove, 0, 1, 2, R
+RAlt & Left::MouseMove, -1, 0, 2, R
+RAlt & Right::MouseMove, 1, 0, 2, R
 
 ;tiling
 #Up::WinMaximize, A
@@ -176,6 +181,11 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
   ^h::explorerHidden()
   ^+n::explorerNewDir()
   ^!+n::explorerNewFile()
+#IfWinActive
+
+#IfWinActive ahk_class ShockwaveFlashFullScreen ;full screen flash
+  Ralt & Enter:: ;overflow
+  Alt & Enter::flashFullscreen() ;leave flash full screen with a keyboard command
 #IfWinActive
 
 #IfWinActive ahk_class FontViewWClass ;font previewer
