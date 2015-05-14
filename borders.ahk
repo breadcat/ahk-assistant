@@ -97,5 +97,9 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+    If WinClass In % "mpv"
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
 
 }

@@ -60,10 +60,6 @@ Insert::appendClipboard()
 ^!Space::toggleAudioDevice()
 !LButton::kdeMove()
 !RButton::kdeResize()
-RAlt & Up::MouseMove, 0, -1, 2, R
-RAlt & Down::MouseMove, 0, 1, 2, R
-RAlt & Left::MouseMove, -1, 0, 2, R
-RAlt & Right::MouseMove, 1, 0, 2, R
 
 ;tiling
 #Up::WinMaximize, A
@@ -132,7 +128,7 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
 ::gtacb::Called to speak to you, can you give them a call back?
-::ctt::Feel free to close the ticket.
+::ctt::Feel free to close the ticket, I'll either update this or open a new ticket if need be.
 ::sksu::Samsung OS7030 KSU
 ::s2b::Samsung OS7030 2BM
 ::s4t::Samsung OS7030 4TM
@@ -234,10 +230,16 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 #IfWinActive
 
 #IfWinActive ahk_class XLMAIN ;excel
-  ^+v::Send {Esc}{Up}^c{Down}^v{Esc}{Down} ;ctrl+shift+v copies above cell into current
+  ^+v::Send ^'{Down} ;C-S-v copies above cell contents into current
+  ^+n::Send !iw ;new sheet
+  ^+w::Send !el ;delete current sheet
+  !F2:: ;overflow
   ^F2::Send !ohr ;rename sheet
-  F3::Send ^f{Enter}{Escape} ;f3 searches for the same string again
+  F3::Send +{F4} ;f3 searches for the same string again
   F6::excelFormulaBar()
+  F11::Send !vu ;fullscreen
+  ^Tab::Send ^{PgDn} ;next sheet
+  ^+Tab::Send ^{PgUp} ;prev sheet
 #IfWinActive
 
 #IfWinActive ahk_class WindowsForms10.Window.8.app.0.2004eee ;act
