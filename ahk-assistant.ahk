@@ -181,7 +181,7 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 
 #IfWinActive ahk_class ShockwaveFlashFullScreen ;full screen flash
   Ralt & Enter:: ;overflow
-  Alt & Enter::flashFullscreen() ;leave flash full screen with a keyboard command
+  Alt & Enter::toggleFullscreen() ;leave flash full screen with a keyboard command
 #IfWinActive
 
 #IfWinActive ahk_class FontViewWClass ;font previewer
@@ -261,11 +261,13 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
   ^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
   ^d::Send ^f ;bookmark remapped to find
   ^b::Send ^v ;replace bookmarks with paste
-  f6::Send ^l ;F6 jumps to address bar
-  ^+o::Send {AltDown}t<{AltUp}o ;ctrl+shift+o option
+  F6::Send ^l ;F6 jumps to address bar
+  ^+o::Send !to ;C-S-o options
   #o::Send, ^c^t^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
   +PgDn::Send {Space 4}{Down 7} ;scroll down to specific part of a specific page, not really
   +PgUp::Send {Home} ;makes sense, kinda
+  Ralt & Enter:: ;overflow
+  Alt & Enter::toggleFullscreen() ;leave flash full screen with a keyboard command
 #IfWinActive
 
 #IfWinActive ahk_class MSPaintApp ;mspaint

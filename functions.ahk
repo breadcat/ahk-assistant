@@ -156,7 +156,7 @@ cmdPaste() { ;C-v / S-insert pastes into cmd
     Return
   }
 
-flashFullscreen() { ;double click the window
+toggleFullscreen() { ;double click the window
     CoordMode, Mouse, Relative
     MouseMove, 250, 250
     Send {Click 2}
@@ -265,41 +265,23 @@ usePlaybackDevice(device) {
   }
 
 winSplit() { ;split active and previous window side by side, press again to swap positions
-    splitToggle := !splitToggle
-    If (splitToggle = "1") {
-        Tile("R")
-        Sleep, 15
-        Send {AltDown}{Tab}{AltUp}
-        Sleep, 10
-        Tile("L")
-        Sleep, 15
-        Send {AltDown}{Tab}{AltUp}
-      }
-    Else {
-        Send {AltDown}{Tab}{AltUp}
-        Sleep, 10
-        winSplit()
-      }
-    Return
+    Tile("R")
+    Sleep, 15
+    Send {AltDown}{Tab}{AltUp}
+    Sleep, 10
+    Tile("L")
+    Sleep, 15
+    Send {AltDown}{Tab}{AltUp}
   }
 
 winSplitH() { ;split active and previous window on top of each other, press again to swap positions
-    splitToggleH := !splitToggleH
-    If (splitToggleH = "1") {
-        Tile("T")
-        Sleep, 15
-        Send {AltDown}{Tab}{AltUp}
-        Sleep, 10
-        Tile("B")
-        Sleep, 15
-        Send {AltDown}{Tab}{AltUp}
-      }
-    Else {
-        Send {AltDown}{Tab}{AltUp}
-        Sleep, 10
-        winSplitH()
-      }
-    Return
+    Tile("T")
+    Sleep, 15
+    Send {AltDown}{Tab}{AltUp}
+    Sleep, 10
+    Tile("B")
+    Sleep, 15
+    Send {AltDown}{Tab}{AltUp}
   }
 
 kdeMove() { ;kde-windows (Easy Window Dragging -- KDE style (requires XP/2k/NT) -- by Jonny)
