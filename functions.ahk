@@ -264,7 +264,7 @@ usePlaybackDevice(device) {
     WinClose, Sound ahk_class #32770
   }
 
-winSplit() { ;split active and previous window side by side, press again to swap positions
+winSplit() { ;split active and previous window side by side
     Tile("R")
     Sleep, 15
     Send {AltDown}{Tab}{AltUp}
@@ -274,7 +274,7 @@ winSplit() { ;split active and previous window side by side, press again to swap
     Send {AltDown}{Tab}{AltUp}
   }
 
-winSplitH() { ;split active and previous window on top of each other, press again to swap positions
+winSplitH() { ;split active and previous window on top of each other
     Tile("T")
     Sleep, 15
     Send {AltDown}{Tab}{AltUp}

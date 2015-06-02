@@ -25,7 +25,7 @@ SetNumLockState, AlwaysOn
 ^q::Send !{F4} ;quit most programs
 #+q::Run notepad "%A_MyDocuments%\Vault\docs\faulties.txt"
 #w::Run firefox
-#+w::Run firefox -private-window
+#+w::Run firefox.exe -private-window
 #e::dirWorking()
 #+e::dirSync()
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ;my computer
@@ -64,6 +64,7 @@ Insert::appendClipboard()
 ;tiling
 #Up::WinMaximize, A
 #Down::WinMinimize, A
+#+Down::Send !{Esc} ;Send to bottom instead of minimise
 #Left::Tile("L")
 #Right::Tile("R")
 #Numpad1::Tile("BL")
@@ -125,6 +126,7 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 ::consistant::consistent
 ::propogate::propagate
 ::refridgeration::refrigeration
+::secratery::secretary
 ;work stuff
 ::ctsty::Called to speak to you, their number is 
 ::gtacb::Called to speak to you, can you give them a call back?
@@ -169,11 +171,12 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 ;application specific hotkeys
 #IfWinActive ahk_class CabinetWClass ;explorer
   CapsLock::explorerUp()
-  F6::Send !d ;addressbar
+  Alt & Enter:: ;overflow
   Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
   F1:: ;overflow to rename, help is useless in explorer
   F2::explorerRename() ;rename commands
   F3::explorerCMD()
+  F6::Send !d ;addressbar
   ^h::explorerHidden()
   ^+n::explorerNewDir()
   ^!+n::explorerNewFile()
@@ -182,6 +185,10 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 #IfWinActive ahk_class ShockwaveFlashFullScreen ;full screen flash
   Ralt & Enter:: ;overflow
   Alt & Enter::toggleFullscreen() ;leave flash full screen with a keyboard command
+#IfWinActive
+
+#IfWinActive ahk_class #32770 ;windows xp date/time picker
+  CapsLock::Send !{F4} ;quit
 #IfWinActive
 
 #IfWinActive ahk_class FontViewWClass ;font previewer
@@ -208,8 +215,10 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 
 #IfWinActive ahk_class SUMATRA_PDF_FRAME ;sumatra pdf
   CapsLock::Send !{F4} ;quit
-  ^b::Send {F12} ; ctrl+b for bookmarks
-  !Enter::Send ^l ;fullscreen
+  ^b::Send {F12} ;C-b toggles bookmarks
+  ^t::Send !vt ;C-t toggles toolbar
+  Alt & Enter:: ;overflow
+  Ralt & Enter::Send ^l ;fullscreen
 #IfWinActive
 
 #IfWinActive ahk_class MediaPlayerClassicW ;mpc-hc
@@ -221,7 +230,7 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 
 #IfWinActive ahk_class mpv ;mpv
   Alt & Enter:: ;overflow to fullscreen below
-  Ralt & Enter::Send f ; ralt-Enter fullscreens
+  Ralt & Enter::Send f ;ralt-Enter fullscreens
   CapsLock::Send !{F4} ;quit
 #IfWinActive
 
