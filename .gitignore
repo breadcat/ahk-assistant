@@ -1,6 +1,6 @@
 
-#http://www.naughter.com/qres.html
+# http://www.naughter.com/qres.html
 resswitch.exe
 
-#physical and ip address replacements
-secret.ahk
+# contains firstName lastName homePhoneNumber workPhoneNumber mobilePhoneNumber homePostCode workPostCode homeAddress workAddress homeEmailAddress workEmailAddress workIPAddress workSIPAddress serverLocalIPAddress serverRemoteIPAddress and crmSearch
+variables.ahk

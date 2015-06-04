@@ -115,7 +115,7 @@ typeDocuments() {
     Return
   }
 
-typeVault() {
+typeSync() {
     If A_OSVersion in WIN_XP
       {
         Send %A_MyDocuments%\Vault\
@@ -244,6 +244,117 @@ borderlessFullscreen() { ;borderless fullscreen script from PCGW (http://pcgamin
     WinGet, WindowID, ID, A
     WinSet, Style, -0xC40000, ahk_id %WindowID%
     WinMove, ahk_id %WindowID%, , 0, 0, A_ScreenWidth, A_ScreenHeight
+    Return
+  }
+
+mstscSpecific() {
+    If A_OSVersion in WIN_XP
+      {
+        global serverLocalIPAddress
+        Run mstsc /v:%serverLocalIPAddress%
+      }
+    Else
+      {
+        global serverRemoteIPAddress
+        Run mstsc /v:%serverRemoteIPAddress%
+      }
+    Return
+  }
+
+
+insertRegards() {
+    global firstName
+    Send,`n`nRegards,`n%firstName%.
+    Return
+  }
+
+insertKindRegards() {
+    global firstName
+    Send,`n`nKind regards,`n%firstName%.
+    Return
+  }
+
+insertEmailAddress() {
+    If A_OSVersion in WIN_XP
+      {
+        global workEmailAddress
+        Send, %workEmailAddress%
+      }
+    Else
+      {
+        global homeEmailAddress
+        Send, %homeEmailAddress%
+      }
+    Return
+  }
+
+insertWorkIP() {
+    global workIPAddress
+    Send, %workIPAddress%
+    Return
+  }
+
+insertSIPIP() {
+    global workSIPAddress
+    Send, %workSIPAddress%
+    Return
+  }
+
+insertTelephoneNumber() {
+    If A_OSVersion in WIN_XP
+      {
+        global workPhoneNumber
+        Send, %workPhoneNumber%
+      }
+    Else
+      {
+        global homePhoneNumber
+        Send, %homePhoneNumber%
+      }
+    Return
+  }
+
+insertMobileNumber() {
+    global mobilePhoneNumber
+    Send, %mobilePhoneNumber%
+    Return
+  }
+
+insertAddress() {
+    If A_OSVersion in WIN_XP
+      {
+        global workAddress
+        Send, %workAddress%
+      }
+    Else
+      {
+        global homeAddress
+        Send, %homeAddress%
+      }
+    Return
+  }
+
+insertPostCode() {
+    If A_OSVersion in WIN_XP
+      {
+        global workPostCode
+        Send, %workPostCode%
+      }
+    Else
+      {
+        global homePostCode
+        Send, %homePostCode%
+      }
+    Return
+  }
+
+searchCustomer() {
+    global crmSearch
+    ClipSaved := ClipboardAll
+    Send, ^c
+    Run, %crmSearch%%clipboard%
+    Clipboard := ClipSaved
+    ClipSaved =
     Return
   }
 

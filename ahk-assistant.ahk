@@ -17,8 +17,8 @@ SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 
 ;includes
+#Include, *i %A_ScriptDir%\variables.ahk ;physical and ip address completions, only included if exists. See .gitignore for details
 #Include, %A_ScriptDir%\functions.ahk ;all those long winded functions
-#Include, *i %A_ScriptDir%\secret.ahk ;physical and ip address completions, only included if exists.
 
 ;hotkeys
 #q::Run notepad
@@ -30,11 +30,13 @@ SetNumLockState, AlwaysOn
 #+e::dirSync()
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ;my computer
 ^!r::Run mstsc ;remote desktop connection
+^!+r::mstscSpecific()
 #t::launchTerminal()
 #+t::Run cmd
 ^!t::pasteTelephone()
 #Enter::dialTelephone()
-#y::send {end}{shift down}{home}{shift up}https://www.youtube.com/v/^v ;create youtube link from ID and bypass age restrictions
+#+Enter::searchCustomer()
+#y::send {End}{ShiftDown}{Home}{ShiftUp}https://www.youtube.com/v/^v ;create youtube link from ID and bypass age restrictions
 ^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
 ^!v::Run %programfiles%\TightVNC\tvnviewer.exe
 #p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
@@ -80,6 +82,46 @@ Insert::appendClipboard()
 #NumpadIns::winSplitH()
 
 ;text replacements
+:*:_r::
+  insertRegards()
+  Return
+:*:_kr::
+  insertKindRegards()
+  Return
+:*:_em::
+  insertEmailAddress()
+  Return
+:*:_wip::
+  insertWorkIP()
+  Return
+:*:_sip::
+  insertSIPIP()
+  Return
+:*:_tel::
+  insertTelephoneNumber()
+  Return
+:*:_mob::
+  insertMobileNumber()
+  Return
+:*:_addr::
+  insertAddress()
+  Return
+:*:_pc::
+  insertPostCode()
+  Return
+:*:_db::
+  typeSync()
+  Return
+:*:_gd::
+  typeSyncDocs()
+  Return
+:*:_md::
+  typeDocuments()
+  Return
+:*:_cw::
+  typeCygwin()
+  Return
+
 ;swedish
 :c*:(Ao)::Å
 :c*:(ao)::å
@@ -114,59 +156,55 @@ Ralt & e::typeAcuteE() ;awful, awful workaround
 :*:(ee)::€
 :*:(deg)::°
 ;stupid fingers
-::seperated::separated
-::seperate::separate
-::recieve::receive
-::recieved::received
-::license::licence
-::licenses::licences
-::equivelant::equivalent
-::equivelants::equivalents
-::attendent::attendant
-::consistant::consistent
-::propogate::propagate
-::refridgeration::refrigeration
-::secratery::secretary
+:*:seperated::separated
+:*:seperate::separate
+:*:recieve::receive
+:*:recieved::received
+:*:license::licence
+:*:licenses::licences
+:*:equivelant::equivalent
+:*:equivelants::equivalents
+:*:attendent::attendant
+:*:consistant::consistent
+:*:propogate::propagate
+:*:refridgeration::refrigeration
+:*:secratery::secretary
 ;work stuff
-::ctsty::Called to speak to you, their number is 
-::gtacb::Called to speak to you, can you give them a call back?
-::ctt::Feel free to close the ticket, I'll either update this or open a new ticket if need be.
-::sksu::Samsung OS7030 KSU
-::s2b::Samsung OS7030 2BM
-::s4t::Samsung OS7030 4TM
-::s4d::Samsung OS7030 4DM
-::s2d::Samsung OS7030 2DM
-::s4s::Samsung OS7030 4SM
-::sepm::Samsung OS7030 EPM
-::smod::Samsung OS7030 Modem
-::s2100b::Samsung DS-2100B
-::s7b::Samsung DS5007S
-::s14b::Samsung DS5014S
-::s21b::Samsung DS5021S
-::s38b::Samsung DS5038S
-::emg80a::LG eMG80-KSUA
-::emg80i::LG eMG80-KSUI
-::emg80b::LG eMG80-BRIU2
-::emg80p::LG eMG80-PRIU
-::emg80h::LG eMG80-HYB8
-::emg80c::LG eMG80-CH204
-::emg80w::LG eMG80-WTIB4
-::ipecs50a::LG iPECS-LIK50A
-::ipecs50b::LG iPECS-LIK50B
-::l9048::LG LDP-9048DSS
-::l9030::LG LDP-9030D
-::l9008::LG LDP-9008D
-::lip24::LG LIP-8024E
-::lip12::LG LIP-8012E
-::lip8::LG LIP-8008E
-::lip4::LG LIP-8004D
-:*:bte`t::BT Elements
-:*:btd`t::BT Diverse 7110+
-;tab completions
-:*:gd`t::typeSyncDocs()
-:*:md`t::typeDocuments()
-:*:db`t::typeSync()
-:*:cw`t::typeCygwin()
+:*:_ctsty::Called to speak to you, their number is 
+:*:_gtacb::Called to speak to you, can you give them a call back?
+:*:_ctt::Feel free to close the ticket, I'll either update this or open a new ticket if need be.
+:*:_sksu::Samsung OS7030 KSU
+:*:_s2b::Samsung OS7030 2BM
+:*:_s4t::Samsung OS7030 4TM
+:*:_s4d::Samsung OS7030 4DM
+:*:_s2d::Samsung OS7030 2DM
+:*:_s4s::Samsung OS7030 4SM
+:*:_sepm::Samsung OS7030 EPM
+:*:_smod::Samsung OS7030 Modem
+:*:_s2100b::Samsung DS-2100B
+:*:_s7b::Samsung DS5007S
+:*:_s14b::Samsung DS5014S
+:*:_s21b::Samsung DS5021S
+:*:_s38b::Samsung DS5038S
+:*:_emg80a::LG eMG80-KSUA
+:*:_emg80i::LG eMG80-KSUI
+:*:_emg80b::LG eMG80-BRIU2
+:*:_emg80p::LG eMG80-PRIU
+:*:_emg80h::LG eMG80-HYB8
+:*:_emg80c::LG eMG80-CH204
+:*:_emg80w::LG eMG80-WTIB4
+:*:_50a::LG iPECS-LIK50A
+:*:_50b::LG iPECS-LIK50B
+:*:_l9048::LG LDP-9048DSS
+:*:_l9030::LG LDP-9030D
+:*:_l9008::LG LDP-9008D
+:*:_lip24::LG LIP-8024E
+:*:_lip12::LG LIP-8012E
+:*:_lip8::LG LIP-8008E
+:*:_lip4::LG LIP-8004D
+:*:_bte::BT Elements
+:*:_btk::BT Elements 1K
+:*:_btd::BT Diverse 7110+
 
 ;application specific hotkeys
 #IfWinActive ahk_class CabinetWClass ;explorer
