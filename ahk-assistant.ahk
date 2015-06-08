@@ -6,10 +6,13 @@
 #NoEnv
 #SingleInstance,Force
 SetTimer, ScriptReload, 1000
-SetWinDelay,2
+SetWinDelay,0
+SetKeyDelay,0
+SetControlDelay,0
 CoordMode,Mouse
 SetWorkingDir %A_MyDocuments%\..\
 ProgramFilesX86 := A_ProgramFiles . (A_PtrSize=8 ? " (x86)" : "") ;pfx86 variable from http://www.autohotkey.com/board/topic/79160-a-programfiles-for-programs-in-windows-7-x86-directory/
+
 
 ;keystates
 SetCapsLockState, AlwaysOff
@@ -82,10 +85,10 @@ Insert::appendClipboard()
 #NumpadIns::winSplitH()
 
 ;text replacements
-:*:_r::
+:*?:_reg::
   insertRegards()
   Return
-:*:_kr::
+:*?:_kreg::
   insertKindRegards()
   Return
 :*:_em::
@@ -161,6 +164,10 @@ Insert::appendClipboard()
 :*?:(tm)::™
 :*?:(ee)::€
 :*?:(deg)::°
+:*?:(half)::½
+:*?:(quart)::¼
+:*?:(div)::÷
+:*?:(micro)::µ
 ;stupid fingers
 :*:seperated::separated
 :*:seperate::separate
@@ -213,6 +220,11 @@ Insert::appendClipboard()
 :*:_btd::BT Diverse 7110+
 
 ;application specific hotkeys
+#IfWinActive ahk_class #32770 ;save/load dialog
+  F1:: ;overflow to rename, help is useless in explorer
+  F2::explorerRename() ;rename commands
+#IfWinActive
+
 #IfWinActive ahk_class CabinetWClass ;explorer
   CapsLock::explorerUp()
   Alt & Enter:: ;overflow

@@ -1,3 +1,4 @@
+
 dirWorking() {
     If A_OSVersion in WIN_XP
       {
@@ -59,9 +60,10 @@ insertDateTime() {
   }
 
 appendClipboard() {
-    newclipboard = %clipboard%
+    backupClipboard = %clipboard%
     Send, ^c
-    clipboard = %newclipboard%`r`n%clipboard%
+    clipboard = %backupClipboard%`r`n%clipboard%
+    backupClipboard = 
     Return
   }
 
@@ -78,16 +80,18 @@ pasteTelephone() {
     StringLeft, 5Digits, clipboard, 5
     StringRight, 6Digits, clipboard, 6
     Send %5Digits% %6Digits%
+    5Digits = 
+    6Digits = 
     Return
   }
 
 dialTelephone() { ;lg phone-link
-    ClipSaved := ClipboardAll
+    backupClipboard := Clipboard
     Send, ^c
     StringReplace, clipboard, clipboard, +44, 0, All ;translate intl codes
     Run, dial://%clipboard% ;must enable internet dialling to work
-    Clipboard := ClipSaved
-    ClipSaved =
+    Clipboard := backupClipboard
+    backupClipboard =
     Return
   }
 
@@ -166,9 +170,18 @@ explorerUp() { ;up one folder
   }
 
 explorerRename() {
-    If A_OSVersion in WIN_XP
+    If A_OSVersion in WIN_XP ;deselect file extension by determining final . character
       {
-        Send {F2}{CtrlDown}{Home}{ShiftDown}{End}{CtrlUp}{Left 4}{ShiftUp} ; Rename (hopefully) deselects file extension
+        backupClipboard = %Clipboard%
+        Send {F2}{CtrlDown}c{CtrlUp}
+        StringGetPos,ExtensionPos, Clipboard,.,R
+        if (ExtensionPos != -1)
+          {
+            Position := StrLen(Clipboard) - ExtensionPos
+            Send, +{Left %Position%}
+          }
+        Clipboard = %backupClipboard%
+        backupClipboard =
       }
     Else
       {
@@ -178,11 +191,11 @@ explorerRename() {
   }
 
 explorerCMD() { ;open command prompt in current location
-    ClipSaved := ClipboardAll
+    backupClipboard := Clipboard
     Send !d^c
     Run, cmd /K "cd `"%clipboard%`""
-    Clipboard := ClipSaved
-    ClipSaved =
+    Clipboard := backupClipboard
+    backupClipboard =
     Return
   }
 
@@ -340,11 +353,11 @@ insertPostCode() {
 
 searchCustomer() {
     global crmSearch
-    ClipSaved := ClipboardAll
+    backupClipboard := Clipboard
     Send, ^c
     Run, %crmSearch%%clipboard%
-    Clipboard := ClipSaved
-    ClipSaved =
+    Clipboard := backupClipboard
+    backupClipboard =
     Return
   }
 
