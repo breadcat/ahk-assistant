@@ -123,38 +123,44 @@ Insert::appendClipboard()
   Return
 
 ;swedish
-:c*:(Ao)::Å
-:c*:(ao)::å
-:c*:(Ai)::Ä
-:c*:(ai)::ä
-:c*:(Oi)::Ö
-:c*:(oi)::ö
+:c*?:(Ao)::Å
+:c*?:(ao)::å
+:c*?:(Ai)::Ä
+:c*?:(ai)::ä
+:c*?:(Oi)::Ö
+:c*?:(oi)::ö
+;norwegian
+:c*?:(AE)::Æ
+:c*?:(ae)::æ
+:c*?:(O/)::Ø
+:c*?:(o/)::ø
 ;german
-:c*:(Ui)::Ü
-:c*:(ui)::ü
-:*:(ss)::ß
+:c*?:(Ui)::Ü
+:c*?:(ui)::ü
+:*?:(ss)::ß
 ;spanish
-:c*:(Ny)::Ñ
-:c*:(ny)::ñ
-:c*:(A-)::Á
-:c*:(a-)::á
-:c*:(E-)::É
-; :c*:(e-)::é ;conflicts with C-A-e insert which is annoying
-Ralt & e::typeAcuteE() ;awful, awful workaround
-:c*:(I-)::Í
-:c*:(i-)::í
-:c*:(O-)::Ó
-:c*:(o-)::ó
-:c*:(U-)::Ú
-:c*:(u-)::ú
-:*:(!!)::¡
-:*:(??)::¿
+:c?*:(Ny)::Ñ
+:c?*:(ny)::ñ
+:c?*:(A-)::Á
+:c?*:(a-)::á
+:c?*:(E-)::É
+:c*:(e-)::
+	Send {ASC 130} ;C-A-e insertion for é is weird
+	Return
+:c?*:(I-)::Í
+:c?*:(i-)::í
+:c?*:(O-)::Ó
+:c?*:(o-)::ó
+:c?*:(U-)::Ú
+:c?*:(u-)::ú
+:*?:(!!)::¡
+:*?:(??)::¿
 ;symbols
-:*:(c)::©
-:*:(r)::®
-:*:(tm)::™
-:*:(ee)::€
-:*:(deg)::°
+:*?:(c)::©
+:*?:(r)::®
+:*?:(tm)::™
+:*?:(ee)::€
+:*?:(deg)::°
 ;stupid fingers
 :*:seperated::separated
 :*:seperate::separate

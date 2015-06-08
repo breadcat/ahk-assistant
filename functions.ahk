@@ -139,16 +139,6 @@ typeCygwin() {
     Return
   }
 
-typeAcuteE() {
-    ; {AltDown}130{AltUp} doesn't work for some reason, don't judge me
-    ClipSaved := ClipboardAll
-    Clipboard = é
-    Send ^v
-    Clipboard := ClipSaved
-    ClipSaved =
-    Return
-  }
-
 cmdPaste() { ;C-v / S-insert pastes into cmd
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
