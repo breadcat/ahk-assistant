@@ -6,13 +6,13 @@
 #NoEnv
 #SingleInstance,Force
 SetTimer, ScriptReload, 1000
-SetWinDelay,0
-SetKeyDelay,0
-SetControlDelay,0
 CoordMode,Mouse
 SetWorkingDir %A_MyDocuments%\..\
 ProgramFilesX86 := A_ProgramFiles . (A_PtrSize=8 ? " (x86)" : "") ;pfx86 variable from http://www.autohotkey.com/board/topic/79160-a-programfiles-for-programs-in-windows-7-x86-directory/
 
+;reduce delays
+SetWinDelay,0
+SetControlDelay,0
 
 ;keystates
 SetCapsLockState, AlwaysOff
@@ -37,21 +37,21 @@ SetNumLockState, AlwaysOn
 #t::launchTerminal()
 #+t::Run cmd
 ^!t::pasteTelephone()
+#p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
 #Enter::dialTelephone()
 #+Enter::searchCustomer()
-#y::send {End}{ShiftDown}{Home}{ShiftUp}https://www.youtube.com/v/^v ;create youtube link from ID and bypass age restrictions
 ^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
 ^!v::Run %programfiles%\TightVNC\tvnviewer.exe
-#p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ;putty
 ^!k::launchKeepass()
 #c::Run calc
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;W-\ - screen standby
+^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
 SC029::Send, 0 ;Backtick send zeroes
 +SC029::Send, `` ;S-Backtick send backticks
 ^SC029::Send, `¬ ;C-Backtick send negations
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
-CapsLock::BackSpace
+*CapsLock::BackSpace
 !^0::Send {Volume_Mute} ;C-A-0 volume mute toggle
 !^-::Send {Volume_Down 3} ;C-A-- volume down
 !^=::Send {Volume_Up 3} ;C-A-+ volume up
@@ -82,9 +82,12 @@ Insert::appendClipboard()
 #Numpad8::Tile("T")
 #Numpad9::Tile("TR")
 #Numpad0::winSplit()
-#NumpadIns::winSplitH()
+#NumpadIns::winSplitH() ;W-S-Num0
 
 ;text replacements
+:*?:_sig::
+  insertSignature()
+  Return
 :*?:_reg::
   insertRegards()
   Return
@@ -142,12 +145,12 @@ Insert::appendClipboard()
 :c*?:(ui)::ü
 :*?:(ss)::ß
 ;spanish
-:c?*:(Ny)::Ñ
-:c?*:(ny)::ñ
+:c?*:(N~)::Ñ
+:c?*:(n~)::ñ
 :c?*:(A-)::Á
 :c?*:(a-)::á
 :c?*:(E-)::É
-:c*:(e-)::
+:c?*:(e-)::
 	Send {ASC 130} ;C-A-e insertion for é is weird
 	Return
 :c?*:(I-)::Í
@@ -169,55 +172,56 @@ Insert::appendClipboard()
 :*?:(div)::÷
 :*?:(micro)::µ
 ;stupid fingers
-:*:seperated::separated
+:*:teh::the
+:*:tehy::they
+:*:taht::that
 :*:seperate::separate
 :*:recieve::receive
-:*:recieved::received
 :*:license::licence
-:*:licenses::licences
 :*:equivelant::equivalent
-:*:equivelants::equivalents
 :*:attendent::attendant
 :*:consistant::consistent
 :*:propogate::propagate
 :*:refridgeration::refrigeration
 :*:secratery::secretary
+:*:fiber::fibre
+:*:liase::liaise
 ;work stuff
-:*:_ctsty::Called to speak to you, their number is 
-:*:_gtacb::Called to speak to you, can you give them a call back?
-:*:_ctt::Feel free to close the ticket, I'll either update this or open a new ticket if need be.
-:*:_sksu::Samsung OS7030 KSU
-:*:_s2b::Samsung OS7030 2BM
-:*:_s4t::Samsung OS7030 4TM
-:*:_s4d::Samsung OS7030 4DM
-:*:_s2d::Samsung OS7030 2DM
-:*:_s4s::Samsung OS7030 4SM
-:*:_sepm::Samsung OS7030 EPM
-:*:_smod::Samsung OS7030 Modem
-:*:_s2100b::Samsung DS-2100B
-:*:_s7b::Samsung DS5007S
-:*:_s14b::Samsung DS5014S
-:*:_s21b::Samsung DS5021S
-:*:_s38b::Samsung DS5038S
-:*:_emg80a::LG eMG80-KSUA
-:*:_emg80i::LG eMG80-KSUI
-:*:_emg80b::LG eMG80-BRIU2
-:*:_emg80p::LG eMG80-PRIU
-:*:_emg80h::LG eMG80-HYB8
-:*:_emg80c::LG eMG80-CH204
-:*:_emg80w::LG eMG80-WTIB4
-:*:_50a::LG iPECS-LIK50A
-:*:_50b::LG iPECS-LIK50B
-:*:_l9048::LG LDP-9048DSS
-:*:_l9030::LG LDP-9030D
-:*:_l9008::LG LDP-9008D
-:*:_lip24::LG LIP-8024E
-:*:_lip12::LG LIP-8012E
-:*:_lip8::LG LIP-8008E
-:*:_lip4::LG LIP-8004D
-:*:_bte::BT Elements
-:*:_btk::BT Elements 1K
-:*:_btd::BT Diverse 7110+
+:*:ctsty::Called to speak to you, their number is 
+:*:gtacb::Called to speak to you, can you give them a call back?
+:*:ctt::Feel free to close the ticket.
+:*:sksu::Samsung OS7030 KSU
+:*:s2b::Samsung OS7030 2BM
+:*:s4t::Samsung OS7030 4TM
+:*:s4d::Samsung OS7030 4DM
+:*:s2d::Samsung OS7030 2DM
+:*:s4s::Samsung OS7030 4SM
+:*:sepm::Samsung OS7030 EPM
+:*:smod::Samsung OS7030 Modem
+:*:s2100b::Samsung DS-2100B
+:*:s7b::Samsung DS5007S
+:*:s14b::Samsung DS5014S
+:*:s21b::Samsung DS5021S
+:*:s38b::Samsung DS5038S
+:*:emg80a::LG eMG80-KSUA
+:*:emg80i::LG eMG80-KSUI
+:*:emg80b::LG eMG80-BRIU2
+:*:emg80p::LG eMG80-PRIU
+:*:emg80h::LG eMG80-HYB8
+:*:emg80c::LG eMG80-CH204
+:*:emg80w::LG eMG80-WTIB4
+:*:50a::LG iPECS-LIK50A
+:*:50b::LG iPECS-LIK50B
+:*:l9048::LG LDP-9048DSS
+:*:l9030::LG LDP-9030D
+:*:l9008::LG LDP-9008D
+:*:lip24::LG LIP-8024E
+:*:lip12::LG LIP-8012E
+:*:lip8::LG LIP-8008E
+:*:lip4::LG LIP-8004D
+:*:bte::BT Elements
+:*:btk::BT Elements 1K
+:*:btd::BT Diverse 7110+
 
 ;application specific hotkeys
 #IfWinActive ahk_class #32770 ;save/load dialog
@@ -236,6 +240,10 @@ Insert::appendClipboard()
   ^h::explorerHidden()
   ^+n::explorerNewDir()
   ^!+n::explorerNewFile()
+  ^s::Send !vb ;view > status bar
+  ^0::Send !vd ;view > details
+  ^-::Send ^{WheelDown 2} ;zoom out
+  ^=::Send ^{WheelUp 2} ;zoom in
 #IfWinActive
 
 #IfWinActive ahk_class ShockwaveFlashFullScreen ;full screen flash
@@ -261,6 +269,8 @@ Insert::appendClipboard()
 
 #IfWinActive ahk_class ShImgVw:CPreviewWnd ;photoviewer windows xp
   CapsLock::Send !{F4} ;quit
+  ^-::Send {-} ;zoom out
+  ^=::Send {+} ;zoom in
 #IfWinActive
 
 #IfWinActive ahk_class Photo_Lightweight_Viewer ;photoviewer windows 7
@@ -292,6 +302,7 @@ Insert::appendClipboard()
 
 #IfWinActive ahk_class rctrl_renwnd32 ;outlook
   ^Enter::Return ;disable accidentally send email shortcut
+  ^f::Send ^e ;C-f finds instead of forwards
 #IfWinActive
 
 #IfWinActive ahk_class XLMAIN ;excel
@@ -308,7 +319,11 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class WindowsForms10.Window.8.app.0.2004eee ;act
-  ^Enter::Send ^{End}{Space}-PG+{Tab 3}{Enter} ;save note with footer
+  ^Enter::
+    Send ^{End}{Space}
+    insertSignature()
+    Send +{Tab 3}{Enter} ;save note with footer
+    Return
   ^n::Send {F9} ;insert note
   ^f::Send !LC ;search for company
 #IfWinActive
@@ -326,9 +341,18 @@ Insert::appendClipboard()
   ^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
   ^d::Send ^f ;bookmark remapped to find
   ^b::Send ^v ;replace bookmarks with paste
+  F1:: ;overflow
+  F2:: ;split current tab from window and tile, kinda flakey and in need of improvement
+    Tile("L") ;tiles left
+    Sleep 25 ;waits for tile to finish
+    Send {Esc}{F6}+{Tab 2}{AppsKey}w ;break off current tab
+    Sleep 250 ;wait for firefox to catch up
+    WinMaximize, A ;fixes black borders on bottom
+    Tile("R") ;tiles right
+    Return ;and you're back in the room
   F6::Send ^l ;F6 jumps to address bar
   ^+o::Send !to ;C-S-o options
-  #o::Send, ^c^t^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
+  #o::Send, ^c{F6}^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
   +PgDn::Send {Space 4}{Down 7} ;scroll down to specific part of a specific page, not really
   +PgUp::Send {Home} ;makes sense, kinda
   Ralt & Enter:: ;overflow
@@ -336,8 +360,8 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class MSPaintApp ;mspaint
-  ^=::Send {CtrlDown}{PgUp}{CtrlUp} ;zoom in
-  ^-::Send {CtrlDown}{PgDn}{CtrlUp} ;zoom out
+  ^=::Send ^{PgUp} ;zoom in
+  ^-::Send ^{PgDn} ;zoom out
 #IfWinActive
 
 #IfWinActive ahk_class Notepad2 ;notepad2-mod
@@ -351,9 +375,9 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class wxWindowClassNR ;audacity
-  ^=::Send {CtrlDown}1{CtrlUp} ;zoom in
-  ^-::Send {CtrlDown}3{CtrlUp} ;zoom out
-  ^0::Send {CtrlDown}2{CtrlUp} ;zoom reset
+  ^=::Send ^1 ;zoom in
+  ^-::Send ^3 ;zoom out
+  ^0::Send ^2 ;zoom reset
 #IfWinActive
 
 #IfWinActive ahk_class civ5 ;civilization 5

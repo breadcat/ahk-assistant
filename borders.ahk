@@ -53,6 +53,10 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+    If WinClass In % "#32770" ;windows xp date/time picker, amongst many other things
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
     If WinProcess In % "Photoshop.exe"
     {
         WinSet, Style, -0xC00000, %WinTitle%

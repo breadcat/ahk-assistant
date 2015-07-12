@@ -67,6 +67,14 @@ appendClipboard() {
     Return
   }
 
+insertSignature() {
+    global firstName
+    global lastName
+    StringLeft, firstinitial, firstname, 1
+    StringLeft, lastinitial, lastname, 1
+    Send, %A_Space%-%firstinitial%%lastinitial%
+  }
+
 pasteTelephone() {
     StringReplace, clipboard, clipboard, +44, 0, All ;translate intl codes
     StringReplace, clipboard, clipboard, %A_Space%,, All ;remove spaces
