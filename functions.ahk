@@ -76,6 +76,8 @@ insertSignature() {
   }
 
 pasteTelephone() {
+    backupClipboard = %clipboard%
+    Send, ^c
     StringReplace, clipboard, clipboard, +44, 0, All ;translate intl codes
     StringReplace, clipboard, clipboard, %A_Space%,, All ;remove spaces
     StringReplace, clipboard, clipboard, %A_Tab%, `,, All ;remove tabs
@@ -90,6 +92,8 @@ pasteTelephone() {
     Send %5Digits% %6Digits%
     5Digits = 
     6Digits = 
+    Clipboard := backupClipboard
+    backupClipboard = 
     Return
   }
 
@@ -406,6 +410,25 @@ winSplitH() { ;split active and previous window on top of each other
     Send {AltDown}{Tab}{AltUp}
   }
 
+tabSplit() {
+    Tile("L") ;tiles left
+    Sleep 25 ;waits for tile to finish
+    Send {Esc}{F6}+{Tab 2}{AppsKey}w ;break off current tab
+    Sleep 250 ;wait for firefox to catch up
+    WinMaximize, A ;fixes black borders on bottom
+    Tile("R") ;tiles right
+    Return ;and you're back in the room
+  }
+
+changeResolution(w,h) {
+    VarSetCapacity(dM,156,0)
+    NumPut(156,dM,36)
+    NumPut(0x5c0000,dM,40)
+    NumPut(w,dM,108)
+    NumPut(h,dM,112)
+    DllCall( "ChangeDisplaySettingsA", UInt,&dM, UInt,0 )
+  }
+
 kdeMove() { ;kde-windows (Easy Window Dragging -- KDE style (requires XP/2k/NT) -- by Jonny)
     MouseGetPos,KDE_X1,KDE_Y1,KDE_id
     WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
@@ -465,8 +488,7 @@ kdeResize() {
     Return
   }
 
-Tile(Pos)
-  {
+Tile(Pos) {
     WinGetClass, class, A
     IfInString , shell_TrayWnd,Progman,Button,DV2ControlHost, %class%
     Return
@@ -495,4 +517,3 @@ Tile(Pos)
     If (Pos = "BL")
         WinMove, A,, 0, mBottom/2, mRight/2, mBottom/2
   }
-Return

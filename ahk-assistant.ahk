@@ -41,7 +41,7 @@ SetNumLockState, AlwaysOn
 #Enter::dialTelephone()
 #+Enter::searchCustomer()
 ^!b::Run %programfiles%\TeamViewer\Version9\TeamViewer.exe
-^!v::Run %programfiles%\TightVNC\tvnviewer.exe
+^!v::Run %ProgramFilesX86%\TightVNC\tvnviewer.exe
 ^!k::launchKeepass()
 #c::Run calc
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;W-\ - screen standby
@@ -55,8 +55,8 @@ RAlt & k::AltTab
 !^0::Send {Volume_Mute} ;C-A-0 volume mute toggle
 !^-::Send {Volume_Down 3} ;C-A-- volume down
 !^=::Send {Volume_Up 3} ;C-A-+ volume up
-^!+Up::run %A_ScriptDir%\resswitch.exe /WIDTH:1920 /HEIGHT:1080 ;1080p screen resolution
-^!+Down::run %A_ScriptDir%\resswitch.exe /WIDTH:1280 /HEIGHT:720 ;720p screen resolution
+^!+Up::changeResolution(1920,1080)
+^!+Down::changeResolution(1280,720)
 XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
 XButton2::Send {MButton} ;remap logitech m570 x2 to wheel click
 #Space::insertDate()
@@ -186,6 +186,7 @@ Insert::appendClipboard()
 :*:secratery::secretary
 :*:fiber::fibre
 :*:liase::liaise
+:*:excercise::exercise
 ;work stuff
 :*:ctsty::Called to speak to you, their number is 
 :*:gtacb::Called to speak to you, can you give them a call back?
@@ -204,14 +205,15 @@ Insert::appendClipboard()
 :*:s21b::Samsung DS5021S
 :*:s38b::Samsung DS5038S
 :*:emg80a::LG eMG80-KSUA
+:*:emg80e::LG eMG80-EKSU
 :*:emg80i::LG eMG80-KSUI
 :*:emg80b::LG eMG80-BRIU2
 :*:emg80p::LG eMG80-PRIU
 :*:emg80h::LG eMG80-HYB8
 :*:emg80c::LG eMG80-CH204
 :*:emg80w::LG eMG80-WTIB4
-:*:50a::LG iPECS-LIK50A
-:*:50b::LG iPECS-LIK50B
+:*:i50a::LG iPECS-LIK50A
+:*:i50b::LG iPECS-LIK50B
 :*:l9048::LG LDP-9048DSS
 :*:l9030::LG LDP-9030D
 :*:l9008::LG LDP-9008D
@@ -303,6 +305,7 @@ Insert::appendClipboard()
 #IfWinActive ahk_class rctrl_renwnd32 ;outlook
   ^Enter::Return ;disable accidentally send email shortcut
   ^f::Send ^e ;C-f finds instead of forwards
+  ^t::Send !go ;C-t goes to today, on calendar view
 #IfWinActive
 
 #IfWinActive ahk_class XLMAIN ;excel
@@ -341,19 +344,12 @@ Insert::appendClipboard()
   ^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
   ^d::Send ^f ;bookmark remapped to find
   ^b::Send ^v ;replace bookmarks with paste
-  F1:: ;overflow
-  F2:: ;split current tab from window and tile, kinda flakey and in need of improvement
-    Tile("L") ;tiles left
-    Sleep 25 ;waits for tile to finish
-    Send {Esc}{F6}+{Tab 2}{AppsKey}w ;break off current tab
-    Sleep 250 ;wait for firefox to catch up
-    WinMaximize, A ;fixes black borders on bottom
-    Tile("R") ;tiles right
-    Return ;and you're back in the room
-  F6::Send ^l ;F6 jumps to address bar
-  ^+o::Send !to ;C-S-o options
   #o::Send, ^c{F6}^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
-  +PgDn::Send {Space 4}{Down 7} ;scroll down to specific part of a specific page, not really
+  ^+o::Send !to ;C-S-o options
+  F1:: ;overflow
+  F2::tabSplit() ;split current tab from window and tile, kinda flakey and in need of improvement
+  F6::Send ^l ;F6 jumps to address bar
+  +PgDn::Send {Space 4}{Down 5} ;scroll down to specific part of a specific page, not really
   +PgUp::Send {Home} ;makes sense, kinda
   Ralt & Enter:: ;overflow
   Alt & Enter::toggleFullscreen() ;leave flash full screen with a keyboard command

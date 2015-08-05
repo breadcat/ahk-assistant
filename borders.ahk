@@ -105,5 +105,13 @@ AdjustWindow(id)
     {
         WinSet, Style, -0xC00000, %WinTitle%
     }
+   If WinClass In % "AutoHotkeyGUI"
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
+   If WinClass In % "RegEdit_RegEdit"
+    {
+        WinSet, Style, -0xC00000, %WinTitle%
+    }
 
 }
