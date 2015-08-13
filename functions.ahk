@@ -47,6 +47,22 @@ launchKeepass() {
     Return
   }
 
+insertGateway() {
+    RunWait , %comspec% /c ipconfig > %A_Temp%\gw.txt,, Hide
+    ArrayCount = 0
+    Loop, Read, %A_Temp%\gw.txt
+      {
+        Count := RegExMatch(A_LoopReadLine, ".*Default Gateway .+ ((?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)).*",ip)
+        If ( %Count% != 0) {
+            ArrayCount += 1
+            IP_Array%ArrayCount% := ip1
+            gateway := ip1
+          }
+      }
+    FileDelete %A_Temp%\gw.txt
+    Send, %gateway%
+  }
+
 insertDate() {
     FormatTime, CurrentDateTime,, yyyy-MM-dd
     Send %CurrentDateTime%
@@ -107,7 +123,7 @@ dialTelephone() { ;lg phone-link
     Return
   }
 
-typeSyncDocs() {
+insertSyncDocs() {
     If A_OSVersion in WIN_XP
       {
         Send %A_MyDocuments%\Vault\docs\
@@ -119,7 +135,7 @@ typeSyncDocs() {
     Return
   }
 
-typeDocuments() {
+insertDocuments() {
     If A_OSVersion in WIN_XP
       {
         Send %A_MyDocuments%
@@ -131,7 +147,7 @@ typeDocuments() {
     Return
   }
 
-typeSync() {
+insertSync() {
     If A_OSVersion in WIN_XP
       {
         Send %A_MyDocuments%\Vault\
@@ -143,7 +159,7 @@ typeSync() {
     Return
   }
 
-typeCygwin() {
+insertCygwin() {
     If A_OSVersion in WIN_XP
       {
         Send C:\cygwin\home\%A_UserName%\

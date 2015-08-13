@@ -44,6 +44,7 @@ SetNumLockState, AlwaysOn
 ^!v::Run %ProgramFilesX86%\TightVNC\tvnviewer.exe
 ^!k::launchKeepass()
 #c::Run calc
+^+v::Send %clipboard% ;manually paste clipboard, minus formatting
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;W-\ - screen standby
 ^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
 SC029::Send, 0 ;Backtick send zeroes
@@ -63,6 +64,8 @@ XButton2::Send {MButton} ;remap logitech m570 x2 to wheel click
 #+Space::insertDateTime()
 Insert::appendClipboard()
 ^!Space::toggleAudioDevice()
+Ralt & PgUp::Send {WheelUp}
+Ralt & PgDn::Send {WheelDown}
 !LButton::kdeMove()
 !RButton::kdeResize()
 
@@ -85,6 +88,9 @@ Insert::appendClipboard()
 #NumpadIns::winSplitH() ;W-S-Num0
 
 ;text replacements
+:*?:_gw::
+  insertGateway()
+  Return
 :*?:_sig::
   insertSignature()
   Return
@@ -116,16 +122,16 @@ Insert::appendClipboard()
   insertPostCode()
   Return
 :*:_db::
-  typeSync()
+  insertSync()
   Return
 :*:_gd::
-  typeSyncDocs()
+  insertSyncDocs()
   Return
 :*:_md::
-  typeDocuments()
+  insertDocuments()
   Return
 :*:_cw::
-  typeCygwin()
+  insertCygwin()
   Return
 
 ;swedish
@@ -344,7 +350,8 @@ Insert::appendClipboard()
   ^!d::Send ^j ;why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
   ^d::Send ^f ;bookmark remapped to find
   ^b::Send ^v ;replace bookmarks with paste
-  #o::Send, ^c{F6}^v{Enter} ;copy selected uri and open, right click option fails to recognise ~50% of what I try
+  #o::Send, ^c{F6}^v{Enter} ;copy selected uri and open in current tab
+  #+o::Send, ^c^t^v{Enter} ;copy selected uri and open in new tab
   ^+o::Send !to ;C-S-o options
   F1:: ;overflow
   F2::tabSplit() ;split current tab from window and tile, kinda flakey and in need of improvement
