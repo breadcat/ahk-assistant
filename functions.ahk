@@ -69,6 +69,12 @@ insertDate() {
     Return
   }
 
+insertTime() {
+    FormatTime, CurrentDateTime,, HHmm
+    Send %CurrentDateTime%
+    Return
+  }
+
 insertDateTime() {
     FormatTime, CurrentDateTime,, yyyy-MM-dd HHmm
     Send %CurrentDateTime%

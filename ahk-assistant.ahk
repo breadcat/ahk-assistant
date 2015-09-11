@@ -46,7 +46,7 @@ SetNumLockState, AlwaysOn
 #c::Run calc
 ^+v::Send %clipboard% ;manually paste clipboard, minus formatting
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ;W-\ - screen standby
-^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0)
+^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0) ; C-A-\ - system standby
 SC029::Send, 0 ;Backtick send zeroes
 +SC029::Send, `` ;S-Backtick send backticks
 ^SC029::Send, `¬ ;C-Backtick send negations
@@ -60,8 +60,6 @@ RAlt & k::AltTab
 ^!+Down::changeResolution(1280,720)
 XButton1::Send {Click 2} ;remap logitech m570 x1 to double click
 XButton2::Send {MButton} ;remap logitech m570 x2 to wheel click
-#Space::insertDate()
-#+Space::insertDateTime()
 Insert::appendClipboard()
 ^!Space::toggleAudioDevice()
 Ralt & PgUp::Send {WheelUp}
@@ -88,6 +86,15 @@ Ralt & PgDn::Send {WheelDown}
 #NumpadIns::winSplitH() ;W-S-Num0
 
 ;text replacements
+:*?:_date::
+  insertDate()
+  Return
+:*?:_time::
+  insertTime()
+  Return
+:*?:_dtime::
+  insertDateTime()
+  Return
 :*?:_gw::
   insertGateway()
   Return
@@ -178,6 +185,7 @@ Ralt & PgDn::Send {WheelDown}
 :*?:(div)::÷
 :*?:(micro)::µ
 ;stupid fingers
+:*:adn::and
 :*:teh::the
 :*:tehy::they
 :*:taht::that
@@ -192,6 +200,8 @@ Ralt & PgDn::Send {WheelDown}
 :*:secratery::secretary
 :*:fiber::fibre
 :*:liase::liaise
+:*:sieze::seize
+:*:imediate::immediate
 :*:excercise::exercise
 ;work stuff
 :*:ctsty::Called to speak to you, their number is 
