@@ -63,6 +63,15 @@ insertGateway() {
     Send, %gateway%
   }
 
+insertCRMFooter() {
+		Send, {Enter}
+		insertDateTime()
+		Send, {Space}
+		insertSignature()
+		Send, {F6}javascript:document.getElementById("SAVE_FOOTER").focus(){Sleep 25}{Enter}{Sleep 50}{Space}
+  Return
+	}
+
 insertDate() {
     FormatTime, CurrentDateTime,, yyyy-MM-dd
     Send %CurrentDateTime%
@@ -70,13 +79,13 @@ insertDate() {
   }
 
 insertTime() {
-    FormatTime, CurrentDateTime,, HHmm
+    FormatTime, CurrentDateTime,, HH:mm
     Send %CurrentDateTime%
     Return
   }
 
 insertDateTime() {
-    FormatTime, CurrentDateTime,, yyyy-MM-dd HHmm
+    FormatTime, CurrentDateTime,, yyyy-MM-dd HH:mm
     Send %CurrentDateTime%
     Return
   }
@@ -95,6 +104,12 @@ insertSignature() {
     StringLeft, firstinitial, firstname, 1
     StringLeft, lastinitial, lastname, 1
     Send, %A_Space%-%firstinitial%%lastinitial%
+  }
+
+pasteClipboard() { ; manually paste clipboard, minus formatting
+    StringReplace, clipboard, clipboard, %A_Tab%, `,, All ;remove tabs
+    SendRaw %clipboard%
+    Return
   }
 
 pasteTelephone() {
@@ -414,29 +429,21 @@ usePlaybackDevice(device) {
 
 winSplit() { ;split active and previous window side by side
     Tile("R")
-    Sleep, 15
-    Send {AltDown}{Tab}{AltUp}
-    Sleep, 10
+    Send {Sleep 15}{AltDown}{Tab}{AltUp}{Sleep 10}
     Tile("L")
-    Sleep, 15
-    Send {AltDown}{Tab}{AltUp}
+    Send {Sleep 15}{AltDown}{Tab}{AltUp}
   }
 
 winSplitH() { ;split active and previous window on top of each other
     Tile("T")
-    Sleep, 15
-    Send {AltDown}{Tab}{AltUp}
-    Sleep, 10
+    Send {Sleep 15}{AltDown}{Tab}{AltUp}{Sleep 10}
     Tile("B")
-    Sleep, 15
-    Send {AltDown}{Tab}{AltUp}
+    Send {Sleep 15}{AltDown}{Tab}{AltUp}
   }
 
 tabSplit() {
     Tile("L") ;tiles left
-    Sleep 25 ;waits for tile to finish
-    Send {Esc}{F6}+{Tab 2}{AppsKey}w ;break off current tab
-    Sleep 250 ;wait for firefox to catch up
+    Send {Sleep 50}{Esc}{F6}+{Tab 2}{AppsKey}w{Sleep 250} ;break off current tab
     WinMaximize, A ;fixes black borders on bottom
     Tile("R") ;tiles right
     Return ;and you're back in the room
