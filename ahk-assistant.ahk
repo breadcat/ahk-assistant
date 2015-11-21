@@ -7,13 +7,12 @@
 #NoEnv
 #SingleInstance,Force
 SetTimer, changeReload, 1000
-SetTimer, remoteReload, 1000
 CoordMode,Mouse
 SetWorkingDir %A_MyDocuments%\..\
 ProgramFilesX86 := A_ProgramFiles . (A_PtrSize=8 ? " (x86)" : "") ; pfx86 variable from http://www.autohotkey.com/board/topic/79160-a-programfiles-for-programs-in-windows-7-x86-directory/
-SetWinDelay,1
-SetKeyDelay,1
-SetControlDelay,1
+SetWinDelay,0
+SetKeyDelay,0
+SetControlDelay,0
 SetCapsLockState, AlwaysOff
 SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
@@ -48,8 +47,8 @@ SetNumLockState, AlwaysOn
 ^!Space::toggleAudioDevice()
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
-Ralt & PgUp::Send {WheelUp}
-Ralt & PgDn::Send {WheelDown}
+RAlt & PgUp::Send {WheelUp}
+RAlt & PgDn::Send {WheelDown}
 SC029::Send, 0 ; Backtick send zeroes
 +SC029::Send, `` ; S-Backtick send backticks
 ^SC029::Send, `¬ ; C-Backtick send negations
@@ -149,8 +148,9 @@ Insert::appendClipboard()
 :c*?:(ai)::ä
 :c*?:(Oi)::Ö
 :c*?:(oi)::ö
-; norwegian
+; norwegian/danish
 :c*?:(AE)::Æ
+:c*?:(Ae)::Æ
 :c*?:(ae)::æ
 :c*?:(O/)::Ø
 :c*?:(o/)::ø
@@ -362,7 +362,7 @@ Insert::appendClipboard()
   ^b::Send ^v ; replace bookmarks with paste
   #o::Send, ^c{F6}^v{Enter} ; copy selected uri and open in current tab
   #+o::Send, ^c^t^v{Enter} ; copy selected uri and open in new tab
-  ^+o::Send, !t {sleep 25} o ; C-S-o options
+  ^+o::Send, !t{sleep 25}o ; C-S-o options
   F1:: ; overflow
   F2::tabSplit() ; split current tab from window and tile, kinda flakey and in need of improvement
   F7:: ; overflow
@@ -401,7 +401,7 @@ Insert::appendClipboard()
 #IfWinActive
 
 
-changeReload: ; auto-reload on change
+changeReload: ; auto-reload script on source change
   {
     FileGetAttrib, FileAttribs, %A_ScriptFullPath%
     IfInString, FileAttribs, A
@@ -414,12 +414,3 @@ changeReload: ; auto-reload on change
       }
     Return
   }
-
-remoteReload: ; reload script when rdp window is detected to allow sending to 
-IfWinActive, ahk_class TscShellContainerClass
-{
-    WinWaitNotActive, ahk_class TscShellContainerClass,,3600
-}
-WinWaitActive, ahk_class TscShellContainerClass,,3600
-Reload
-return
