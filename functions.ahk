@@ -72,6 +72,14 @@ insertCRMFooter() {
   Return
 	}
 
+insertFooter() {
+		Send, {Enter}
+		insertDateTime()
+		Send, {Space}
+		insertSignature()
+  Return
+	}
+
 insertDate() {
     FormatTime, CurrentDateTime,, yyyy-MM-dd
     Send %CurrentDateTime%
@@ -227,7 +235,7 @@ explorerRename() {
         if (ExtensionPos != -1)
           {
             Position := StrLen(Clipboard) - ExtensionPos
-            Send, +{Left %Position%}
+            Send, {End}{Left %Position%}{CtrlDown}{ShiftDown}{Home}{ShiftUp}{CtrlUp}
           }
         Clipboard = %backupClipboard%
         backupClipboard =

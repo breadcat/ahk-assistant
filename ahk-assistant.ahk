@@ -140,9 +140,13 @@ Insert::appendClipboard()
 :*:_cw::
   insertCygwin()
   Return
+:*?:_foot::
+	insertFooter()
+	Return
 ; special character insertion
 ; swedish
 :c*?:(Ao)::Å
+:c*?:(AO)::Å
 :c*?:(ao)::å
 :c*?:(Ai)::Ä
 :c*?:(ai)::ä
@@ -371,7 +375,7 @@ Insert::appendClipboard()
   +PgUp::Send {Home} ; makes sense, kinda
   Ralt & Enter:: ; overflow
   Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard command
-  :*?:_foot::
+  :*?:_crm::
 		insertCRMFooter()
 		return
 #IfWinActive
