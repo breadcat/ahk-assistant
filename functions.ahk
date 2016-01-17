@@ -2,11 +2,11 @@
 dirWorking() {
     If A_OSVersion in WIN_XP
       {
-        Run explorer %A_MyDocuments%
+        Run %A_MyDocuments%
       }
     Else
       {
-        Run explorer %A_MyDocuments%\..\Downloads
+        Run %A_MyDocuments%\..\Downloads
       }
     Return
   }
@@ -14,11 +14,21 @@ dirWorking() {
 dirSync() {
     If A_OSVersion in WIN_XP
       {
-        Run explorer %A_MyDocuments%\Vault
+        Run %A_MyDocuments%\Vault
+        WinWaitActive ahk_class CabinetWClass ; wait for window to display
+        {
+					PostMessage, 0x111, 28715,,, ahk_class CabinetWClass ; enable list view to work around thumbnail no icons bug
+				}
       }
     Else
       {
-        Run explorer %A_MyDocuments%\..\Vault
+        Run %A_MyDocuments%\..\Vault
+        WinWaitActive ahk_class CabinetWClass ; wait for window to display
+        {
+					PostMessage, 0x111, 28715,,, ahk_class CabinetWClass ; at this point, i just like list view
+					Send, +{Tab} ; weird glitch fix where focus is on the sort columns meaning you need to press enter twice
+				}
+
       }
     Return
   }
@@ -64,10 +74,7 @@ insertGateway() {
   }
 
 insertCRMFooter() {
-		Send, {Enter}
-		insertDateTime()
-		Send, {Space}
-		insertSignature()
+		insertFooter()
 		Send, {F6}javascript:document.getElementById("SAVE_FOOTER").focus(){Sleep 25}{Enter}{Sleep 50}{Space}
   Return
 	}
@@ -115,7 +122,8 @@ insertSignature() {
   }
 
 pasteClipboard() { ; manually paste clipboard, minus formatting
-    StringReplace, clipboard, clipboard, %A_Tab%, `,, All ;remove tabs
+    StringReplace, clipboard, clipboard, %A_Tab%, `,, All ; remove tabs
+    clipboard = %clipboard% ; trim whitespace
     SendRaw %clipboard%
     Return
   }
@@ -235,7 +243,7 @@ explorerRename() {
         if (ExtensionPos != -1)
           {
             Position := StrLen(Clipboard) - ExtensionPos
-            Send, {End}{Left %Position%}{CtrlDown}{ShiftDown}{Home}{ShiftUp}{CtrlUp}
+            Send, {CtrlDown}{Home}{CtrlUp}{CtrlDown}{ShiftDown}{End}{CtrlUp}{Left %Position%}{ShiftUp}
           }
         Clipboard = %backupClipboard%
         backupClipboard =
@@ -284,7 +292,7 @@ explorerNewDir() { ;allows xp to create new folder from keypress
 explorerNewFile() { ;create a new blank text file
     If A_OSVersion in WIN_XP
       {
-        Send !fwt{End}{Left 4}{ShiftDown}{Home}{ShiftUp} ;new text file, and deselect file extension
+        Send !fwt{CtrlDown}{Home}{ShiftDown}{End}{CtrlUp}{Left 4}{ShiftUp} ;new text file, and deselect file extension
       }
     Else
       {
@@ -295,7 +303,7 @@ explorerNewFile() { ;create a new blank text file
 
 excelFormulaBar() { ;jumps to formula bar
     CoordMode, Mouse, Relative
-    MouseMove, 180, 60
+    MouseMove, 170, 75
     Send {LButton}
     Return
   }

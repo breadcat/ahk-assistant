@@ -276,7 +276,6 @@ Insert::appendClipboard()
   ^0::Send !vd ; view > details
   ^-::Send ^{WheelDown 2} ; zoom out
   ^=::Send ^{WheelUp 2} ; zoom in
-  #+Space::Send !vl!v+h ; fix weird xp explorer bug where you get no labels on thumbnails
 #IfWinActive
 
 #IfWinActive ahk_class ShockwaveFlashFullScreen ; full screen flash
@@ -307,6 +306,7 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class Photo_Lightweight_Viewer ; photoviewer windows 7
+  ^w:: ; overflow
   CapsLock::Send !{F4} ; quit
   Up:: ; overflow
   Down::Return ; fixes up/down breaking left/right navigation
@@ -339,7 +339,13 @@ Insert::appendClipboard()
   ^t::Send !go ; C-t goes to today, on calendar view
 #IfWinActive
 
-#IfWinActive ahk_class XLMAIN ; excel
+#IfWinActive ahk_class OpusApp ; word 2003
+  ^=::Send ^{WheelUp} ; zoom in
+  ^-::Send ^{WheelDown} ; zoom out
+  ^0::Send !vzp{Enter} ; fit to page zoom
+#IfWinActive
+
+#IfWinActive ahk_class XLMAIN ; excel 2003
   ^+v::Send ^'{Down} ; C-S-v copies above cell contents into current
   ^+n::Send !iw ; new sheet
   ^+w::Send !el ; delete current sheet
