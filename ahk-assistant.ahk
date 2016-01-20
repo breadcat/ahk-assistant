@@ -18,6 +18,7 @@ SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 #Include, *i %A_ScriptDir%\variables.ahk ; physical and ip address completions, only included if exists. See .gitignore for details
 #Include, %A_ScriptDir%\functions.ahk ; all those long winded functions
+#Include, *i %A_ScriptDir%\buggy_mouse.ahk ; r.secsrv.net/AutoHotkey/Scripts/Buggy-Mouse super useful for my logitech m570
 
 
 ; global hotkeys
@@ -74,6 +75,7 @@ Insert::appendClipboard()
 #Numpad3::Tile("BR")
 #Numpad4::Tile("L")
 #Numpad5::WinMaximize, A
+#NumpadClear::WinSet, AlwaysOnTop, , A ; W-S-Num5
 #Numpad6::Tile("R")
 #Numpad7::Tile("TL")
 #Numpad8::Tile("T")
@@ -194,27 +196,28 @@ Insert::appendClipboard()
 ; stupid fingers
 :*:i'::I'
 :*:adn::and
-:*:teh::the
+:*:teh ::the{space} ; space is for the rare occurence where I type tehran
 :*:tehy::they
 :*:taht::that
-:*:seperate::separate
-:*:recieve::receive
-:*:license::licence
-:*:equivelant::equivalent
+; words I just plain can't spell, plus a few americanisms
 :*:attendent::attendant
-:*:consistant::consistent
-:*:propogate::propagate
-:*:occurance::occurence
-:*:refridgeration::refrigeration
-:*:secratery::secretary
 :*:cinammon::cinnamon
 :*:competative::competitive
+:*:consistant::consistent
+:*:equivelant::equivalent
+:*:excercise::exercise
 :*:fiber::fibre
+:*:imediate::immediate
 :*:liase::liaise
 :*:liasing::liaising
+:*:license::licence
+:*:occurance::occurence
+:*:propogate::propagate
+:*:recieve::receive
+:*:refridgeration::refrigeration
+:*:secratery::secretary
+:*:seperate::separate
 :*:sieze::seize
-:*:imediate::immediate
-:*:excercise::exercise
 ; work stuff
 :*:ctsty::Called to speak to you, their number is 
 :*:gtacb::Called to speak to you, can you give them a call back?
@@ -398,6 +401,7 @@ Insert::appendClipboard()
   ^Down::Send {Down} ; disable (alt) shift line down feature
   ^+Up:: ; overflow
   ^Up::Send {Up} ; disable (alt) shift line up feature
+  !u::Send ^a!o ; remap delete last character to sort lines, after selecting everything
 #IfWinActive
 
 #IfWinActive ahk_class wxWindowClassNR ; audacity
