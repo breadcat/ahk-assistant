@@ -75,8 +75,8 @@ insertGateway() {
 
 insertCRMFooter() {
 		insertFooter()
-		Send, {F6}javascript:document.getElementById("SAVE_FOOTER").focus(){Sleep 25}{Enter}{Sleep 50}{Space}
-  Return
+		Send, {F6}javascript:document.getElementById("SAVE_FOOTER").focus(){Sleep 10}{Enter}{Sleep 25}{Space}
+		Return
 	}
 
 insertFooter() {
@@ -122,7 +122,7 @@ insertSignature() {
   }
 
 pasteClipboard() { ; manually paste clipboard, minus formatting
-    StringReplace, clipboard, clipboard, %A_Tab%, `,, All ; remove tabs
+    StringReplace, clipboard, clipboard, %A_Tab%,, All ; remove tabs
     clipboard = %clipboard% ; trim whitespace
     SendRaw %clipboard%
     Return
@@ -133,7 +133,7 @@ pasteTelephone() {
     Send, ^c
     StringReplace, clipboard, clipboard, +44, 0, All ;translate intl codes
     StringReplace, clipboard, clipboard, %A_Space%,, All ;remove spaces
-    StringReplace, clipboard, clipboard, %A_Tab%, `,, All ;remove tabs
+    StringReplace, clipboard, clipboard, %A_Tab%,, All ;remove tabs
     StringReplace, clipboard, clipboard, `,,, All ;remove commas
     StringReplace, clipboard, clipboard, `r,, All ;remove lines
     StringReplace, clipboard, clipboard, `n,, All ;remove lines
@@ -255,12 +255,17 @@ explorerRename() {
     Return
   }
 
-explorerCMD() { ;open command prompt in current location
+explorerCMD() { ;open command prompt in current location, now with support for other drives but still a bit glitchy as ever
     backupClipboard := Clipboard
-    Send !d^c
+    Send !d^x{Sleep 50}
     Run, cmd /K "cd `"%clipboard%`""
+    StringLeft, DriveLetter, clipboard, 2
+    WinWaitActive ahk_class ConsoleWindowClass
+        Send, {Sleep 100}%driveLetter% & cls{Enter}
+        Return
     Clipboard := backupClipboard
     backupClipboard =
+    driveLetter =
     Return
   }
 

@@ -143,8 +143,8 @@ Insert::appendClipboard()
   insertCygwin()
   Return
 :*?:_foot::
-	insertFooter()
-	Return
+  insertFooter()
+  Return
 ; special character insertion
 ; swedish
 :c*?:(Ao)::Å
@@ -164,6 +164,10 @@ Insert::appendClipboard()
 :c*?:(Ui)::Ü
 :c*?:(ui)::ü
 :*?:(ss)::ß
+; dutch and/or maxïmo park
+:c*?:(Ii)::Ï
+:c*?:(II)::Ï
+:c*?:(ii)::ï
 ; spanish
 :c?*:(N~)::Ñ
 :c?*:(n~)::ñ
@@ -193,35 +197,47 @@ Insert::appendClipboard()
 :*?:(micro)::µ
 :*?:(bull)::•
 :*?:(middot)::·
-; stupid fingers
-:*:i'::I'
+:*?:(tab)::
+	Send {ASC 00009} ; the space tab character, not the navigation one. rarely used.
+	Return
+; typos and common mistakes
 :*:adn::and
-:*:teh ::the{space} ; space is for the rare occurence where I type tehran
-:*:tehy::they
-:*:taht::that
-; words I just plain can't spell, plus a few americanisms
+:*:aquire::acquire
 :*:attendent::attendant
 :*:cinammon::cinnamon
 :*:competative::competitive
 :*:consistant::consistent
+:*:enterance::entrance
 :*:equivelant::equivalent
 :*:excercise::exercise
 :*:fiber::fibre
+:*:i'::I' ; fix common casing
 :*:imediate::immediate
 :*:liase::liaise
 :*:liasing::liaising
 :*:license::licence
 :*:occurance::occurence
+:*:parliment::parliament
+:*:persu::pursu
 :*:propogate::propagate
 :*:recieve::receive
 :*:refridgeration::refrigeration
 :*:secratery::secretary
 :*:seperate::separate
 :*:sieze::seize
-; work stuff
+:*:taht::that
+:*:teh ::the{space} ; space is for the rare occurence where I type tehran
+:*:tehy::they
+; general abbreviations
+:*:afaik::as far as I know
+:*:iirc::if I recall correctly
+:*:imo::in my opinion
+; work related abbreviations
 :*:ctsty::Called to speak to you, their number is 
 :*:gtacb::Called to speak to you, can you give them a call back?
+:*:ccwi::Customer called regarding an issue relating to 
 :*:ctt::Feel free to close the ticket.
+:*:yctt::You can close this ticket.
 :*:sksu::Samsung OS7030 KSU
 :*:s2b::Samsung OS7030 2BM
 :*:s4t::Samsung OS7030 4TM
@@ -258,9 +274,12 @@ Insert::appendClipboard()
 
 
 ; application specific hotkeys
-#IfWinActive ahk_class #32770 ; save/load dialog
+#IfWinActive ahk_class #32770 ; misc save/load/time-date/find boxes and more!
+  CapsLock::Send !{F4} ; quit
   F1:: ; overflow to rename, help is useless in explorer
   F2::explorerRename() ; rename commands
+  /::Send, \ ; forward slashes paths aren't accepted
+  !/::Send, / ; just in case you need an incorrect slash
 #IfWinActive
 
 #IfWinActive ahk_class CabinetWClass ; explorer
@@ -272,6 +291,7 @@ Insert::appendClipboard()
   F3::explorerCMD()
   F6::Send !d ; addressbar
   ^Backspace::Send ^+{Left}{Backspace} ; backspace a word
+  ^f::Return ; disable search in explorer, was always pretty useless
   ^h::explorerHidden()
   ^+n::explorerNewDir()
   ^!+n::explorerNewFile()
@@ -284,10 +304,6 @@ Insert::appendClipboard()
 #IfWinActive ahk_class ShockwaveFlashFullScreen ; full screen flash
   Ralt & Enter:: ; overflow
   Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard command
-#IfWinActive
-
-#IfWinActive ahk_class #32770 ; windows xp date/time picker
-  CapsLock::Send !{F4} ; quit
 #IfWinActive
 
 #IfWinActive ahk_class FontViewWClass ; font previewer
@@ -303,6 +319,7 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class ShImgVw:CPreviewWnd ; photoviewer windows xp
+  ^w:: ; overflow
   CapsLock::Send !{F4} ; quit
   ^-::Send {-} ; zoom out
   ^=::Send {+} ; zoom in
@@ -395,7 +412,7 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class Notepad2 ; notepad2-mod
-  ^0::Return ; disable annoying transparency feature
+  ^0::Send ^/ ; remap transparency feature to reset zoom level, in keeping with other hotkeys
   !t::Return ; disable always on top
   ^+Down:: ; overflow
   ^Down::Send {Down} ; disable (alt) shift line down feature
