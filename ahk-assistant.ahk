@@ -7,7 +7,6 @@
 #SingleInstance,Force
 CoordMode,Mouse
 SetWorkingDir %A_MyDocuments%\..\
-ProgramFilesX86 := A_ProgramFiles . (A_PtrSize=8 ? " (x86)" : "") ; pfx86 variable from http://www.autohotkey.com/board/topic/79160-a-programfiles-for-programs-in-windows-7-x86-directory/
 SetWinDelay,0
 SetKeyDelay,0
 SetControlDelay,0
@@ -17,32 +16,29 @@ SetNumLockState, AlwaysOn
 SetTimer, changeReload, 1000
 Menu, Tray, Icon, %A_ScriptDir%\ahk-assistant.ico ; tray icon
 #Include, *i %A_ScriptDir%\variables.ahk ; include physical and ip address completions, only included if exists. See .gitignore for details
-#Include, *i %A_ScriptDir%\buggy_mouse.ahk ; r.secsrv.net/AutoHotkey/Scripts/Buggy-Mouse super useful for my logitech m570, only included if exists
 
 
 ; global hotkeys
 #q::Run notepad
 ^q::Send !{F4} ; quit most programs
-#+q::Run wordpad
 #w::Run firefox
 #+w::Run firefox.exe -private-window
-#e::dirWorking()
-#+e::dirSync()
+#e::Run %A_WorkingDir%\Downloads
+#+e::Run %A_WorkingDir%\Vault
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ; my computer
 ^!r::Run mstsc ; remote desktop connection
-^!+r::mstscSpecific() ; remote desktop to a destination defined by variable file
-#t::launchTerminal() ; useful terminal
-#+t::Run cmd ; less useful terminal
+^!+r::Run mstsc /v:%serverRemoteAddress% ; rdp to a destination defined by variable file
+#t::Run cmd ; useful terminal
+#+t::Run putty -ssh -P %sshPort% %sshHost% ; remote terminal
 ^!t::pasteTelephone()
-#p::Run "%ProgramFilesX86%\PuTTY\putty.exe" ; putty
+#p::Run putty
 #Enter::dialTelephone()
 #+Enter::searchCustomer()
 *CapsLock::BackSpace
-^!k::Run "%A_MyDocuments%\..\Vault\docs\keepass\KeePass.exe"
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ; W-\ - screen standby
 ^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0) ; C-A-\ - system standby
+^!+x::forceClose()
 #c::Run calc
-^!v::Run %ProgramFilesX86%\TightVNC\tvnviewer.exe
 ^+v::pasteClipboard()
 ^!m::ControlSend, , {Space}, ahk_exe mpv.exe ; global hotkey to toggle mpv pause/play
 ^!Space::toggleAudioDevice()
@@ -56,12 +52,8 @@ SC029::Send, 0 ; Backtick send zeroes
 !^0::Send {Volume_Mute} ; C-A-0 volume mute toggle
 !^-::Send {Volume_Down 3} ; C-A-- volume down
 !^=::Send {Volume_Up 3} ; C-A-+ volume up
-XButton1::Send {Click 2} ; remap logitech m570 x1 to double click
-XButton2::Send {MButton} ; remap logitech m570 x2 to wheel click
 Insert::appendClipboard()
 #LButton::WinSet, Style, -0x840000, A ; W-Click - remove window borders
-^!+Up::changeResolution(1920,1080) ; change screen resolution native 1080p
-^!+Down::changeResolution(1280,720) ; change screen res low-res 720p
 !LButton::kdeMove() ; kde style window moving
 !RButton::kdeResize() ; kde style window resizing
 #Up::WinMaximize, A ; maximise
@@ -85,28 +77,25 @@ Insert::appendClipboard()
 
 ; application specific hotkeys
 #IfWinActive ahk_class #32770 ; misc save/load/time-date/find boxes and more!
-	CapsLock::Send !{F4} ; quit
-  F1:: ; overflow to rename, help is useless in explorer
-  F2::explorerRename() ; rename commands
+  CapsLock::Send !{F4} ; quit
+  F1::Send, {F2} ; rename, help is useless in explorer
   /::Send, \ ; forward slashes paths aren't accepted
   !/::Send, / ; just in case you need an incorrect slash
 #IfWinActive
 
 #IfWinActive ahk_class CabinetWClass ; explorer
-  CapsLock::explorerUp()
+  CapsLock::Send {AltDown}{Up}{AltUp}
   Alt & Enter:: ; overflow
   Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
   ^Enter::explorerSplit()
   ^+Enter::Send {AppsKey}{Down 2}{Enter} ; C-S enter opens in new window
   F1:: ; overflow to rename, help is useless in explorer
-  F2::explorerRename() ; rename commands
-  F3::explorerCMD()
+  F3::Send, {F2} ; rename for fun, nobody uses F3
   F6::Send !d ; addressbar
   ^Backspace::Send ^+{Left}{Backspace} ; backspace a word
   ^f::Return ; disable search in explorer, was always pretty useless
   ^h::explorerHidden()
-  ^+n::explorerNewDir()
-  ^!+n::explorerNewFile()
+  ^!+n::Send !fwt ; creates a new text file
   ^p::Send, !p ; C-p also works for toggle preview
   ^s::Send !vb ; view > status bar
   ^0::Send !vd ; view > details
@@ -178,7 +167,7 @@ Insert::appendClipboard()
   ^0::Send !vzp{Enter} ; fit to page zoom
 #IfWinActive
 
-#IfWinActive ahk_class XLMAIN ; excel 2003
+#IfWinActive ahk_class XLMAIN ; excel 2003/2007
   ^+v::Send ^'{Down} ; C-S-v copies above cell contents into current
   ^!+v::pasteClipboard() ; C-A-S-v past clipboard as above steals C-A-v
   ^+n::Send !iw ; new sheet
@@ -193,6 +182,7 @@ Insert::appendClipboard()
   ^0::Send !vz1{Enter} ; reset zoom
   ^-::Send ^{WheelDown} ; zoom out
   ^=::Send ^{WheelUp} ; zoom in
+  ^Backspace::Send {CtrlDown}{ShiftDown}{Left}{CtrlUp}{ShiftUp}{Backspace} ; C-Backspace deletes word when in formula bar, can't ^!LB due to it not releasing and deleting the whole line
 #IfWinActive
 
 #IfWinActive ahk_class wxWindowNR ; hydrus client
@@ -215,7 +205,7 @@ Insert::appendClipboard()
   #+o::Send, ^c^t^v{Enter} ; copy selected uri and open in new tab
   ^+o::Send, !t{sleep 150}o ; C-S-o options
   F1:: ; overflow
-  F2::tabSplit() ; split current tab from window and tile, kinda flakey and in need of improvement
+  F2::Send {Sleep 25}{Esc}{Sleep 25}{F6}{ShiftDown}{Tab 2}{ShiftUp}{AppsKey}w{Sleep 250} ; split current tab from window and tile, kinda flakey and in need of improvement
   F7:: ; overflow
   F6::Send ^l ; F6 jumps to address bar
   +PgDn::Send {Space 4}{Down 5} ; scroll down to specific part of a specific page, not really
@@ -250,10 +240,7 @@ Insert::appendClipboard()
 
 #IfWinActive ahk_class WinClass_FXS ; civilization 5
   F11::borderlessFullscreen()
-#IfWinActive
-
-#IfWinActive ahk_class LaunchUnrealUWindowsClient ; viscera cleanup detail
-  F11::borderlessFullscreen()
+  ^h::send {Home}{Esc}
 #IfWinActive
 
 
@@ -280,46 +267,56 @@ Insert::appendClipboard()
   insertSignature()
   Return
 :*?:_reg::
-  insertRegards()
+  Send,`n`nRegards,`n%firstName%.
   Return
 :*?:_kreg::
-  insertKindRegards()
+  Send,`n`nKind regards,`n%firstName%.
   Return
-:*:_em::
-  insertEmailAddress()
+:*?:_dial::
+  formatNumber()
+  Send, dial://^v
+  Return
+:*:_hem::
+  Send, %homeEmailAddress%
+  Return
+:*:_wem::
+  Send, %workEmailAddress%
   Return
 :*:_wip::
-  insertWorkIP()
+  Send, %workIPAddress%
   Return
 :*:_sip::
-  insertSIPIP()
+  Send, %workSIPAddress%
   Return
 :*:_mac::
-	insertRemoteMAC()
+	Send, %remoteMAC%
 	Return
-:*:_tel::
-  insertTelephoneNumber()
+:*:_htel::
+  Send, %homePhoneNumber%
+  Return
+:*:_wtel::
+  Send, %workPhoneNumber%
   Return
 :*:_mob::
-  insertMobileNumber()
+  Send, %mobilePhoneNumber%
   Return
-:*:_addr::
-  insertAddress()
+:*:_haddr::
+  Send, %homeAddress%
   Return
-:*:_pc::
-  insertPostCode()
+:*:_waddr::
+  Send, %workAddress%
+  Return
+:*:_hpc::
+  Send, %homePostCode%
+  Return
+:*:_wpc::
+  Send, %workPostCode%
   Return
 :*:_db::
-  insertSync()
-  Return
-:*:_gd::
-  insertSyncDocs()
+  Send, %A_WorkingDir%\Vault\
   Return
 :*:_md::
-  insertDocuments()
-  Return
-:*:_cw::
-  insertCygPath()
+  Send, %A_WorkingDir%
   Return
 :*?:_foot::
   insertFooter()
@@ -346,6 +343,8 @@ Insert::appendClipboard()
 :c*?:(ui)::ü
 :*?:(ss)::ß
 ; dutch and/or maxïmo park
+:c*?:(Ei)::Ë
+:c*?:(ei)::ë
 :c*?:(Ii)::Ï
 :c*?:(II)::Ï
 :c*?:(ii)::ï
@@ -356,6 +355,17 @@ Insert::appendClipboard()
 :c*?:(/p)::þ
 :c*?:(Y-)::Ý
 :c*?:(y-)::ý
+; italian
+:c?*:(A\)::À
+:c?*:(a\)::à
+:c?*:(E\)::È
+:c?*:(e\)::è
+:c?*:(I\)::Ì
+:c?*:(i\)::ì
+:c?*:(O\)::Ò
+:c?*:(o\)::ò
+:c?*:(U\)::Ù
+:c?*:(U\)::ù
 ; spanish
 :c?*:(N~)::Ñ
 :c?*:(n~)::ñ
@@ -392,10 +402,13 @@ Insert::appendClipboard()
 :*:aging::ageing
 :*:aquire::acquire
 :*:attendent::attendant
+:*:bolognaise::bolognese
+:*:bredth::breadth
 :*:cinammon::cinnamon
 :*:competative::competitive
 :*:componant::component
 :*:consistant::consistent
+:*:differnet::different
 :*:enterance::entrance
 :*:equivelant::equivalent
 :*:excercise::exercise
@@ -406,13 +419,18 @@ Insert::appendClipboard()
 :*:habe::have
 :*:i'::I' ; fix common casing
 :*:imediate::immediate
+:*:intermitent::intermittent
 :*:liase::liaise
 :*:liasing::liaising
 :*:license::licence
 :*:micheal::michael
-:*:occurance::occurence
+:*:neice::niece
+:*:occurance::occurrence
+:*:occured::occurred
 :*:parliment::parliament
-:*:persu::pursu
+:*:persue::pursue
+:*:persuit::pursuit
+:*:pronounciation::pronunciation
 :*:propogate::propagate
 :*:recieve::receive
 :*:refridgeration::refrigeration
@@ -421,13 +439,21 @@ Insert::appendClipboard()
 :*:sieze::seize
 :*:taht::that
 :*:teh ::the{space} ; space is for the rare occurence where I type tehran
+:*:tehm::them
 :*:tehy::they
+:*:yhe::the
 
 ; general abbreviations
 :*:afaik::as far as I know
+:c?*:ASAP::as soon as possible
+:*:atm::at the moment
+:*:bbs::be back soon
+:*:brb::be right back
+:*:btw::by the way
 :*:iirc::if I recall correctly
 :*:imho::in my honest opinion
 :*:imo::in my opinion
+:*:tbqh::to be quite honest
 
 ; work related abbreviations
 :*:ctsty::Called to speak to you, their number is 
@@ -438,57 +464,6 @@ Insert::appendClipboard()
 
 
 ; functions
-dirWorking() {
-    If A_OSVersion in WIN_XP
-      {
-        Run %A_MyDocuments%
-      }
-    Else
-      {
-        Run %A_MyDocuments%\..\Downloads
-      }
-    Return
-  }
-
-dirSync() {
-    If A_OSVersion in WIN_XP
-      {
-        Run %A_MyDocuments%\Vault
-        WinWaitActive ahk_class CabinetWClass ; wait for window to display
-        {
-					PostMessage, 0x111, 28715,,, ahk_class CabinetWClass ; enable list view to work around thumbnail no icons bug
-				}
-      }
-    Else
-      {
-        Run %A_MyDocuments%\..\Vault
-        WinWaitActive ahk_class CabinetWClass ; wait for window to display
-        {
-					PostMessage, 0x111, 28715,,, ahk_class CabinetWClass ; at this point, i just like list view
-					Send, +{Tab} ; weird glitch fix where focus is on the sort columns meaning you need to press enter twice
-				}
-
-      }
-    Return
-  }
-
-insertRemoteMAC() {
-		global remoteMAC
-    Send, %remoteMAC%
-	}
-
-insertCygPath() {
-    Send, %A_WinDir%\..\cygwin\home\
-  }
-
-launchTerminal() {
-    IfNotExist, %SystemDrive%\cygwin\
-      Run, C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico -
-    Else
-      Run, C:\cygwin\bin\mintty.exe -i /Cygwin-Terminal.ico -
-    Return
-  }
-
 insertGateway() {
     RunWait , %comspec% /c ipconfig > %A_Temp%\gw.txt,, Hide
     ArrayCount = 0
@@ -516,7 +491,6 @@ insertSignature() {
 insertFooter() {
 		Send, {Enter}
 		insertDateTime()
-		Send, {Space}
 		insertSignature()
     Return
 	}
@@ -582,6 +556,7 @@ formatNumber() {
     StringReplace, clipboard, clipboard, -,, All ; remove hyphens
     StringReplace, clipboard, clipboard, (,, All ; remove lbracket
     StringReplace, clipboard, clipboard, ),, All ; remove rbracket
+    StringReplace, clipboard, clipboard, •,, All ; remove bulletpoints
     Return
   }
 
@@ -601,57 +576,18 @@ pasteTelephone() {
 
 dialTelephone() { ; mondago/lg phone-link
     backupClipboard := Clipboard
-    Send, ^c{Sleep 50} ; sometimes won't work nicely without a pause
+    Send, ^c{Sleep 150} ; sometimes won't work nicely without a pause
     formatNumber()
     Run, dial://%clipboard% ; send dial command, probably needs enable internet dialling to work
-    ToolTip, Dialling %clipboard% ; flash tooltip showing number sent
-    sleep, 1500 ; janky close function avoiding timers
-    ToolTip ; close tooltip
     Clipboard := backupClipboard
     backupClipboard =
-    Return
-  }
-
-insertSyncDocs() {
-    If A_OSVersion in WIN_XP
-      {
-        Send %A_MyDocuments%\Vault\docs\
-      }
-    Else
-      {
-        Send C:\Users\%A_UserName%\Vault\docs\
-      }
-    Return
-  }
-
-insertDocuments() {
-    If A_OSVersion in WIN_XP
-      {
-        Send %A_MyDocuments%
-      }
-    Else
-      {
-        Send C:\Users\%A_UserName%\
-      }
-    Return
-  }
-
-insertSync() {
-    If A_OSVersion in WIN_XP
-      {
-        Send %A_MyDocuments%\Vault\
-      }
-    Else
-      {
-        Send C:\Users\%A_UserName%\Vault\
-      }
     Return
   }
 
 cmdPaste() { ; pastes into cmd
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
-    Send {RButton}p
+    Send {RButton}
     Return
   }
 
@@ -667,53 +603,6 @@ explorerSplit() {
     winSplit()
   }
 
-explorerUp() { ;up one folder
-    If A_OSVersion in WIN_XP
-      {
-        Send {BackSpace}
-      }
-    Else
-      {
-        Send !{Up}
-      }
-    Return
-  }
-
-explorerRename() {
-    If A_OSVersion in WIN_XP ; deselect file extension by determining final . character
-      {
-        backupClipboard = %Clipboard%
-        Send {F2}{CtrlDown}c{CtrlUp}
-        StringGetPos,ExtensionPos, Clipboard,.,R
-        if (ExtensionPos != -1)
-          {
-            Position := StrLen(Clipboard) - ExtensionPos
-            Send, {CtrlDown}{Home}{CtrlUp}{CtrlDown}{ShiftDown}{End}{CtrlUp}{Left %Position%}{ShiftUp}
-          }
-        Clipboard = %backupClipboard%
-        backupClipboard =
-      }
-    Else
-      {
-        Send {F2}
-      }
-    Return
-  }
-
-explorerCMD() { ; open command prompt in current location, now with support for other drives but still a bit glitchy as ever
-    backupClipboard = %Clipboard%
-    Send !d^c ; jump to address bar and copy string
-    StringLeft, driveLetter, clipboard, 2 ; extract drive letter from address
-    Run, cmd ; run command prompt
-    WinWaitActive ahk_class ConsoleWindowClass
-        Send, popd %driveLetter%{Enter}%driveLetter%{Enter}cd "%clipboard%"{Enter}cls{Enter} ; jump to a network drive location too
-        Return
-    Clipboard = %backupClipboard%
-    backupClipboard =
-    driveLetter =
-    Return
-  }
-
 explorerHidden() { ; toggle show/hide hidden folders, stolen from http://www.autohotkey.com/board/topic/68131-turn-off-show-hidden-files-at-boot/
     RegRead, HiddenFiles_Status, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden
     If HiddenFiles_Status = 2
@@ -727,34 +616,11 @@ explorerHidden() { ; toggle show/hide hidden folders, stolen from http://www.aut
     Return
   }
 
-explorerNewDir() { ; allows xp to create new folder from keypress
-    If A_OSVersion in WIN_XP
-      {
-        Send !fwf
-      }
-    Else
-      {
-        Send ^+n
-      }
-    Return
-  }
-
-explorerNewFile() { ; create a new blank text file
-    If A_OSVersion in WIN_XP
-      {
-        Send !fwt{CtrlDown}{Home}{ShiftDown}{End}{CtrlUp}{Left 4}{ShiftUp} ;new text file, and deselect file extension
-      }
-    Else
-      {
-        Send !fwt ;clever windows 7 already knows to skip file extensions
-      }
-    Return
-  }
-
 excelFormulaBar() { ;jumps to formula bar
     CoordMode, Mouse, Relative
     MouseMove, 250, 65
-    Send {LButton}
+    ; Send {LButton}{End}{ShiftDown}{Home}{ShiftUp}
+    Send {LButton}{End}
     Return
   }
 
@@ -765,96 +631,9 @@ borderlessFullscreen() { ;borderless fullscreen script from PCGW (http://pcgamin
     Return
   }
 
-mstscSpecific() {
-    global serverRemoteIPAddress
-    Run mstsc /v:%serverRemoteIPAddress%
-    Return
-  }
-
-insertRegards() {
-    global firstName
-    Send,`n`nRegards,`n%firstName%.
-    Return
-  }
-
-insertKindRegards() {
-    global firstName
-    Send,`n`nKind regards,`n%firstName%.
-    Return
-  }
-
-insertEmailAddress() {
-    If A_OSVersion in WIN_XP
-      {
-        global workEmailAddress
-        Send, %workEmailAddress%
-      }
-    Else
-      {
-        global homeEmailAddress
-        Send, %homeEmailAddress%
-      }
-    Return
-  }
-
-insertWorkIP() {
-    global workIPAddress
-    Send, %workIPAddress%
-    Return
-  }
-
-insertSIPIP() {
-    global workSIPAddress
-    Send, %workSIPAddress%
-    Return
-  }
-
-insertTelephoneNumber() {
-    If A_OSVersion in WIN_XP
-      {
-        global workPhoneNumber
-        Send, %workPhoneNumber%
-      }
-    Else
-      {
-        global homePhoneNumber
-        Send, %homePhoneNumber%
-      }
-    Return
-  }
-
-insertMobileNumber() {
-    global mobilePhoneNumber
-    Send, %mobilePhoneNumber%
-    Return
-  }
-
-insertAddress() {
-    If A_OSVersion in WIN_XP
-      {
-        global workAddress
-        Send, %workAddress%
-      }
-    Else
-      {
-        global homeAddress
-        Send, %homeAddress%
-      }
-    Return
-  }
-
-insertPostCode() {
-    If A_OSVersion in WIN_XP
-      {
-        global workPostCode
-        Send, %workPostCode%
-      }
-    Else
-      {
-        global homePostCode
-        Send, %homePostCode%
-      }
-    Return
+forceClose() {
+    WinGet, PID, PID, % "ahk_id " WinExist("A")
+    Process, Close, %PID%
   }
 
 searchCustomer() {
@@ -896,23 +675,6 @@ winSplitH() { ;split active and previous window on top of each other
     Send {Sleep 15}{AltDown}{Tab}{AltUp}{Sleep 10}
     Tile("B")
     Send {Sleep 15}{AltDown}{Tab}{AltUp}
-  }
-
-tabSplit() {
-    Tile("L") ;tiles left
-    Send {Sleep 50}{Esc}{F6}{ShiftDown}{Tab 2}{ShiftUp}{AppsKey}w{Sleep 250} ;break off current tab
-    WinMaximize, A ;fixes black borders on bottom
-    Tile("R") ;tiles right
-    Return ;and you're back in the room
-  }
-
-changeResolution(w,h) {
-    VarSetCapacity(dM,156,0)
-    NumPut(156,dM,36)
-    NumPut(0x5c0000,dM,40)
-    NumPut(w,dM,108)
-    NumPut(h,dM,112)
-    DllCall( "ChangeDisplaySettingsA", UInt,&dM, UInt,0 )
   }
 
 kdeMove() { ;kde-windows (Easy Window Dragging -- KDE style (requires XP/2k/NT) -- by Jonny)
