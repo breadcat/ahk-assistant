@@ -112,6 +112,10 @@ Insert::appendClipboard()
   CapsLock::Send !{F4} ; quit
 #IfWinActive
 
+#IfWinActive ahk_class FM ; 7zip file manager
+  !Up::Send {Backspace}
+#IfWinActive
+
 #IfWinActive ahk_class SciCalc ; windows xp calc
   CapsLock::Send !{F4} ; quit
 #IfWinActive
@@ -405,6 +409,7 @@ Insert::appendClipboard()
 :*:bolognaise::bolognese
 :*:bredth::breadth
 :*:cinammon::cinnamon
+:*:comaraderie::camaraderie
 :*:competative::competitive
 :*:componant::component
 :*:consistant::consistent
@@ -442,6 +447,7 @@ Insert::appendClipboard()
 :*:tehm::them
 :*:tehy::they
 :*:yhe::the
+:*:yuo::you
 
 ; general abbreviations
 :*:afaik::as far as I know
@@ -649,9 +655,9 @@ searchCustomer() {
 toggleAudioDevice() { ;toggle between default audio output (http://ml.pe/optimizing/2013/changing-the-default-sound-device-using-autohotkey/)
     switch := !switch
     If (switch)
-        usePlaybackDevice(1)
-    Else
         usePlaybackDevice(3)
+    Else
+        usePlaybackDevice(4)
     Return
   }
 
