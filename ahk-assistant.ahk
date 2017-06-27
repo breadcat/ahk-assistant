@@ -14,7 +14,7 @@ SetCapsLockState, AlwaysOff
 SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 SetTimer, changeReload, 1000
-Menu, Tray, Icon, %A_ScriptDir%\ahk-assistant.ico ; tray icon
+Menu, Tray, Icon, %A_ScriptDir%\%A_ScriptName%.ico ; tray icon
 #Include, *i %A_ScriptDir%\variables.ahk ; include physical and ip address completions, only included if exists. See .gitignore for details
 
 
@@ -132,6 +132,7 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class Photo_Lightweight_Viewer ; photoviewer windows 7
+  q:: ; overflow
   ^w:: ; overflow
   CapsLock::Send !{F4} ; quit
   Up:: ; overflow
@@ -424,6 +425,7 @@ Insert::appendClipboard()
 :*:habe::have
 :*:i'::I' ; fix common casing
 :*:imediate::immediate
+:*:independant::independent
 :*:intermitent::intermittent
 :*:liase::liaise
 :*:liasing::liaising
