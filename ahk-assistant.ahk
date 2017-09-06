@@ -30,9 +30,7 @@ Menu, Tray, Icon, %A_ScriptDir%\%A_ScriptName%.ico ; tray icon
 ^!+r::Run mstsc /v:%serverRemoteAddress% ; rdp to a destination defined by variable file
 #t::Run cmd ; useful terminal
 #+t::Run putty -ssh -P %sshPort% %sshHost% ; remote terminal
-^!t::pasteTelephone()
 #p::Run putty
-#Enter::dialTelephone()
 #+Enter::searchCustomer()
 *CapsLock::BackSpace
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ; W-\ - screen standby
@@ -41,6 +39,7 @@ Menu, Tray, Icon, %A_ScriptDir%\%A_ScriptName%.ico ; tray icon
 #c::Run calc
 ^+v::pasteClipboard()
 ^!m::ControlSend, , {Space}, ahk_exe mpv.exe ; global hotkey to toggle mpv pause/play
+^!n::ControlSend, , {Space}, ahk_exe firefox.exe ; global hotkey to toggle firefox pause/play
 ^!Space::toggleAudioDevice()
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
@@ -48,6 +47,7 @@ RAlt & PgUp::Send {WheelUp}
 RAlt & PgDn::Send {WheelDown}
 SC029::Send, 0 ; Backtick send zeroes
 +SC029::Send, `` ; S-Backtick send backticks
+#SC029::Run %A_ScriptDir%\..\clickcall-dialhandler\dial.exe %clipboard%
 ^SC029::Send, `¬ ; C-Backtick send negations
 !^0::Send {Volume_Mute} ; C-A-0 volume mute toggle
 !^-::Send {Volume_Down 3} ; C-A-- volume down
@@ -84,7 +84,8 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class CabinetWClass ; explorer
-  CapsLock::Send {AltDown}{Up}{AltUp}
+  CapsLock:: ; overflow
+  RAlt & Up::Send {AltDown}{Up}{AltUp}
   Alt & Enter:: ; overflow
   Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
   ^Enter::explorerSplit()
@@ -245,7 +246,7 @@ Insert::appendClipboard()
 
 #IfWinActive ahk_class WinClass_FXS ; civilization 5
   F11::borderlessFullscreen()
-  ^h::send {Home}{Esc}
+  ^h::send {Home}{Esc} ; return to capital city, then close home screen
 #IfWinActive
 
 
@@ -276,10 +277,6 @@ Insert::appendClipboard()
   Return
 :*?:_kreg::
   Send,`n`nKind regards,`n%firstName%.
-  Return
-:*?:_dial::
-  formatNumber()
-  Send, dial://^v
   Return
 :*:_hem::
   Send, %homeEmailAddress%
@@ -316,6 +313,12 @@ Insert::appendClipboard()
   Return
 :*:_wpc::
   Send, %workPostCode%
+  Return
+:*:_salu::
+  insertSalutation()
+  Return
+:*:_wdat::
+  workDatFile()
   Return
 :*:_db::
   Send, %A_WorkingDir%\Vault\
@@ -403,6 +406,7 @@ Insert::appendClipboard()
 :*?:(middot)::·
 
 ; typos and common mistakes
+:*:addon::add-on
 :*:adn::and
 :*:aging::ageing
 :*:aquire::acquire
@@ -448,6 +452,7 @@ Insert::appendClipboard()
 :*:teh ::the{space} ; space is for the rare occurence where I type tehran
 :*:tehm::them
 :*:tehy::they
+:*:wifi::Wi-Fi
 :*:yhe::the
 :*:yuo::you
 
@@ -485,7 +490,7 @@ insertGateway() {
           }
       }
     FileDelete %A_Temp%\gw.txt
-    Send, %gateway%{del} ; del is for auto complete filling in the rest of the address bar unecessarily
+    Send, %gateway%{Del} ; del is for auto complete filling in the rest of the address bar unecessarily
   }
 
 insertSignature() {
@@ -507,6 +512,23 @@ insertCRMFooter() {
 		insertFooter()
 		Send, {Tab}{Space} ; jump out of textarea and press save
     Return
+	}
+
+insertSalutation() {
+		If(A_Hour <12)
+			Send, Morning
+		Else if (A_Hour <17)
+			Send, Afternoon
+		Else
+			Send, Evening
+	Return
+	}
+
+workDatFile() {
+		global firstName
+		insertSalutation()
+		Send, ,`n`nPlease can I get a .dat file generated for system ID: %clipboard%?`nThe order reference will be:{Space}`n`nRegards,`n%firstName%.{Up 3}{End}
+	Return
 	}
 
 insertDate() {
@@ -543,59 +565,22 @@ appendClipboard() {
   }
 
 pasteClipboard() { ; manually paste clipboard, minus most formatting
-    StringReplace, clipboard, clipboard, •,, All ; remove bullet points
-    StringReplace, clipboard, clipboard, ·,, All ; remove middots
-    StringReplace, clipboard, clipboard, %A_Tab%,, All ; remove tabs
-    StringReplace, clipboard, clipboard, `r,, All ; remove half of line breaks
-    StringReplace, clipboard, clipboard, `n,, All ; remove other half of line breaks
-    clipboard = %clipboard% ; trim whitespace
+	clipboard := RegExReplace(clipboard, "[\W_]+") ; remove underscores, non-numbers and non-letters
     SendRaw %clipboard%
-    Return
-  }
-
-formatNumber() {
-    StringReplace, clipboard, clipboard, +44 `(0`), 0, All ; translate incorrect intl code
-    StringReplace, clipboard, clipboard, +44, 0, All ; translate intl codes
-    StringReplace, clipboard, clipboard, %A_Space%,, All ; remove spaces
-    StringReplace, clipboard, clipboard, %A_Tab%,, All ; remove tabs
-    StringReplace, clipboard, clipboard, `,,, All ; remove commas
-    StringReplace, clipboard, clipboard, `r,, All ; remove lines
-    StringReplace, clipboard, clipboard, `n,, All ; remove lines
-    StringReplace, clipboard, clipboard, -,, All ; remove hyphens
-    StringReplace, clipboard, clipboard, (,, All ; remove lbracket
-    StringReplace, clipboard, clipboard, ),, All ; remove rbracket
-    StringReplace, clipboard, clipboard, •,, All ; remove bulletpoints
-    Return
-  }
-
-pasteTelephone() {
-    backupClipboard = %clipboard%
-    formatNumber()
-    StringLeft, 5Digits, clipboard, 5 ; area code
-    ; if %5Digits% = "01298" ; if area code is buxton
-    StringRight, 6Digits, clipboard, 6
-    Send %5Digits% %6Digits%
-    Clipboard := backupClipboard
-    backupClipboard = 
-    5Digits = 
-    6Digits = 
-    Return
-  }
-
-dialTelephone() { ; mondago/lg phone-link
-    backupClipboard := Clipboard
-    Send, ^c{Sleep 150} ; sometimes won't work nicely without a pause
-    formatNumber()
-    Run, dial://%clipboard% ; send dial command, probably needs enable internet dialling to work
-    Clipboard := backupClipboard
-    backupClipboard =
     Return
   }
 
 cmdPaste() { ; pastes into cmd
     CoordMode, Mouse, Relative
     MouseMove, 100, 100
-    Send {RButton}
+    If A_OSVersion in WIN_7
+      {
+        Send {RButton}p ; p for paste needed for Windows 7
+      }
+    Else
+      {
+        Send {RButton}
+      }
     Return
   }
 
