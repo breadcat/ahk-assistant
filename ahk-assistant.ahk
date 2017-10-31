@@ -33,6 +33,7 @@ Menu, Tray, Icon, %A_ScriptDir%\%A_ScriptName%.ico ; tray icon
 #p::Run putty
 #+Enter::searchCustomer()
 *CapsLock::BackSpace
+RWin::AppsKey ; remap key for Rosewill keyboards
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ; W-\ - screen standby
 ^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0) ; C-A-\ - system standby
 ^!+x::forceClose()
@@ -320,6 +321,9 @@ Insert::appendClipboard()
 :*:_wdat::
   workDatFile()
   Return
+:*:_wlcr::
+	workLCRInsert()
+	Return
 :*:_db::
   Send, %A_WorkingDir%\Vault\
   Return
@@ -475,6 +479,14 @@ Insert::appendClipboard()
 :*:ctt::Feel free to close the ticket.
 :*:yctt::You can close this ticket.
 
+; week day casing
+:*:monday::Monday
+:*:tuesday::Tuesday
+:*:wednesday::Wednesday
+:*:thursday::Thursday
+:*:friday::Friday
+:*:saturday::Saturday
+:*:sunday::Sunday
 
 ; functions
 insertGateway() {
@@ -490,7 +502,7 @@ insertGateway() {
           }
       }
     FileDelete %A_Temp%\gw.txt
-    Send, %gateway%{Del} ; del is for auto complete filling in the rest of the address bar unecessarily
+    Send, %gateway%
   }
 
 insertSignature() {
@@ -526,8 +538,20 @@ insertSalutation() {
 
 workDatFile() {
 		global firstName
+		Send order{Tab 4}`.dat file request{Tab}
 		insertSalutation()
 		Send, ,`n`nPlease can I get a .dat file generated for system ID: %clipboard%?`nThe order reference will be:{Space}`n`nRegards,`n%firstName%.{Up 3}{End}
+	Return
+	}
+
+workLCRInsert() {
+		digitsLCR := "010101"
+		digitStart := "2"
+		Send 1{tab}0-7{enter}{sleep 2500}{tab 3}
+		loop 8 {
+			Send c{tab}%digitStart%{tab 3}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 100}
+			digitStart++ ; increment digit by 1
+		}
 	Return
 	}
 
@@ -565,8 +589,9 @@ appendClipboard() {
   }
 
 pasteClipboard() { ; manually paste clipboard, minus most formatting
-	clipboard := RegExReplace(clipboard, "[\W_]+") ; remove underscores, non-numbers and non-letters
-    SendRaw %clipboard%
+	pastedClipboard := RegExReplace(clipboard, "[\W_]+") ; remove underscores, non-numbers and non-letters
+    SendRaw %pastedClipboard%
+    pastedClipboard :=
     Return
   }
 
