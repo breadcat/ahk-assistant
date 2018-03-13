@@ -15,6 +15,8 @@ SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 SetTimer, changeReload, 1000
 Menu, Tray, Icon, %A_ScriptDir%\%A_ScriptName%.ico ; tray icon
+Menu, tray, add ; seperator for menu
+menu, tray, add, Autorun Script, scriptAutorun ; autorun tray indicator
 #Include, *i %A_ScriptDir%\variables.ahk ; include physical and ip address completions, only included if exists. See .gitignore for details
 
 
@@ -175,6 +177,7 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class XLMAIN ; excel 2003/2007
+  ^!t::Send {AppsKey}f{Tab}{End}{Up 2}{Enter} ; sets cell format to text to allow leading zeroes
   ^+v::Send ^'{Down} ; C-S-v copies above cell contents into current
   ^!+v::pasteClipboard() ; C-A-S-v past clipboard as above steals C-A-v
   ^+n::Send !iw ; new sheet
@@ -303,6 +306,9 @@ Insert::appendClipboard()
 :*:_mob::
   Send, %mobilePhoneNumber%
   Return
+:*:_xmraddr::
+  Send, %xmrAddress%
+  Return
 :*:_haddr::
   Send, %homeAddress%
   Return
@@ -318,7 +324,7 @@ Insert::appendClipboard()
 :*:_salu::
   insertSalutation()
   Return
-:*:_wdat::
+:*:_wdatfile::
   workDatFile()
   Return
 :*:_wlcr::
@@ -427,11 +433,9 @@ Insert::appendClipboard()
 :*:equivelant::equivalent
 :*:excercise::exercise
 :*:fiber::fibre
-:*:forth::fourth
 :*:fourty::forty
 :*:goverment::government
 :*:habe::have
-:*:i'::I' ; fix common casing
 :*:imediate::immediate
 :*:independant::independent
 :*:intermitent::intermittent
@@ -450,6 +454,7 @@ Insert::appendClipboard()
 :*:recieve::receive
 :*:refridgeration::refrigeration
 :*:secratery::secretary
+:*:segway::segue
 :*:seperate::separate
 :*:sieze::seize
 :*:taht::that
@@ -459,18 +464,22 @@ Insert::appendClipboard()
 :*:wifi::Wi-Fi
 :*:yhe::the
 :*:yuo::you
+:c?*:i'll::I'll
+:c?*:i'm::I'm
 
 ; general abbreviations
 :*:afaik::as far as I know
-:c?*:ASAP::as soon as possible
 :*:atm::at the moment
 :*:bbs::be back soon
 :*:brb::be right back
 :*:btw::by the way
+:*:fyi::for your information
 :*:iirc::if I recall correctly
 :*:imho::in my honest opinion
 :*:imo::in my opinion
+:*:tbh::to be honest
 :*:tbqh::to be quite honest
+:c?*:ASAP::as soon as possible
 
 ; work related abbreviations
 :*:ctsty::Called to speak to you, their number is 
@@ -480,11 +489,11 @@ Insert::appendClipboard()
 :*:yctt::You can close this ticket.
 
 ; week day casing
-:*:monday::Monday
-:*:tuesday::Tuesday
-:*:wednesday::Wednesday
-:*:thursday::Thursday
-:*:friday::Friday
+:c?*:monday::Monday
+:c?*:tuesday::Tuesday
+:c?*:wednesday::Wednesday
+:c?*:thursday::Thursday
+:c?*:friday::Friday
 :*:saturday::Saturday
 :*:sunday::Sunday
 
@@ -547,9 +556,9 @@ workDatFile() {
 workLCRInsert() {
 		digitsLCR := "010101"
 		digitStart := "2"
-		Send 1{tab}0-7{enter}{sleep 2500}{tab 3}
+		Send 1{tab}0-7{enter}{sleep 1000}{tab 3}
 		loop 8 {
-			Send c{tab}%digitStart%{tab 3}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 100}
+			Send c{tab}%digitStart%{tab 2}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 50}
 			digitStart++ ; increment digit by 1
 		}
 	Return
@@ -784,6 +793,15 @@ Tile(Pos) {
         WinMove, A,, 0, mBottom/2, mRight/2, mBottom/2
   }
 
+; autorun script section in tray menu
+scriptAutorun:
+  {
+	; delete and recreate registry key
+	RegDelete, HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run, %A_ScriptName%
+	RegWrite, REG_SZ, HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run, %A_ScriptName%, "%A_ScriptDir%\%A_ScriptName%"
+	Return
+  }
+
 ; auto-reload script on source change
 changeReload:
   {
@@ -798,3 +816,4 @@ changeReload:
       }
     Return
   }
+
