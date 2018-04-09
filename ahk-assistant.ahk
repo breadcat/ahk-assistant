@@ -38,7 +38,7 @@ menu, tray, add, Autorun Script, scriptAutorun ; autorun tray indicator
 RWin::AppsKey ; remap key for Rosewill keyboards
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ; W-\ - screen standby
 ^!\::DllCall("PowrProf\SetSuspendState", "int", 0, "int", 0, "int", 0) ; C-A-\ - system standby
-^!+x::forceClose()
+^!+x::forceClose() ; C-A-S-x force close application
 #c::Run calc
 ^+v::pasteClipboard()
 ^!m::ControlSend, , {Space}, ahk_exe mpv.exe ; global hotkey to toggle mpv pause/play
@@ -418,6 +418,7 @@ Insert::appendClipboard()
 ; typos and common mistakes
 :*:addon::add-on
 :*:adn::and
+:*:ahve::have
 :*:aging::ageing
 :*:aquire::acquire
 :*:attendent::attendant
@@ -464,8 +465,10 @@ Insert::appendClipboard()
 :*:wifi::Wi-Fi
 :*:yhe::the
 :*:yuo::you
+:c?*:i'd::I'd
 :c?*:i'll::I'll
 :c?*:i'm::I'm
+:c?*:i've::I've
 
 ; general abbreviations
 :*:afaik::as far as I know
