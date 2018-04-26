@@ -601,9 +601,13 @@ appendClipboard() {
   }
 
 pasteClipboard() { ; manually paste clipboard, minus most formatting
-	pastedClipboard := RegExReplace(clipboard, "[\W_]+") ; remove underscores, non-numbers and non-letters
-    SendRaw %pastedClipboard%
-    pastedClipboard :=
+    StringReplace, clipboard, clipboard, ?,, All ; remove bullet points
+    StringReplace, clipboard, clipboard, ·,, All ; remove middots
+    StringReplace, clipboard, clipboard, %A_Tab%,, All ; remove tabs
+    StringReplace, clipboard, clipboard, `r,, All ; remove half of line breaks
+    StringReplace, clipboard, clipboard, `n,, All ; remove other half of line breaks
+    clipboard = %clipboard% ; trim whitespace
+    SendRaw %clipboard%
     Return
   }
 
