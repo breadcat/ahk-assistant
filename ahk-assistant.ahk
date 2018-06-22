@@ -306,8 +306,8 @@ Insert::appendClipboard()
 :*:_mob::
   Send, %mobilePhoneNumber%
   Return
-:*:_xmraddr::
-  Send, %xmrAddress%
+:*:_xrbaddr::
+  Send, %xrbAddress%
   Return
 :*:_haddr::
   Send, %homeAddress%
