@@ -202,6 +202,7 @@ Insert::appendClipboard()
 #IfWinActive ahk_class ConsoleWindowClass ; command prompt
   +Insert:: ; unix style S-insert, overflow
   ^v::cmdPaste() ; win style C-v, paste function
+  ^l::Send ^c{Enter}cls{Enter} ; clear screen as in linux
 #IfWinActive
 
 #IfWinActive ahk_class ahk_class ahk_class MozillaWindowClass ; firefox
