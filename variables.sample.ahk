@@ -9,6 +9,7 @@ mobilePhoneNumber := ""
 homePostCode := ""
 workPostCode := ""
 
+xmrAddress := ""
 xrbAddress := ""
 
 homeAddress := ""
