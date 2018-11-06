@@ -59,23 +59,9 @@ Insert::appendClipboard()
 #LButton::WinSet, Style, -0x840000, A ; W-Click - remove window borders
 !LButton::kdeMove() ; kde style window moving
 !RButton::kdeResize() ; kde style window resizing
-#Up::WinMaximize, A ; maximise
-#Down::WinMinimize, A ; minimise
 #+Down::Send !{Esc} ; Send to bottom instead of minimise
-#Left::Tile("L") ; left
-#Right::Tile("R") ; right
-#Numpad1::Tile("BL") ; bottom left
-#Numpad2::Tile("B") ; bottom 50%
-#Numpad3::Tile("BR") ; bottom right
-#Numpad4::Tile("L") ; left
 #Numpad5::WinMaximize, A ; maximise window
 #NumpadClear::WinSet, AlwaysOnTop, , A ; W-S-Num5 toggles current window to always on top
-#Numpad6::Tile("R") ; right
-#Numpad7::Tile("TL") ; top left
-#Numpad8::Tile("T") ; top 50%
-#Numpad9::Tile("TR") ; top right
-#Numpad0::winSplit() ; W-num0 tile windows vertically
-#NumpadIns::winSplitH() ; W-S-num0 tile windows horizontally
 
 
 ; application specific hotkeys
@@ -91,7 +77,6 @@ Insert::appendClipboard()
   RAlt & Up::Send {AltDown}{Up}{AltUp}
   Alt & Enter:: ; overflow
   Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
-  ^Enter::explorerSplit()
   ^+Enter::Send {AppsKey}{Down 2}{Enter} ; C-S enter opens in new window
   F1:: ; overflow to rename, help is useless in explorer
   F3::Send, {F2} ; rename for fun, nobody uses F3
@@ -216,7 +201,7 @@ Insert::appendClipboard()
   #+o::Send, ^c^t^v{Enter} ; copy selected uri and open in new tab
   ^+o::Send, !t{sleep 150}o ; C-S-o options
   F1:: ; overflow
-  F2::Send {Sleep 25}{Esc}{Sleep 25}{F6}{ShiftDown}{Tab 2}{ShiftUp}{AppsKey}w{Sleep 250} ; split current tab from window and tile, kinda flakey and in need of improvement
+  F2::Send {Sleep 25}{Esc}{Sleep 25}{F6}{ShiftDown}{Tab 2}{ShiftUp}{AppsKey}w{Sleep 250} ; split current tab from window
   F7:: ; overflow
   F6::Send ^l ; F6 jumps to address bar
   +PgDn::Send {Space 4}{Down 5} ; scroll down to specific part of a specific page, not really
@@ -636,11 +621,6 @@ toggleFullscreen() { ;double click the window
     Return
   }
 
-explorerSplit() {
-    Send {AppsKey}{Down 2}{Enter}{Sleep 100}
-    winSplit()
-  }
-
 explorerHidden() { ; toggle show/hide hidden folders, stolen from http://www.autohotkey.com/board/topic/68131-turn-off-show-hidden-files-at-boot/
     RegRead, HiddenFiles_Status, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden
     If HiddenFiles_Status = 2
@@ -701,20 +681,6 @@ usePlaybackDevice(device) {
     WinClose, Sound ahk_class #32770
   }
 
-winSplit() { ;split active and previous window side by side
-    Tile("R")
-    Send {Sleep 15}{AltDown}{Tab}{AltUp}{Sleep 10}
-    Tile("L")
-    Send {Sleep 15}{AltDown}{Tab}{AltUp}
-  }
-
-winSplitH() { ;split active and previous window on top of each other
-    Tile("T")
-    Send {Sleep 15}{AltDown}{Tab}{AltUp}{Sleep 10}
-    Tile("B")
-    Send {Sleep 15}{AltDown}{Tab}{AltUp}
-  }
-
 kdeMove() { ;kde-windows (Easy Window Dragging -- KDE style (requires XP/2k/NT) -- by Jonny)
     MouseGetPos,KDE_X1,KDE_Y1,KDE_id
     WinGet,KDE_Win,MinMax,ahk_id %KDE_id%
@@ -772,36 +738,6 @@ kdeResize() {
         KDE_Y1 := (KDE_Y2 + KDE_Y1)
       }
     Return
-  }
-
-Tile(Pos) {
-    WinGetClass, class, A
-    IfInString , shell_TrayWnd,Progman,Button,DV2ControlHost, %class%
-    Return
-    IfWinExist,ahk_class Shell_TrayWnd
-        SysGet, m, MonitorWorkArea
-    Else SysGet, m, Monitor
-    WinGetPos, MWT_X, MWT_Y, MWT_W, MWT_H, A
-    SendMessage, 0x1F,,,, A
-    WinGet, MWT_active, MinMax, A
-    If (MWT_active = 1)
-        WinRestore, A
-    If (Pos = "T")
-        WinMove, A,, 0, 0, mRight, mBottom/2
-    If (Pos = "B")
-        WinMove, A,, 0, mBottom/2, mRight, mBottom/2
-    If (Pos = "L")
-        WinMove, A,, 0, 0, mRight/2, mBottom
-    If (Pos = "R")
-        WinMove, A,, mRight/2, 0, mRight/2, mBottom
-    If (Pos = "TL")
-        WinMove, A,, 0, 0, mRight/2, mBottom/2
-    If (Pos = "TR")
-        WinMove, A,, mRight/2, 0, mRight/2, mBottom/2
-    If (Pos = "BR")
-        WinMove, A,, mRight/2, mBottom/2, mRight/2, mBottom/2
-    If (Pos = "BL")
-        WinMove, A,, 0, mBottom/2, mRight/2, mBottom/2
   }
 
 ; autorun script section in tray menu
