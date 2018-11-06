@@ -539,7 +539,7 @@ insertSalutation() {
 
 workDatFile() {
 		global firstName
-		Send order{Tab 4}`.dat file request{Tab}
+		Send order{Tab 3}`.dat file request{Tab}
 		insertSalutation()
 		Send, ,`n`nPlease can I get a .dat file generated for system ID: %clipboard%?`nThe order reference will be:{Space}`n`nRegards,`n%firstName%.{Up 3}{End}
 	Return
