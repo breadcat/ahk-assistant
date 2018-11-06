@@ -128,6 +128,12 @@ Insert::appendClipboard()
   Down::Return ; fixes up/down breaking left/right navigation
 #IfWinActive
 
+#IfWinActive ahk_exe ImageGlass.exe
+  q:: ; overflow
+  ^w:: ; overflow
+  CapsLock::Send !{F4} ; quit
+#IfWinActive
+
 #IfWinActive ahk_class SUMATRA_PDF_FRAME ; sumatra pdf
   CapsLock::Send !{F4} ; quit
   ^b::Send {F12} ; C-b toggles bookmarks
