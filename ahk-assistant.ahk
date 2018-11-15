@@ -600,6 +600,7 @@ pasteClipboard() { ; manually paste clipboard, minus most formatting
     StringReplace, clipboard, clipboard, ·,, All ; remove middots
     StringReplace, clipboard, clipboard, %A_Tab%,, All ; remove tabs
     StringReplace, clipboard, clipboard, `r,, All ; remove half of line breaks
+    StringReplace, clipboard, clipboard, /,%A_Space%, All ; forward slashes mess up linux paths
     StringReplace, clipboard, clipboard, `n,, All ; remove other half of line breaks
     clipboard = %clipboard% ; trim whitespace
     SendRaw %clipboard%
