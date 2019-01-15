@@ -128,7 +128,7 @@ Insert::appendClipboard()
   Down::Return ; fixes up/down breaking left/right navigation
 #IfWinActive
 
-#IfWinActive ahk_exe ImageGlass.exe
+#IfWinActive ahk_class IrfanView
   q:: ; overflow
   ^w:: ; overflow
   CapsLock::Send !{F4} ; quit
