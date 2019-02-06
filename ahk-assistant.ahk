@@ -554,9 +554,10 @@ workDatFile() {
 workLCRInsert() {
 		digitsLCR := "010101"
 		digitStart := "2"
-		Send 1{tab}0-7{enter}{sleep 1000}{tab 3}
+		Send 1{tab}0-7{enter}{sleep 1500}{tab 3}
 		loop 8 {
-			Send c{tab}%digitStart%{tab 2}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 50}
+			Send c{tab}%digitStart%{tab 3}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 150} ; 3.1.7
+			; Send c{tab}%digitStart%{tab 2}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 50} ; >3.1.7
 			digitStart++ ; increment digit by 1
 		}
 	Return
