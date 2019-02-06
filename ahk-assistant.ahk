@@ -597,14 +597,17 @@ appendClipboard() {
   }
 
 pasteClipboard() { ; manually paste clipboard, minus most formatting
-    StringReplace, clipboard, clipboard, ?,, All ; remove bullet points
-    StringReplace, clipboard, clipboard, ·,, All ; remove middots
-    StringReplace, clipboard, clipboard, %A_Tab%,, All ; remove tabs
-    StringReplace, clipboard, clipboard, `r,, All ; remove half of line breaks
-    StringReplace, clipboard, clipboard, /,%A_Space%, All ; forward slashes mess up linux paths
-    StringReplace, clipboard, clipboard, `n,, All ; remove other half of line breaks
-    clipboard = %clipboard% ; trim whitespace
-    SendRaw %clipboard%
+	tempClipboard = %clipboard%
+    StringReplace, tempClipboard, tempClipboard, ?,, All ; remove bullet points
+    StringReplace, tempClipboard, tempClipboard, ·,, All ; remove middots
+    StringReplace, tempClipboard, tempClipboard, %A_Tab%,, All ; remove tabs
+    StringReplace, tempClipboard, tempClipboard, /,%A_Space%, All ; forward slashes mess up linux paths
+    StringReplace, tempClipboard, tempClipboard, +44,0, All ; remove international dialling code without a space
+    StringReplace, tempClipboard, tempClipboard, `r,, All ; remove half of line breaks
+    StringReplace, tempClipboard, tempClipboard, `n,, All ; remove other half of line breaks
+    tempClipboard = %tempClipboard% ; trim whitespace
+    SendRaw %tempClipboard%
+    tempClipboard =
     Return
   }
 
