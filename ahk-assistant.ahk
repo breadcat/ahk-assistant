@@ -442,6 +442,7 @@ Insert::appendClipboard()
 :*:neice::niece
 :*:occurance::occurrence
 :*:occured::occurred
+:*:ommitted::omitted
 :*:parliment::parliament
 :*:persue::pursue
 :*:persuit::pursuit
