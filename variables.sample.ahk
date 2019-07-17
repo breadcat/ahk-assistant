@@ -20,6 +20,7 @@ workEmailAddress := ""
 
 workIPAddress := ""
 workSIPAddress := ""
+workCBIPAddress := ""
 serverRemoteAddress := ""
 remoteMAC := ""
 

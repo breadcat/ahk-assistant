@@ -284,6 +284,9 @@ Insert::appendClipboard()
 :*:_sip::
   Send, %workSIPAddress%
   Return
+:*:_cbip::
+  Send, %workCBIPAddress%
+  Return
 :*:_mac::
 	Send, %remoteMAC%
 	Return
