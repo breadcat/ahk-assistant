@@ -640,9 +640,7 @@ explorerHidden() { ; toggle show/hide hidden folders, stolen from http://www.aut
     Else
         RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden, 2
     WinGetClass, eh_Class,A
-    If (eh_Class = "#32770" OR A_OSVersion = "WIN_VISTA" OR A_OSVersion = "WIN_7")
-        Send, {F5}
-    Else PostMessage, 0x111, 28931,,, A
+	Send, {F5}
     Return
   }
 
