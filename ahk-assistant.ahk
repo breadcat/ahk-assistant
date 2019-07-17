@@ -191,8 +191,6 @@ Insert::appendClipboard()
 #IfWinActive
 
 #IfWinActive ahk_class ConsoleWindowClass ; command prompt
-  +Insert:: ; unix style S-insert, overflow
-  ^v::cmdPaste() ; win style C-v, paste function
   ^l::Send ^c{Enter}cls{Enter} ; clear screen as in linux
 #IfWinActive
 
@@ -609,20 +607,6 @@ pasteClipboard() { ; manually paste clipboard, minus most formatting
     tempClipboard = %tempClipboard% ; trim whitespace
     SendRaw %tempClipboard%
     tempClipboard =
-    Return
-  }
-
-cmdPaste() { ; pastes into cmd
-    CoordMode, Mouse, Relative
-    MouseMove, 100, 100
-    If A_OSVersion in WIN_7
-      {
-        Send {RButton}p ; p for paste needed for Windows 7
-      }
-    Else
-      {
-        Send {RButton}
-      }
     Return
   }
 
