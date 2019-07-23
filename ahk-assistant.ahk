@@ -176,7 +176,7 @@ Insert::appendClipboard()
   !F2:: ; overflow
   ^F2::Send !ohr ; rename sheet
   F3::Send +{F4} ; f3 searches for the same string again
-  F6::excelFormulaBar()
+  F6::Send {F2} ; shortcut to formula bar
   F11::Send !vu ; fullscreen
   ^Tab::Send ^{PgDn} ; next sheet
   ^+Tab::Send ^{PgUp} ; prev sheet
@@ -628,14 +628,6 @@ explorerHidden() { ; toggle show/hide hidden folders, stolen from http://www.aut
         RegWrite, REG_DWORD, HKEY_CURRENT_USER, Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced, Hidden, 2
     WinGetClass, eh_Class,A
 	Send, {F5}
-    Return
-  }
-
-excelFormulaBar() { ;jumps to formula bar
-    CoordMode, Mouse, Relative
-    MouseMove, 250, 65
-    ; Send {LButton}{End}{ShiftDown}{Home}{ShiftUp}
-    Send {LButton}{End}
     Return
   }
 
