@@ -469,7 +469,7 @@ Insert::appendClipboard()
 
 ; general abbreviations
 :*:afaik::as far as I know
-:*:atm::at the moment
+:*:atm ::at the moment{space} ; space is for when I type atmosphere
 :*:bbs::be back soon
 :*:brb::be right back
 :*:btw::by the way
