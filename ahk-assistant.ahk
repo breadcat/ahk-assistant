@@ -232,6 +232,11 @@ Insert::appendClipboard()
   !u::Send ^a!o ; remap delete last character to sort lines, after selecting everything
 #IfWinActive
 
+#IfWinActive ahk_exe calibre-parallel.exe ; calibre reader
+  q:: ; overflow
+  CapsLock::Send !{F4} ; quit
+#IfWinActive
+
 #IfWinActive ahk_class wxWindowClassNR ; audacity
   ^=::Send ^1 ; zoom in
   ^-::Send ^3 ; zoom out
@@ -287,6 +292,9 @@ Insert::appendClipboard()
 :*:_cbip::
   Send, %workCBIPAddress%
   Return
+ :*:_ntp::
+	Send, 0.uk.pool.ntp.org
+	Return 
 :*:_mac::
 	Send, %remoteMAC%
 	Return
