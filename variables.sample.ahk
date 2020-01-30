@@ -28,3 +28,7 @@ crmSearch := ""
 
 sshHost := ""
 sshPort := ""
+
+necUsername := ""
+necPassword := ""
+necPort := ""
