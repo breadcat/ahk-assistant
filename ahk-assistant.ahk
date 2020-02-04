@@ -105,7 +105,7 @@ Insert::appendClipboard()
   !Up::Send {Backspace}
 #IfWinActive
 
-#IfWinActive ahk_exe AppMgrEX.exe ; NEC SV9100 programming tool
+#If WinActive("ahk_exe AppMgrEX.exe") or WinActive("ahk_exe AppMgr.exe") ; NEC programming tools
     global necUsername
     global necPassword
     global necPort
@@ -113,9 +113,11 @@ Insert::appendClipboard()
 		Send tech{Tab}12345678{Enter}
 		Return
 	:*?:__cred::
-		Send {CtrlDown}v{CtrlUp}{Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{tab}%necPassword%
+		Send {CtrlDown}v{CtrlUp}{Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{Tab}%necPassword%{Tab}{Enter}{Sleep 750}{Enter}
+		Sleep, 3000
+		Msgbox, Don't forget to download!
 		Return
-#IfWinActive
+#If
 
 #IfWinActive ahk_class SciCalc ; windows xp calc
   CapsLock::Send !{F4} ; quit
