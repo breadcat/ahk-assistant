@@ -146,6 +146,12 @@ Insert::appendClipboard()
   CapsLock::Send !{F4} ; quit
 #IfWinActive
 
+#IfWinActive ahk_class FullScreenClass ; irfanview fullscreen-o-mode
+  q:: ; overflow
+  ^w:: ; overflow
+  CapsLock::Send !{F4}{sleep 15}!{F4} ; quit
+#IfWinActive
+
 #IfWinActive ahk_class SUMATRA_PDF_FRAME ; sumatra pdf
   CapsLock::Send !{F4} ; quit
   ^b::Send {F12} ; C-b toggles bookmarks
