@@ -105,7 +105,7 @@ Insert::appendClipboard()
   !Up::Send {Backspace}
 #IfWinActive
 
-#If WinActive("ahk_exe AppMgrEX.exe") or WinActive("ahk_exe AppMgr.exe") ; NEC programming tools
+#If WinActive("ahk_exe AppMgrEX.exe") or WinActive("ahk_exe AppMgr.exe") or WinActive("ahk_exe AppMgrPx.exe") ; NEC programming tools
     global necUsername
     global necPassword
     global necPort
