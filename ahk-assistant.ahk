@@ -274,6 +274,23 @@ Insert::appendClipboard()
   ^h::send {Home}{Esc} ; return to capital city, then close home screen
 #IfWinActive
 
+; dead by daylight
+#IfWinActive ahk_exe DeadByDaylight-Win64-Shipping.exe
+	*G::
+	Loop
+	{
+		Send, {a Down}{a Up}
+		Sleep, 50
+		Send, {d Down}{d Up}
+	}until !GetKeyState("G","P")
+	return
+	*H::
+	Loop
+	{
+		Send, {Space Down}{Space Up}
+	}until !GetKeyState("H","P")
+	return
+#IfWinActive
 
 ; text insertion/replacements
 :*?:_date::
