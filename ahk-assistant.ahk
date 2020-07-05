@@ -490,6 +490,7 @@ Insert::appendClipboard()
 :*:liase::liaise
 :*:liasing::liaising
 :*:license::licence
+:*:liek::like
 :*:micheal::michael
 :*:neice::niece
 :*:occurance::occurrence
