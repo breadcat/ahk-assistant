@@ -337,7 +337,7 @@ Insert::appendClipboard()
   Return
  :*:_ntp::
 	Send, 0.uk.pool.ntp.org
-	Return 
+	Return
 :*:_mac::
 	Send, %remoteMAC%
 	Return
@@ -534,9 +534,9 @@ Insert::appendClipboard()
 :c?*:ASAP::as soon as possible
 
 ; work related abbreviations
-:*:ctsty::Called to speak to you, their number is 
+:*:ctsty::Called to speak to you, their number is
 :*:gtacb::Called to speak to you, can you give them a call back?
-:*:ccwi::Customer called regarding an issue relating to 
+:*:ccwi::Customer called regarding an issue relating to
 :*:ctt::Feel free to close the ticket.
 :*:yctt::You can close this ticket.
 
@@ -638,7 +638,7 @@ insertDateTime() {
 insertWeek() {
     yearWeek = %A_YDay%
     yearWeek /= 7
-    yearWeek++ ; Convert from 0-base to 1-base 
+    yearWeek++ ; Convert from 0-base to 1-base
     Send %yearWeek%
   }
 
@@ -646,7 +646,7 @@ appendClipboard() {
     backupClipboard = %clipboard%
     Send, ^c
     clipboard = %backupClipboard%`r`n%clipboard%
-    backupClipboard = 
+    backupClipboard =
     Return
   }
 
