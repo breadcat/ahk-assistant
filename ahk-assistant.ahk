@@ -175,9 +175,10 @@ Insert::appendClipboard()
   p::Send ^7 ; p for playlist
 #IfWinActive
 
-#IfWinActive ahk_class mpv ; mpv
+#If WinActive("ahk_exe mpv.exe") or WinActive("ahk_exe mpvnet.exe") ; mpv and mpv.net
   Alt & Enter:: ; overflow to fullscreen below
   Ralt & Enter::Send f ; ralt-Enter fullscreens
+  q:: ; overflow to quit, for mpv.net
   CapsLock::Send !{F4} ; quit
 #IfWinActive
 
