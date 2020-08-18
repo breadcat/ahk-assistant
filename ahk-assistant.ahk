@@ -300,6 +300,9 @@ Insert::appendClipboard()
 :*?:_time::
   insertTime()
   Return
+:*?:_dttime::
+  insertBlogDateTime()
+  Return
 :*?:_dtime::
   insertDateTime()
   Return
@@ -626,6 +629,12 @@ insertDate() {
 
 insertTime() {
     FormatTime, CurrentDateTime,, HH:mm
+    Send %CurrentDateTime%
+    Return
+  }
+
+insertBlogDateTime() {
+    FormatTime, CurrentDateTime,, yyyy-MM-ddTHH:mm:00
     Send %CurrentDateTime%
     Return
   }
