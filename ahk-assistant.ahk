@@ -452,6 +452,10 @@ Insert::appendClipboard()
 :c?*:(u-)::ú
 :*?:(!!)::¡
 :*?:(??)::¿
+; ...latin?
+:c*?:(OE)::Œ
+:c*?:(Oe)::Œ
+:c*?:(oe)::œ
 
 ; symbols
 :*?:(c)::©
@@ -522,6 +526,7 @@ Insert::appendClipboard()
 :c?*:i'll::I'll
 :c?*:i'm::I'm
 :c?*:i've::I've
+:c?*:paypal::PayPal
 
 ; general abbreviations
 :*:afaik::as far as I know
