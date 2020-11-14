@@ -119,11 +119,7 @@ Insert::appendClipboard()
 		Return
 #If
 
-#IfWinActive ahk_class SciCalc ; windows xp calc
-  CapsLock::Send !{F4} ; quit
-#IfWinActive
-
-#IfWinActive ahk_class CalcFrame ; windows 7 calc
+#If WinActive("ahk_class SciCalc") or WinActive("ahk_class CalcFrame") ; windows xp or windows 7 calculator
   CapsLock::Send !{F4} ; quit
 #IfWinActive
 
