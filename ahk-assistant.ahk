@@ -15,6 +15,7 @@ SetScrollLockState, AlwaysOff
 SetNumLockState, AlwaysOn
 SetTimer, changeReload, 1000
 Menu, Tray, Icon, %A_ScriptDir%\%A_ScriptName%.ico ; tray icon
+menu, tray, add, Edit variable file, scriptEditVariables ; autorun tray indicator
 Menu, tray, add ; seperator for menu
 menu, tray, add, Autorun Script, scriptAutorun ; autorun tray indicator
 #Include, *i %A_ScriptDir%\variables.ahk ; include physical and ip address completions, only included if exists. See .gitignore for details
@@ -790,6 +791,12 @@ kdeResize() {
         KDE_Y1 := (KDE_Y2 + KDE_Y1)
       }
     Return
+  }
+
+scriptEditVariables:
+  {
+	Run notepad "%A_ScriptDir%\variables.ahk"
+	Return
   }
 
 ; autorun script section in tray menu
