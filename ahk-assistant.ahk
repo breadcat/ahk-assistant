@@ -58,8 +58,8 @@ SC029::Send, 0 ; Backtick send zeroes
 #SC029::Run %A_ScriptDir%\..\clickcall-dialhandler\dial.exe %clipboard%
 ^SC029::Send, `¬ ; C-Backtick send negations
 !^0::Send {Volume_Mute} ; C-A-0 volume mute toggle
-!^-::Send {Volume_Down 3} ; C-A-- volume down
-!^=::Send {Volume_Up 3} ; C-A-+ volume up
+!^-::Send {Volume_Down 1} ; C-A-- volume down
+!^=::Send {Volume_Up 1} ; C-A-+ volume up
 Insert::appendClipboard()
 #LButton::WinSet, Style, -0x840000, A ; W-Click - remove window borders
 !LButton::kdeMove() ; kde style window moving
