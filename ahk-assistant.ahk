@@ -474,8 +474,8 @@ Insert::appendClipboard()
 ; typos and common mistakes
 :*:addon::add-on
 :*:adn::and
-:*:ahve::have
 :*:aging::ageing
+:*:ahve::have
 :*:aquire::acquire
 :*:attendent::attendant
 :*:bolognaise::bolognese
