@@ -516,6 +516,7 @@ Insert::appendClipboard()
 :*:segway::segue
 :*:seperate::separate
 :*:sieze::seize
+:*:supercede::supersede
 :*:taht::that
 :*:teh ::the{space} ; space is for the rare occurence where I type tehran
 :*:tehm::them
