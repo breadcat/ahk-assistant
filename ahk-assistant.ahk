@@ -68,6 +68,11 @@ Insert::appendClipboard()
 #Numpad5::WinMaximize, A ; maximise window
 #NumpadClear::WinSet, AlwaysOnTop, , A ; W-S-Num5 toggles current window to always on top
 
+; spotify global hotkeys
+^Numpad7::PostMessage, 0x319,, 0xC0000,, ahk_exe Spotify.exe ; prev track spotify
+^Numpad8::PostMessage, 0x319,, 0xE0000,, ahk_exe Spotify.exe ; pause toggle spotify
+^Numpad9::PostMessage, 0x319,, 0xB0000,, ahk_exe Spotify.exe ; next track spotify
+
 
 ; application specific hotkeys
 #IfWinActive ahk_class #32770 ; misc save/load/time-date/find boxes and more!
