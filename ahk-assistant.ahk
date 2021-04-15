@@ -47,7 +47,7 @@ RWin::AppsKey ; remap key for Rosewill keyboards
 #c::Run calc
 ^+v::pasteClipboard()
 ^!m::ControlSend, , {Space}, ahk_exe mpv.exe ; global hotkey to toggle mpv pause/play
-^!n::ControlSend, , {Space}, ahk_exe firefox.exe ; global hotkey to toggle firefox pause/play
+^!n::dailyNotes()
 ^!Space::toggleAudioDevice()
 RAlt & j::ShiftAltTab
 RAlt & k::AltTab
@@ -724,6 +724,15 @@ searchCustomer() {
     Run, %crmSearch%%clipboard%
     Clipboard := backupClipboard
     backupClipboard =
+    Return
+  }
+
+dailyNotes() {
+    global workAddress
+    companyName := SubStr(workAddress,1,InStr(workAddress,"`n")-1) . " Limited"
+    formattime, todaysDate,, yyyy-MM-dd
+    noteFilename := A_WorkingDir . "\OneDrive - " . companyName . "\Notes\wfh\notes " . todaysDate . ".txt"
+    Run notepad "%noteFilename%"
     Return
   }
 
