@@ -123,9 +123,7 @@ Insert::appendClipboard()
 		Send tech{Tab}12345678{Enter}
 		Return
 	:*?:__cred::
-		Send {CtrlDown}v{CtrlUp}{Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{Tab}%necPassword%{Tab}{Enter}{Sleep 750}{Enter}
-		Sleep, 3000
-		Msgbox, Don't forget to download!
+		Send {CtrlDown}v{CtrlUp}{Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{Tab}%necPassword%{Tab}{Enter}{Sleep 750}{Enter}{Sleep 3000}{F6}
 		Return
 #If
 
