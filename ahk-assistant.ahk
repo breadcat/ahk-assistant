@@ -156,6 +156,8 @@ Insert::appendClipboard()
   q:: ; overflow
   ^w:: ; overflow
   CapsLock::Send !{F4} ; quit
+  !Left::Send l
+  !Right::Send r
 #IfWinActive
 
 #IfWinActive ahk_class FullScreenClass ; irfanview fullscreen-o-mode
