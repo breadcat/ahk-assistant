@@ -227,7 +227,7 @@ Insert::appendClipboard()
   ^l::Send ^c{Enter}cls{Enter} ; clear screen as in linux
 #IfWinActive
 
-#IfWinActive ahk_class ahk_class ahk_class MozillaWindowClass ; firefox
+#IfWinActive ahk_class MozillaWindowClass ; firefox
   ^+w::Send ^w ; quit window closes tab
   ^+n::Send ^+p ; new incognito window
   ^q::Send ^w ; quit now closes tab, the two keys are too close for this sort of thing
@@ -243,6 +243,8 @@ Insert::appendClipboard()
   F6::Send ^l ; F6 jumps to address bar
   +PgDn::Send {Space 4}{Down 5} ; scroll down to specific part of a specific page, not really
   +PgUp::Send {Home} ; makes sense, kinda
+  RAlt & Left::Send, ^+{Tab}
+  RAlt & Right::Send, ^{Tab}
   Ralt & Enter:: ; overflow
   Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard command
   :*?:_crm::
