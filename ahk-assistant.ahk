@@ -368,6 +368,9 @@ Insert::appendClipboard()
 :*:_xrbaddr::
   Send, %xrbAddress%
   Return
+:*:_banaddr::
+  Send, %banAddress%
+  Return
 :*:_haddr::
   Send, %homeAddress%
   Return

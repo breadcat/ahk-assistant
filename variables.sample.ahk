@@ -11,6 +11,7 @@ workPostCode := ""
 
 xmrAddress := ""
 xrbAddress := ""
+banAddress := ""
 
 homeAddress := ""
 workAddress := ""
