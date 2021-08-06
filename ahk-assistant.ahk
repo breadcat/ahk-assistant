@@ -257,7 +257,7 @@ Insert::appendClipboard()
   ^-::Send ^{PgDn} ; zoom out
 #IfWinActive
 
-#IfWinActive ahk_class Notepad2 ; notepad2-mod
+#If WinActive("ahk_class Notepad2") or WinActive("ahk_class Notepad3") ; notepad 2 and 3
   ^0::Send ^/ ; remap transparency feature to reset zoom level, in keeping with other hotkeys
   !t::Return ; disable always on top
   ^+Down:: ; overflow
