@@ -371,6 +371,9 @@ Insert::appendClipboard()
 :*:_banaddr::
   Send, %banAddress%
   Return
+:*:_proid::
+  Send, %prolificID%
+  Return
 :*:_haddr::
   Send, %homeAddress%
   Return
