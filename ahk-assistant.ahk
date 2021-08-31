@@ -491,6 +491,7 @@ Insert::appendClipboard()
 :*:ahve::have
 :*:aquire::acquire
 :*:attendent::attendant
+:*:bene::been
 :*:bolognaise::bolognese
 :*:bredth::breadth
 :*:cinammon::cinnamon
