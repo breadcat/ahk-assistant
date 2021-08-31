@@ -122,8 +122,12 @@ Insert::appendClipboard()
     :*?:__login::
 		Send tech{Tab}12345678{Enter}
 		Return
-	:*?:__cred::
-		Send {CtrlDown}v{CtrlUp}{Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{Tab}%necPassword%{Tab}{Enter}{Sleep 750}{Enter}{Sleep 3000}{F6}
+	Alt & Enter:: ; connect, paste IP, enter credentials, connect, download
+		Send {F5}{Sleep 250}{Tab 5}{Sleep 250}
+		pasteClipboard()
+		Send {Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{Tab}%necPassword%{Tab}{Enter}{Sleep 250}{Enter}
+		Sleep 5000 ; required for some reason, download window won't open unless split
+		Send {F6}{Sleep 250}{Tab 4}{Enter}
 		Return
 #If
 
