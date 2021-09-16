@@ -238,6 +238,7 @@ Insert::appendClipboard()
   ^!d::Send ^j ; why Downloads is ctrl+j while addons is ctrl+alt+a will never make sense
   ^d::Send ^f ; bookmark remapped to find
   ^b::Send ^v ; replace bookmarks with paste
+  ^+m::Send, ^+n ; why is this feature even a thing
   #o::Send, ^c{F6}^v{Enter} ; copy selected uri and open in current tab
   #+o::Send, ^c^t^v{Enter} ; copy selected uri and open in new tab
   ^+o::Send, !t{sleep 150}o ; C-S-o options
@@ -247,8 +248,8 @@ Insert::appendClipboard()
   F6::Send ^l ; F6 jumps to address bar
   +PgDn::Send {Space 4}{Down 5} ; scroll down to specific part of a specific page, not really
   +PgUp::Send {Home} ; makes sense, kinda
-  RAlt & Left::Send, ^+{Tab}
-  RAlt & Right::Send, ^{Tab}
+  RAlt & Left::Send, !{Left}
+  RAlt & Right::Send, !{Right}
   Ralt & Enter:: ; overflow
   Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard command
   :*?:_crm::
