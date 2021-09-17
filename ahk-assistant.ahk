@@ -425,6 +425,7 @@ Insert::appendClipboard()
 :c*?:(ae)::æ
 :c*?:(O/)::Ø
 :c*?:(o/)::ø
+:*:(norquote)::«»{Left}
 :*:kronor::kroner
 ; german
 :c*?:(Ui)::Ü
