@@ -288,8 +288,7 @@ Insert::appendClipboard()
   ^h::send {Home}{Esc} ; return to capital city, then close home screen
 #IfWinActive
 
-; dead by daylight
-#IfWinActive ahk_exe DeadByDaylight-Win64-Shipping.exe
+#IfWinActive ahk_exe DeadByDaylight-Win64-Shipping.exe ; dead by daylight
 	*G::
 	Loop
 	{
