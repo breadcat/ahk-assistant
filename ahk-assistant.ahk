@@ -241,7 +241,7 @@ Insert::appendClipboard()
   ^+m::Send, ^+n ; why is this feature even a thing
   #o::Send, ^c{F6}^v{Enter} ; copy selected uri and open in current tab
   #+o::Send, ^c^t^v{Enter} ; copy selected uri and open in new tab
-  ^+o::Send, !t{sleep 150}o ; C-S-o options
+  ^+o::Send, !t{sleep 150}s ; C-S-o options
   F1:: ; overflow
   F2::Send {Sleep 25}{Esc}{Sleep 25}{F6}{ShiftDown}{Tab 2}{ShiftUp}{AppsKey}w{Sleep 250} ; split current tab from window
   F7:: ; overflow
