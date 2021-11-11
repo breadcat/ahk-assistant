@@ -541,6 +541,7 @@ Insert::appendClipboard()
 :*:teh ::the{space} ; space is for the rare occurence where I type tehran
 :*:tehm::them
 :*:tehy::they
+:*:woth::with
 :*:wifi::Wi-Fi
 :*:yhe::the
 :*:yuo::you
