@@ -111,7 +111,7 @@ Insert::appendClipboard()
   CapsLock::Send !{F4} ; quit
 #IfWinActive
 
-#IfWinActive ahk_class FM ; 7zip file manager
+#IfWinActive ahk_exe 7zFM.exe ; 7zip file manager
   !Up::Send {Backspace}
 #IfWinActive
 
@@ -170,7 +170,7 @@ Insert::appendClipboard()
   CapsLock::Send !{F4}{sleep 15}!{F4} ; quit
 #IfWinActive
 
-#IfWinActive ahk_class SUMATRA_PDF_FRAME ; sumatra pdf
+#IfWinActive ahk_exe SumatraPDF.exe ; sumatra pdf
   CapsLock::Send !{F4} ; quit
   ^b::Send {F12} ; C-b toggles bookmarks
   ^t::Send !vt ; C-t toggles toolbar
@@ -257,7 +257,7 @@ Insert::appendClipboard()
 		return
 #IfWinActive
 
-#IfWinActive ahk_class MSPaintApp ; mspaint
+#IfWinActive ahk_exe mspaint.exe ; mspaint
   ^=::Send ^{PgUp} ; zoom in
   ^-::Send ^{PgDn} ; zoom out
 #IfWinActive
@@ -277,7 +277,7 @@ Insert::appendClipboard()
   CapsLock::Send !{F4} ; quit
 #IfWinActive
 
-#IfWinActive ahk_class wxWindowClassNR ; audacity
+#IfWinActive ahk_exe audacity.exe ; audacity
   ^=::Send ^1 ; zoom in
   ^-::Send ^3 ; zoom out
   ^0::Send ^2 ; zoom reset
