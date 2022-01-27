@@ -1,35 +1,29 @@
 
+; personal details
 firstName := ""
 lastName := ""
-
-homePhoneNumber := ""
-workPhoneNumber := ""
-mobilePhoneNumber := ""
-
+homeAddress := ""
 homePostCode := ""
-workPostCode := ""
+homePhoneNumber := ""
+mobilePhoneNumber := ""
+homeEmailAddress := ""
+prolificID:= ""
 
+; crypto addresses
 xmrAddress := ""
 xrbAddress := ""
 banAddress := ""
 
-homeAddress := ""
+; work details
 workAddress := ""
-
-homeEmailAddress := ""
+workPostCode := ""
+workPhoneNumber := ""
+workPhoneNumberDDI := ""
+workMobilePhoneNumber := ""
 workEmailAddress := ""
-
 workIPAddress := ""
-workSIPAddress := ""
 workCBIPAddress := ""
-serverRemoteAddress := ""
 remoteMAC := ""
-
-crmSearch := ""
-
-sshHost := ""
-sshPort := ""
-
 necUsername := ""
 necPassword := ""
 necPort := ""
