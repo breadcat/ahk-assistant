@@ -35,10 +35,10 @@ menu, tray, standard
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ; my computer
 ^!r::Run mstsc ; remote desktop connection
 ^!+r::Run mstsc /v:%serverRemoteAddress% ; rdp to a destination defined by variable file
-#t::Run cmd ; useful terminal
-#+t::Run putty -ssh -P %sshPort% %sshHost% ; remote terminal
-#p::Run putty
-#+Enter::searchCustomer()
+#t:: ; overflow
+#Enter::Run cmd ; command prompt
+#p:: ; overflow
+#+Enter:: Run putty
 *CapsLock::BackSpace
 RWin::AppsKey ; remap key for Rosewill keyboards
 #\::SendMessage 0x112, 0xF170, 2, , Program Manager ; W-\ - screen standby
@@ -87,17 +87,14 @@ Insert::appendClipboard()
   RAlt & Up::Send {AltDown}{Up}{AltUp}
   Alt & Enter:: ; overflow
   Ralt & Enter::Send {AppsKey}{Up}{Enter} ; ralt-enter properties
-  ^+Enter::Send {AppsKey}{Down 2}{Enter} ; C-S enter opens in new window
+  ^+Enter::Send {AppsKey}e ; C-S-enter opens in new window
   F1:: ; overflow to rename, help is useless in explorer
   F3::Send, {F2} ; rename for fun, nobody uses F3
   F6::Send !d ; addressbar
   ^Backspace::Send ^+{Left}{Backspace} ; backspace a word
   ^f::Return ; disable search in explorer, was always pretty useless
   ^h::explorerHidden()
-  ^!+n::Send !fwt ; creates a new text file
   ^p::Send, !p ; C-p also works for toggle preview
-  ^s::Send !vb ; view > status bar
-  ^0::Send !vd ; view > details
   ^-::Send ^{WheelDown 2} ; zoom out
   ^=::Send ^{WheelUp 2} ; zoom in
 #IfWinActive
@@ -122,12 +119,10 @@ Insert::appendClipboard()
     :*?:__login::
 		Send tech{Tab}12345678{Enter}
 		Return
-	Alt & Enter:: ; connect, paste IP, enter credentials, connect, download
+	Alt & Enter:: ; connect, paste IP, enter credentials, connect
 		Send {F5}{Sleep 250}{Tab 5}{Sleep 250}
 		pasteClipboard()
 		Send {Tab}{Enter}{Tab}%necPort%{Tab 2}{Enter}{Tab}%necUsername%{Tab}%necPassword%{Tab}{Enter}{Sleep 250}{Enter}
-		Sleep 5000 ; required for some reason, download window won't open unless split
-		Send {F6}{Sleep 250}{Tab 4}{Enter}
 		Return
 #If
 
@@ -288,21 +283,8 @@ Insert::appendClipboard()
   ^h::send {Home}{Esc} ; return to capital city, then close home screen
 #IfWinActive
 
-#IfWinActive ahk_exe DeadByDaylight-Win64-Shipping.exe ; dead by daylight
-	*G::
-	Loop
-	{
-		Send, {a Down}{a Up}
-		Sleep, 50
-		Send, {d Down}{d Up}
-	}until !GetKeyState("G","P")
-	return
-	*H::
-	Loop
-	{
-		Send, {Space Down}{Space Up}
-	}until !GetKeyState("H","P")
-	return
+#IfWinActive ahk_exe Teams.exe ; i hate ms teams
+  ^a::Send {End}{ShiftDown}{Home}{ShiftUp}
 #IfWinActive
 
 ; text insertion/replacements
@@ -345,9 +327,6 @@ Insert::appendClipboard()
 :*:_wip::
   Send, %workIPAddress%
   Return
-:*:_sip::
-  Send, %workSIPAddress%
-  Return
 :*:_cbip::
   Send, %workCBIPAddress%
   Return
@@ -363,8 +342,14 @@ Insert::appendClipboard()
 :*:_wtel::
   Send, %workPhoneNumber%
   Return
+:*:_wddi::
+  Send, %workPhoneNumberDDI%
+  Return
 :*:_mob::
   Send, %mobilePhoneNumber%
+  Return
+:*:_wmob::
+  Send, %workMobilePhoneNumber%
   Return
 :*:_xmraddr::
   Send, %xmrAddress%
@@ -396,9 +381,6 @@ Insert::appendClipboard()
 :*:_wdatfile::
   workDatFile()
   Return
-:*:_wlcr::
-	workLCRInsert()
-	Return
 :*:_db::
   Send, %A_WorkingDir%\Vault\
   Return
@@ -489,16 +471,21 @@ Insert::appendClipboard()
 :*?:(bull)::•
 :*?:(middot)::·
 
-; typos and common mistakes
+; typos, abbreviations and common mistakes
 :*:addon::add-on
 :*:adn::and
+:*:afaik::as far as I know
 :*:aging::ageing
 :*:ahve::have
 :*:aquire::acquire
+:*:atm ::at the moment{space} ; space is for when I type atmosphere
 :*:attendent::attendant
-:*:bene::been
+:*:bbs::be back soon
+:*:bene ::been{space} ; space is for when typing benefit
 :*:bolognaise::bolognese
+:*:brb::be right back
 :*:bredth::breadth
+:*:btw::by the way
 :*:cinammon::cinnamon
 :*:comaraderie::camaraderie
 :*:competative::competitive
@@ -510,9 +497,13 @@ Insert::appendClipboard()
 :*:excercise::exercise
 :*:fiber::fibre
 :*:fourty::forty
+:*:fyi::for your information
 :*:goverment::government
 :*:habe::have
+:*:iirc::if I recall correctly
 :*:imediate::immediate
+:*:imho::in my honest opinion
+:*:imo::in my opinion
 :*:independant::independent
 :*:intermitent::intermittent
 :*:liase::liaise
@@ -537,32 +528,21 @@ Insert::appendClipboard()
 :*:sieze::seize
 :*:supercede::supersede
 :*:taht::that
+:*:tbh::to be honest
+:*:tbqh::to be quite honest
 :*:teh ::the{space} ; space is for the rare occurence where I type tehran
 :*:tehm::them
 :*:tehy::they
-:*:woth::with
 :*:wifi::Wi-Fi
+:*:woth::with
 :*:yhe::the
 :*:yuo::you
+:c?*:ASAP::as soon as possible
 :c?*:i'd::I'd
 :c?*:i'll::I'll
 :c?*:i'm::I'm
 :c?*:i've::I've
 :c?*:paypal::PayPal
-
-; general abbreviations
-:*:afaik::as far as I know
-:*:atm ::at the moment{space} ; space is for when I type atmosphere
-:*:bbs::be back soon
-:*:brb::be right back
-:*:btw::by the way
-:*:fyi::for your information
-:*:iirc::if I recall correctly
-:*:imho::in my honest opinion
-:*:imo::in my opinion
-:*:tbh::to be honest
-:*:tbqh::to be quite honest
-:c?*:ASAP::as soon as possible
 
 ; work related abbreviations
 :*:ctsty::Called to speak to you, their number is
@@ -633,18 +613,6 @@ workDatFile() {
 		Send order{Tab 3}`.dat file request{Tab}
 		insertSalutation()
 		Send, ,`n`nPlease can I get a .dat file generated for system ID: %clipboard%?`nThe order reference will be:{Space}`n`nRegards,`n%firstName%.{Up 3}{End}
-	Return
-	}
-
-workLCRInsert() {
-		digitsLCR := "010101"
-		digitStart := "2"
-		Send 1{tab}0-7{enter}{sleep 1500}{tab 3}
-		loop 8 {
-			Send c{tab}%digitStart%{tab 3}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 150} ; 3.1.7
-			; Send c{tab}%digitStart%{tab 2}%digitsLCR%{tab}%digitsLCR%{tab}%digitsLCR%{tab}{sleep 50} ; >3.1.7
-			digitStart++ ; increment digit by 1
-		}
 	Return
 	}
 
@@ -732,21 +700,9 @@ forceClose() {
     Process, Close, %PID%
   }
 
-searchCustomer() {
-    global crmSearch
-    backupClipboard := Clipboard
-    Send, ^c
-    Run, %crmSearch%%clipboard%
-    Clipboard := backupClipboard
-    backupClipboard =
-    Return
-  }
-
 dailyNotes() {
-    global workAddress
-    companyName := SubStr(workAddress,1,InStr(workAddress,"`n")-1) . " Limited"
     formattime, todaysDate,, yyyy-MM-dd
-    noteFilename := A_WorkingDir . "\OneDrive - " . companyName . "\Notes\wfh\notes " . todaysDate . ".txt"
+    noteFilename := A_WorkingDir . "\Vault\docs\wfh\notes " . todaysDate . ".txt"
     Run notepad "%noteFilename%"
     Return
   }
