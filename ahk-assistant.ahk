@@ -248,9 +248,6 @@ RAlt & Left::Send, !{Left}
 RAlt & Right::Send, !{Right}
 Ralt & Enter:: ; overflow
 Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard command
-:*?:_crm::
-   insertCRMFooter()
-return
 #IfWinActive
 
 #IfWinActive ahk_exe mspaint.exe ; mspaint
@@ -586,12 +583,6 @@ insertFooter() {
    Send, {Enter}
    insertDateTime()
    insertSignature()
-   Return
-}
-
-insertCRMFooter() {
-   insertFooter()
-   Send, {Tab}{Space} ; jump out of textarea and press save
    Return
 }
 
