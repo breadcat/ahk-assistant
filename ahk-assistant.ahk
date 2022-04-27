@@ -148,6 +148,8 @@ Down::Return ; fixes up/down breaking left/right navigation
 q:: ; overflow
 ^w:: ; overflow
 CapsLock::Send !{F4} ; quit
+!Left::Send {AltDown}e9{AltUp} ; CCW rotation
+!Right::Send, {AltDown}e0{AltUp} ; CW rotation
 #IfWinActive
 
 #IfWinActive ahk_class IrfanView
