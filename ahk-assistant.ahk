@@ -480,6 +480,7 @@ Return
 :*:bolognaise::bolognese
 :*:brb::be right back
 :*:bredth::breadth
+:*:btu::but
 :*:btw::by the way
 :*:cinammon::cinnamon
 :*:comaraderie::camaraderie
