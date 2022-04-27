@@ -283,7 +283,7 @@ F11::borderlessFullscreen()
 #IfWinActive
 
 #IfWinActive ahk_exe Teams.exe ; i hate ms teams
-^a::Send {End}{ShiftDown}{Home}{ShiftUp}
+^a::Send {End}{CtrlDown}{ShiftDown}{Home}{CtrlUp}{ShiftUp}
 #IfWinActive
 
 ; text insertion/replacements
