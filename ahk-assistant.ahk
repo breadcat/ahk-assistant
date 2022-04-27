@@ -34,6 +34,7 @@ menu, tray, standard
 ^!e::Run ::{20d04fe0-3aea-1069-a2d8-08002b30309d} ; my computer
 ^!r::Run mstsc ; remote desktop connection
 ^!+r::Run mstsc /v:%serverRemoteAddress% ; rdp to a destination defined by variable file
+^!t::Run *RunAs cmd ; C-A-t admin cmd
 #t:: ; overflow
 #Enter::Run cmd ; command prompt
 #p:: ; overflow
