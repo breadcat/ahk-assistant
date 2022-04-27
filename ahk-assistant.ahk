@@ -379,9 +379,6 @@ Return
 :*:_salu::
    insertSalutation()
 Return
-:*:_wdatfile::
-   workDatFile()
-Return
 :*:_db::
    Send, %A_WorkingDir%\Vault\
 Return
@@ -605,14 +602,6 @@ insertSalutation() {
       Send, Afternoon
    Else
       Send, Evening
-   Return
-}
-
-workDatFile() {
-   global firstName
-   Send order{Tab 3}`.dat file request{Tab}
-   insertSalutation()
-   Send, ,`n`nPlease can I get a .dat file generated for system ID: %clipboard%?`nThe order reference will be:{Space}`n`nRegards,`n%firstName%.{Up 3}{End}
    Return
 }
 
