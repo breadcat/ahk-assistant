@@ -153,20 +153,6 @@ CapsLock::Send !{F4} ; quit
 !Right::Send, {AltDown}e0{AltUp} ; CW rotation
 #IfWinActive
 
-#IfWinActive ahk_class IrfanView
-q:: ; overflow
-^w:: ; overflow
-CapsLock::Send !{F4} ; quit
-!Left::Send l
-!Right::Send r
-#IfWinActive
-
-#IfWinActive ahk_class FullScreenClass ; irfanview fullscreen-o-mode
-q:: ; overflow
-^w:: ; overflow
-CapsLock::Send !{F4}{sleep 15}!{F4} ; quit
-#IfWinActive
-
 #IfWinActive ahk_exe SumatraPDF.exe ; sumatra pdf
 CapsLock::Send !{F4} ; quit
 ^b::Send {F12} ; C-b toggles bookmarks
