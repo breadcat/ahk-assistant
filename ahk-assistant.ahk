@@ -108,6 +108,12 @@ Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard comman
 CapsLock::Send !{F4} ; quit
 #IfWinActive
 
+#IfWinActive ahk_exe fontview.exe ; windows 10 font viewer
+q:: ; overflow
+^w:: ; overflow
+CapsLock::Send !{F4} ; quit
+#IfWinActive
+
 #IfWinActive ahk_exe 7zFM.exe ; 7zip file manager
 !Up::Send {Backspace}
 #IfWinActive
