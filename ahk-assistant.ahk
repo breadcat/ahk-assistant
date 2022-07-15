@@ -639,6 +639,8 @@ pasteClipboard() {
    StringReplace, tempClipboard, tempClipboard, +44,0, All ; remove international dialling code without a space
    StringReplace, tempClipboard, tempClipboard, `r,, All ; remove half of line breaks
    StringReplace, tempClipboard, tempClipboard, `n,, All ; remove other half of line breaks
+   StringReplace, tempClipboard, tempClipboard, https:,, All ; remove other half of line breaks
+   StringReplace, tempClipboard, tempClipboard, http:,, All ; remove other half of line breaks
    tempClipboard = %tempClipboard% ; trim whitespace
    SendRaw %tempClipboard%
    tempClipboard =
