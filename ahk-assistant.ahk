@@ -258,6 +258,10 @@ Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard comman
 !u::Send ^a!o ; remap delete last character to sort lines, after selecting everything
 #IfWinActive
 
+#IfWinActive ahk_class Notepad++ ; notepad++
+!o::Send {AltDown}el{Up 9}{AltUp}{Enter}
+#IfWinActive
+
 #IfWinActive ahk_exe calibre-parallel.exe ; calibre reader
 q:: ; overflow
 CapsLock::Send !{F4} ; quit
