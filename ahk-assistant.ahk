@@ -259,7 +259,7 @@ Alt & Enter::toggleFullscreen() ; leave flash full screen with a keyboard comman
 #IfWinActive
 
 #IfWinActive ahk_class Notepad++ ; notepad++
-!o::Send {AltDown}el{Up 9}{AltUp}{Enter}
+!o::Send {AltDown}el{Up 9}{AltUp}{Enter}{AltDown}el{Down}{AltUp}{Enter} ; remove duplicates and sort
 #IfWinActive
 
 #IfWinActive ahk_exe calibre-parallel.exe ; calibre reader
