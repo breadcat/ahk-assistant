@@ -282,6 +282,10 @@ F11::borderlessFullscreen()
 ^a::Send {End}{CtrlDown}{ShiftDown}{Home}{CtrlUp}{ShiftUp}
 #IfWinActive
 
+#IfWinActive ahk_class SunAwtFrame ; vidyascape
+^LButton::osrsDropItem()
+#IfWinActive
+
 ; text insertion/replacements
 :*?:_date::
    insertDate()
@@ -677,6 +681,16 @@ borderlessFullscreen() {
    WinSet, Style, -0xC40000, ahk_id %WindowID%
    WinMove, ahk_id %WindowID%, , 0, 0, A_ScreenWidth, A_ScreenHeight
    Return
+}
+
+osrsDropItem() {
+	SendInput {Click Right}
+	Sleep 25
+	Mousemove ,0 ,50 ,0 ,R
+	Sleep 15
+	SendInput {Click}
+	Sleep 15
+	Mousemove ,0 ,-50 ,0 ,R
 }
 
 forceClose() {
